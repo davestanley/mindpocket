@@ -1,4 +1,7 @@
 
+
+######################### NLP Functions #########################
+
 def find_inds_of_NE(tags):
     # Get indices of all named entity tags in the tags list
     l = [i for i, t in enumerate(tags) if not t == 'O']
@@ -148,37 +151,83 @@ def extract_blanked_out_sentences(results,verbose_mode = False):
 
     return text_blanks
 
+######################### App GUI Functions #########################
 
 
-# Set up and load data
-# Includes
+
+# General imports
 import sys
 import os
 
+# Imports for dash
+import dash
+import dash_core_components as dcc
+import dash_html_components as html
+from dash.dependencies import Input, Output
 
-# Setup paths containing utility
+# Setup local paths
 curr_folder = os.getcwd()
 sys.path.insert(0, os.path.join(curr_folder,'../app'))
 
-# Load the data
-from utils import load_SQuAD_train
-arts = load_SQuAD_train()
+external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
+
+app = dash.Dash(__name__, external_stylesheets=external_stylesheets)
+
+app.layout = html.Div([
+    dcc.Textarea(
+        id='input-box',
+        placeholder='Enter a value...',
+        value='This is a TextArea component',
+        style={'width': '100%'},
+        rows=20
+    ),
+    html.Button('Submit', id='button'),
+    html.Div(id='output-container-button',
+             children='Enter a value and press submit')
+])
 
 
-# Choose a paragraph
-paragraph = arts[15]['paragraphs'][1]['context']
-print(paragraph)
+@app.callback(
+    dash.dependencies.Output('output-container-button', 'children'),
+    [dash.dependencies.Input('button', 'n_clicks')],
+    [dash.dependencies.State('input-box', 'value')])
+def update_output(n_clicks, value):
+    testing_mode = False
 
-# Tag the paragraph
-results = tag_paragraph_NER(paragraph)
+    paragraph = value
+    print(paragraph)
+
+    if not testing_mode:
+        # Tag the paragraph
+        results = tag_paragraph_NER(paragraph)
+
+        # Generate the sentences
+        text_blanks = extract_blanked_out_sentences(results)
+        blanked_sentence = text_blanks['text']
+        removed_word = text_blanks['removed_word']
+        removed_word_tag = text_blanks['removed_word_tag']
+        
+        #print(blanked_sentence)
+        #print('Answer: ' + removed_word)
+    else:
+        # Fill in some default values
+        blanked_sentence = 'as created by Jordan ___, a software engi'
+        removed_word = 'Walke'
 
 
-# Print the sentences
-text_blanks = extract_blanked_out_sentences(results)
+    out = [html.P('Question: Fill in the blank(s)'),
+    html.P(blanked_sentence),
+    html.P('Answer: {}'.format(removed_word))
+    ]
 
-blanked_sentence = text_blanks['text']
-removed_word = text_blanks['removed_word']
-removed_word_tag = text_blanks['removed_word_tag']
+    return out
+    # return 'Fill in the blank:\n"{}"\n Answer:{} \n'.format(
+    #     blanked_sentence,
+    #     removed_word
+    # )
 
-print(blanked_sentence)
-print('Answer: ' + removed_word)
+
+
+
+if __name__ == '__main__':
+    app.run_server(debug=True)
