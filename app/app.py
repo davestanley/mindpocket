@@ -275,7 +275,7 @@ def update_output(n_clicks, value):
 
         # Loop through sentences in steps of 4 sentences at a time
         Nsent = len(results_list)
-        step_size=3
+        step_size=2
         out = []
         count=0
         for i in range(0,Nsent,step_size):

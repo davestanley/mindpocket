@@ -4,21 +4,20 @@ import numpy as np
 import json
 import os
 
-
-def load_SQuAD_train(verbose=False):
+def load_SQuAD_data(filename,verbose=False):
     import json
     import os
-
 
     # Set up path info
     repodir = os.path.join(os.getenv("HOME"),'src','animated-succotash')
     datadir = os.path.join(repodir,'data')
     squaddir = os.path.join(datadir,'SQuAD')
 
-    filename = os.path.join(squaddir,'train-v2.0.json')
+    fullname = os.path.join(squaddir,filename)
+    if verbose: print(fullname)
 
     # Load the data
-    json_data=open(filename,'r')
+    json_data=open(fullname,'r')
     data = json.load(json_data)
     json_data.close()
 
@@ -39,3 +38,11 @@ def load_SQuAD_train(verbose=False):
             print(art['title'])
 
     return arts
+
+
+def load_SQuAD_train(verbose=False):
+    return load_SQuAD_data('train-v2.0.json',verbose)
+
+
+def load_SQuAD_dev(verbose=False):
+    return load_SQuAD_data('dev-v2.0.json',verbose)
