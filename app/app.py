@@ -256,11 +256,18 @@ app.layout = html.Div(style={'backgroundColor': colors['background']},children=[
     [dash.dependencies.Input('button', 'n_clicks')],
     [dash.dependencies.State('input-box', 'value')])
 def update_output(n_clicks, value):
-    testing_mode = False
+    testing_mode = True
     verbose_mode = True
 
     paragraph = value
-    print(paragraph)
+
+    # Testing: see if we can identify paragraph breaks
+    if testing_mode:
+        print(paragraph)
+        print("Paragraph type: " + str(type(paragraph)))
+        if '\n' in paragraph:
+            print('pass')
+
 
     if not testing_mode:
         # Tag the paragraph
