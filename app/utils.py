@@ -1,4 +1,5 @@
 
+# Mainly file IO utilities
 
 import numpy as np
 import json
