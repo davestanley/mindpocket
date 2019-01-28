@@ -1,3 +1,5 @@
+# This file preprocesses the original SQuAD data by running AllenNLP
+# named entity recognition on all articles
 
 # Set up and load data
 # Includes
@@ -15,7 +17,7 @@ curr_folder = os.getcwd()
 sys.path.insert(0, os.path.join(curr_folder,'../app'))
 
 # Import custom utilities
-from utils import load_SQuAD_train, load_SQuAD_dev
+from utils import load_SQuAD_train, load_SQuAD_dev, exists_SQuAD_pp
 from utils import load_SQuAD_train_pp, load_SQuAD_dev_pp
 from utils import save_SQuAD_train_pp, save_SQuAD_dev_pp
 
@@ -25,7 +27,8 @@ verbose2_on = False      # Detailed verbose comments - show results of NLP
 testing_mode = False
 
 # Set up AllenNLP
-if not testing_mode: predictor = Predictor.from_path("/home/davestanley/src/allennlp/ner-model-2018.12.18.tar.gz")
+allenNERmodel = os.path.join(os.getenv("HOME"),'src','allennlp','ner-model-2018.12.18.tar.gz')
+if not testing_mode: predictor = Predictor.from_path(allenNERmodel)
 
 
 # Load the training data
@@ -38,7 +41,16 @@ art = arts
 # Loop through and add results field to data
 art2 = art.copy()
 for i,a in enumerate(art):
-    print("Article number:" + str(i).zfill(3) + ". Saving to: " + 'train_art_' + str(i).zfill(3) + '.json')
+    filename = 'train_art_' + str(i).zfill(3) + '.json'
+
+    # Do a short test to see if file exists
+    file_exists = exists_SQuAD_pp(filename)
+    if file_exists:
+        print("File: " + filename + " already exists. Skipping...")
+        continue        # If file already exists, skip over to the next file
+
+    # Otherwise with operation
+    print("Article number:" + str(i).zfill(3) + ". Saving to: " + filename)
     for j,p in enumerate(a['paragraphs']):
         print("\tParagraph number: " + str(j))
         if not testing_mode:
@@ -58,7 +70,7 @@ for i,a in enumerate(art):
         art2[i]['paragraphs'][j]['allenNER']=results2
 
     # Save individual articles
-    save_SQuAD_train_pp(art2[i],'train_art_' + str(i).zfill(3) + '.json')
+    save_SQuAD_train_pp(art2[i],filename)
 
 # Save new data to json
 save_SQuAD_train_pp(art2)
@@ -67,6 +79,10 @@ save_SQuAD_train_pp(art2)
 arts3 = load_SQuAD_train_pp()
 
 train_art_0 = load_SQuAD_train_pp('train_art_000.json')
+
+# Testing
+# save_SQuAD_train_pp(arts,filename='test.json',verbose=False,do_overwrite=False)
+
 
 
 # # Import all
