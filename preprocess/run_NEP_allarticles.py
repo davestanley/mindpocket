@@ -30,13 +30,12 @@ testing_mode = False
 allenNERmodel = os.path.join(os.getenv("HOME"),'src','allennlp','ner-model-2018.12.18.tar.gz')
 if not testing_mode: predictor = Predictor.from_path(allenNERmodel)
 
-
+# # # # # # # # # # # # # # # # # # # # Process training data # # # # # # # # # # # # # # # # #
 # Load the training data
 arts = load_SQuAD_train()
 
 art = arts
 # art = arts[105:107]         # A few short articles
-
 
 # Loop through and add results field to data
 art2 = art.copy()
@@ -72,14 +71,58 @@ for i,a in enumerate(art):
     # Save individual articles
     save_SQuAD_train_pp(art2[i],filename)
 
-# Save new data to json
-save_SQuAD_train_pp(art2)
 
-# Test loading data
-arts3 = load_SQuAD_train_pp()
+# # # # # # # # # # # # # # # # # # # # Process DEV data # # # # # # # # # # # # # # # # #
+# Load the training data
+arts = load_SQuAD_dev()
 
-train_art_0 = load_SQuAD_train_pp('train_art_000.json')
+art = arts
+# art = arts[105:107]         # A few short articles
 
+# Loop through and add results field to data
+art2 = art.copy()
+for i,a in enumerate(art):
+    filename = 'dev_art_' + str(i).zfill(3) + '.json'
+
+    # Do a short test to see if file exists
+    file_exists = exists_SQuAD_pp(filename)
+    if file_exists:
+        print("File: " + filename + " already exists. Skipping...")
+        continue        # If file already exists, skip over to the next file
+
+    # Otherwise with operation
+    print("Article number:" + str(i).zfill(3) + ". Saving to: " + filename)
+    for j,p in enumerate(a['paragraphs']):
+        print("\tParagraph number: " + str(j))
+        if not testing_mode:
+            results = predictor.predict(sentence=p['context'])
+            if verbose2_on:
+                for word, tag in zip(results["words"], results["tags"]):
+                    print(f"{word}\t{tag}")
+
+            # Merge words and tags together into 1 long sentence, for more efficient json storage
+            results2 = {
+                    'words': ' '.join(results['words']),
+                    'tags': ' '.join(results['tags']),
+                }
+        else:
+            results = 'asdf'
+            results2 = 'asdf'
+        art2[i]['paragraphs'][j]['allenNER']=results2
+
+    # Save individual articles
+    save_SQuAD_dev_pp(art2[i],filename)
+
+
+
+# # Save new data to json
+# save_SQuAD_train_pp(art2)
+#
+# # Test loading data
+# arts3 = load_SQuAD_train_pp()
+#
+# train_art_0 = load_SQuAD_train_pp('train_art_000.json')
+#
 # Testing
 # save_SQuAD_train_pp(arts,filename='test.json',verbose=False,do_overwrite=False)
 
