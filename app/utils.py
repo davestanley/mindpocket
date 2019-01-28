@@ -4,13 +4,23 @@ import numpy as np
 import json
 import os
 
-def load_SQuAD_data(filename,SQuAD_foldername='SQuAD',verbose=False):
-    import json
+
+# # # # # Core File IO functions # # # # # # #
+def get_data_folder():
     import os
 
     # Set up path info
     repodir = os.path.join(os.getenv("HOME"),'src','animated-succotash')
     datadir = os.path.join(repodir,'data')
+
+    return datadir
+
+
+def load_SQuAD_data(filename,SQuAD_foldername='SQuAD',verbose=False):
+    import json
+    import os
+
+    datadir = get_data_folder()
     squaddir = os.path.join(datadir,SQuAD_foldername)
 
     fullname = os.path.join(squaddir,filename)
@@ -39,13 +49,12 @@ def load_SQuAD_data(filename,SQuAD_foldername='SQuAD',verbose=False):
 
     return arts
 
-def save_SQuAD_data(arts,filename,SQuAD_foldername='SQuAD_postprocessed',verbose=False):
+def save_SQuAD_data(arts,filename,SQuAD_foldername='SQuAD_postprocessed',verbose=False,do_overwrite=False):
     import json
     import os
 
     # Set up path info
-    repodir = os.path.join(os.getenv("HOME"),'src','animated-succotash')
-    datadir = os.path.join(repodir,'data')
+    datadir = get_data_folder()
     squaddir = os.path.join(datadir,SQuAD_foldername)
 
     # Create directory if doesn't already exist
@@ -56,11 +65,41 @@ def save_SQuAD_data(arts,filename,SQuAD_foldername='SQuAD_postprocessed',verbose
     fullname = os.path.join(squaddir,filename)
     if verbose: print(fullname)
 
-    data = {'data': arts, 'version':['v2.0']}
+    # Check if path exists. If exists, and overwrite is false, return
+    if os.path.exists(fullname):
+        file_exists = True
+        if not do_overwrite:
+            # Break out of code if we're not overwriting
+            print("File " + fullname + " exists...skipping.")
+            return file_exists
+        else:
+            print("File " + fullname + " exists...overwriting.")
+    else:
+        file_exists = False
 
     # Save the data
+    data = {'data': arts, 'version':['v2.0']}
     with open(fullname, 'w') as outfile:
         json.dump(data, outfile)
+
+    return file_exists
+
+
+# # # # # Test if file exists # # # # #
+def exists_SQuAD_pp(filename,SQuAD_foldername='SQuAD_postprocessed'):
+    import os
+    SQuAD_foldername
+
+    datadir = get_data_folder()
+    squaddir = os.path.join(datadir,SQuAD_foldername)
+
+    fullname = os.path.join(squaddir,filename)
+
+    if os.path.exists(fullname):
+        file_exists = True
+    else: file_exists = False
+
+    return file_exists
 
 
 # # # # # Loading data # # # # #
@@ -82,8 +121,10 @@ def load_SQuAD_dev_pp(filename='dev-v2.0.json',verbose=False):
 
 
 # # # # # Saving data # # # # #
-def save_SQuAD_train_pp(arts,filename='train-v2.0.json',verbose=False):
-    save_SQuAD_data(arts,filename,'SQuAD_postprocessed',verbose)
+def save_SQuAD_train_pp(arts,filename='train-v2.0.json',verbose=False,do_overwrite=False):
+    file_exists = save_SQuAD_data(arts,filename,'SQuAD_postprocessed',verbose,do_overwrite)
+    return file_exists
 
-def save_SQuAD_dev_pp(arts,filename='dev-v2.0.json',verbose=False):
-    save_SQuAD_data(arts,filename,'SQuAD_postprocessed',verbose)
+def save_SQuAD_dev_pp(arts,filename='dev-v2.0.json',verbose=False,do_overwrite=False):
+    file_exists = save_SQuAD_data(arts,filename,'SQuAD_postprocessed',verbose,do_overwrite)
+    return file_exists
