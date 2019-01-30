@@ -1,7 +1,7 @@
 
 # Utilities specifically for working with the SQuAD dataset
 
-def classify_blanks_from_answers(art,maxWords_per_FITB=2,verbose_on=False):
+def classify_blanks_from_answers(art,maxWords_per_FITB=2,verbose_on=False,warning_level=0):
     """Creates keys context_blanked and blank_classification under paragraph, based on keywords present in answers"""
     # Imports
     from utils_NLP import extract_no_stopwords
@@ -26,18 +26,26 @@ def classify_blanks_from_answers(art,maxWords_per_FITB=2,verbose_on=False):
             all_answers = [a['text'] for qa in p['qas'] for a in qa['answers']]
 
             context = p['context']
-            context = context.replace('  ',' ')
+
+            # Manual cleaning
+            context = context.replace('  ',' ')               # Remove any double spaces!
+            #if context[-1] == ' ': context = context[:-1]     # Remove any trailing blank space at end
+            #if context[0] == ' ': context = context[1:]       # Remove any initial blank space 1
+
+            # Split context in preparation for
             context_split = context.split()
             blank_classification = [False] * len(context_split)
 
             # Check to make sure reconstruction works
             context_reassembled = ' '.join(context_split)
             if not context == context_reassembled:
-                print("Warning: Article #" + str(i) + " somethings wrong - mismatch between original context and re-assembled context")
-#                 print(context)
-#                 print(context_reassembled)
-#                 print(len(context))
-#                 print(len(context_reassembled))
+                if warning_level == 1: print("Warning: Article #" + str(i) + " something's wrong - mismatch between original context and re-assembled context")
+                if warning_level == 2:
+                    print(len(context))
+                    print(len(context_reassembled))
+                if warning_level == 3:
+                    print(context)
+                    print(context_reassembled)
 
             #context_split_lower = context.lower().split()
             if verbose_on2: print('\tContext: ' + context)
