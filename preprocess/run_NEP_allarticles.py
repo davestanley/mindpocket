@@ -17,7 +17,7 @@ curr_folder = os.getcwd()
 sys.path.insert(0, os.path.join(curr_folder,'../app'))
 
 # Import custom utilities
-from utils import load_SQuAD_train, load_SQuAD_dev, exists_SQuAD_pp
+from utils import load_SQuAD_train, load_SQuAD_dev, exists_datafolder
 from utils import load_SQuAD_train_pp, load_SQuAD_dev_pp
 from utils import save_SQuAD_train_pp, save_SQuAD_dev_pp
 
@@ -43,7 +43,7 @@ for i,a in enumerate(art):
     filename = 'train_art_' + str(i).zfill(3) + '.json'
 
     # Do a short test to see if file exists
-    file_exists = exists_SQuAD_pp(filename)
+    file_exists = exists_datafolder(filename,'SQuAD_postprocessed')
     if file_exists:
         print("File: " + filename + " already exists. Skipping...")
         continue        # If file already exists, skip over to the next file
@@ -85,7 +85,7 @@ for i,a in enumerate(art):
     filename = 'dev_art_' + str(i).zfill(3) + '.json'
 
     # Do a short test to see if file exists
-    file_exists = exists_SQuAD_pp(filename)
+    file_exists = exists_datafolder(filename)
     if file_exists:
         print("File: " + filename + " already exists. Skipping...")
         continue        # If file already exists, skip over to the next file
@@ -112,6 +112,8 @@ for i,a in enumerate(art):
 
     # Save individual articles
     save_SQuAD_dev_pp(art2[i],filename)
+
+# Once all individual files have been saved, merge into 1 large json
 
 
 

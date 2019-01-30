@@ -87,13 +87,11 @@ def save_SQuAD_data(arts,filename,SQuAD_foldername='SQuAD_postprocessed',verbose
 
 
 # # # # # Test if file exists # # # # #
-def exists_SQuAD_pp(filename,SQuAD_foldername='SQuAD_postprocessed'):
+def exists_datafolder(filename,SQuAD_foldername='SQuAD_postprocessed'):
     import os
-    SQuAD_foldername
 
     datadir = get_data_folder()
     squaddir = os.path.join(datadir,SQuAD_foldername)
-
     fullname = os.path.join(squaddir,filename)
 
     if os.path.exists(fullname):
@@ -101,6 +99,7 @@ def exists_SQuAD_pp(filename,SQuAD_foldername='SQuAD_postprocessed'):
     else: file_exists = False
 
     return file_exists
+
 
 
 # # # # # Loading data # # # # #
