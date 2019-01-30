@@ -86,3 +86,16 @@ def classify_blanks_from_answers(art,maxWords_per_FITB=2,return_full=False,verbo
         return art2
     else:
         return art3
+
+def merge_arts_paragraph_fields(arts,arts2,list_of_fields,verbose_on=False):
+    ''' Merges 2 lists of arts together'''
+    from copy import deepcopy
+
+    art_merged = deepcopy(arts)
+    for i,a in enumerate(arts):
+        if verbose_on: print("Article number:" + str(i).zfill(3))
+        for j,p in enumerate(a['paragraphs']):
+            if verbose_on: print("\tParagraph number: " + str(j))
+            for field in list_of_fields:
+                art_merged[i]['paragraphs'][j][field] = arts2[i]['paragraphs'][j][field]
+    return art_merged
