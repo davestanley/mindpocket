@@ -35,16 +35,30 @@ def classify_blanks_from_answers(art,maxWords_per_FITB=2,return_full=False,verbo
 
             # Manual cleaning
             context = context.replace('  ',' ')               # Remove any double spaces!
-            #if context[-1] == ' ': context = context[:-1]     # Remove any trailing blank space at end
-            #if context[0] == ' ': context = context[1:]       # Remove any initial blank space 1
+            context = context.strip()                         # Remove excess white space at start and end
 
-            # Split context in preparation for
-            context_split = context.split()
+            # # Split context in preparation for marking words
+            # context_split = context.split()
+
+            # # Split context in preparation for marking words
+            # from allennlp.predictors import SentenceTaggerPredictor
+            # predictor = SentenceTaggerPredictor([],[])
+            # context_split = predictor._tokenizer.split_words(context);
+
+            # Split context in preparation for marking words
+            from allennlp.data.tokenizers.word_splitter import SpacyWordSplitter
+            ws = SpacyWordSplitter()
+            context_split = ws.split_words(context);
+
+
+            # Create blanks
             blank_classification = [0] * len(context_split)
 
             # Check to make sure reconstruction works
-            context_reassembled = ' '.join(context_split)
+            context_reassembled = ' '.join(join_punctuation(context_split))
             if not context == context_reassembled:
+                import import pdb
+                pdb.set_trace()
                 if warning_level == 1: print("Warning: Article #" + str(i) + " something's wrong - mismatch between original context and re-assembled context")
                 if warning_level == 2:
                     print(len(context))
