@@ -5,6 +5,17 @@ import numpy as np
 import json
 import os
 
+# # # # # Path information # # # # # # #
+def get_foldername(in):
+    if in == 'sq'
+        foldername = 'SQuAD'    # Original SQuAD dataset
+    if in == 'sq_pp_ner'
+        foldername = 'SQuAD_pp_NER'
+    if in == 'sq_pp_trainging'
+        foldername = 'SQuAD_pp_trainingblanks'
+    return foldername
+
+
 
 # # # # # Core File IO functions # # # # # # #
 def get_data_folder():
@@ -17,12 +28,12 @@ def get_data_folder():
     return datadir
 
 
-def load_SQuAD_data(filename,SQuAD_foldername='SQuAD',verbose=False):
+def load_data(filename,foldername='SQuAD',verbose=False):
     import json
     import os
 
     datadir = get_data_folder()
-    squaddir = os.path.join(datadir,SQuAD_foldername)
+    squaddir = os.path.join(datadir,foldername)
 
     fullname = os.path.join(squaddir,filename)
     if verbose: print(fullname)
@@ -50,13 +61,13 @@ def load_SQuAD_data(filename,SQuAD_foldername='SQuAD',verbose=False):
 
     return arts
 
-def save_SQuAD_data(arts,filename,SQuAD_foldername='SQuAD_postprocessed',verbose=False,do_overwrite=False):
+def save_data(arts,filename,foldername='SQuAD_postprocessed',verbose=False,do_overwrite=False):
     import json
     import os
 
     # Set up path info
     datadir = get_data_folder()
-    squaddir = os.path.join(datadir,SQuAD_foldername)
+    squaddir = os.path.join(datadir,foldername)
 
     # Create directory if doesn't already exist
     if not os.path.exists(squaddir):
@@ -87,11 +98,11 @@ def save_SQuAD_data(arts,filename,SQuAD_foldername='SQuAD_postprocessed',verbose
 
 
 # # # # # Test if file exists # # # # #
-def exists_datafolder(filename,SQuAD_foldername='SQuAD_postprocessed'):
+def exists_datafolder(filename,foldername='SQuAD_postprocessed'):
     import os
 
     datadir = get_data_folder()
-    squaddir = os.path.join(datadir,SQuAD_foldername)
+    squaddir = os.path.join(datadir,foldername)
     fullname = os.path.join(squaddir,filename)
 
     if os.path.exists(fullname):
@@ -105,26 +116,26 @@ def exists_datafolder(filename,SQuAD_foldername='SQuAD_postprocessed'):
 # # # # # Loading data # # # # #
 # Raw data
 def load_SQuAD_train(filename='train-v2.0.json',verbose=False):
-    return load_SQuAD_data(filename,'SQuAD',verbose)
+    return load_data(filename,get_foldername('sq'),verbose)
 
 def load_SQuAD_dev(filename='dev-v2.0.json',verbose=False):
-    return load_SQuAD_data(filename,'SQuAD',verbose)
+    return load_data(filename,get_foldername('sq'),verbose)
 
-# Postprocessed data
-def load_SQuAD_train_pp(filename='train-v2.0.json',verbose=False):
-    # Load data from post processing folder
-    return load_SQuAD_data(filename,'SQuAD_postprocessed',verbose)
-
-def load_SQuAD_dev_pp(filename='dev-v2.0.json',verbose=False):
-    # Load data from post processing folder
-    return load_SQuAD_data(filename,'SQuAD_postprocessed',verbose)
-
-
-# # # # # Saving data # # # # #
-def save_SQuAD_train_pp(arts,filename='train-v2.0.json',verbose=False,do_overwrite=False):
-    file_exists = save_SQuAD_data(arts,filename,'SQuAD_postprocessed',verbose,do_overwrite)
-    return file_exists
-
-def save_SQuAD_dev_pp(arts,filename='dev-v2.0.json',verbose=False,do_overwrite=False):
-    file_exists = save_SQuAD_data(arts,filename,'SQuAD_postprocessed',verbose,do_overwrite)
-    return file_exists
+# # Postprocessed data
+# def load_SQuAD_train_pp(filename='train-v2.0.json',verbose=False):
+#     # Load data from post processing folder
+#     return load_data(filename,'SQuAD_postprocessed',verbose)
+#
+# def load_SQuAD_dev_pp(filename='dev-v2.0.json',verbose=False):
+#     # Load data from post processing folder
+#     return load_data(filename,'SQuAD_postprocessed',verbose)
+#
+#
+# # # # # # Saving data # # # # #
+# def save_SQuAD_train_pp(arts,filename='train-v2.0.json',verbose=False,do_overwrite=False):
+#     file_exists = save_data(arts,filename,'SQuAD_postprocessed',verbose,do_overwrite)
+#     return file_exists
+#
+# def save_SQuAD_dev_pp(arts,filename='dev-v2.0.json',verbose=False,do_overwrite=False):
+#     file_exists = save_data(arts,filename,'SQuAD_postprocessed',verbose,do_overwrite)
+#     return file_exists
