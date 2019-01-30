@@ -6,12 +6,12 @@ import json
 import os
 
 # # # # # Path information # # # # # # #
-def get_foldername(in):
-    if in == 'sq'
+def get_foldername (mystring):
+    if mystring == 'sq':
         foldername = 'SQuAD'    # Original SQuAD dataset
-    if in == 'sq_pp_ner'
+    if mystring == 'sq_pp_ner':
         foldername = 'SQuAD_pp_NER'
-    if in == 'sq_pp_trainging'
+    if mystring == 'sq_pp_trainging':
         foldername = 'SQuAD_pp_trainingblanks'
     return foldername
 
@@ -39,9 +39,8 @@ def load_data(filename,foldername='SQuAD',verbose=False):
     if verbose: print(fullname)
 
     # Load the data
-    json_data=open(fullname,'r')
-    data = json.load(json_data)
-    json_data.close()
+    with open(fullname,'r') as f:
+        data = json.load(f)
 
     arts = data['data']
 
@@ -75,7 +74,7 @@ def save_data(arts,filename,foldername='SQuAD_postprocessed',verbose=False,do_ov
         os.makedirs(squaddir)
 
     fullname = os.path.join(squaddir,filename)
-    if verbose: print(fullname)
+    if verbose: print('Saving' + fullname)
 
     # Check if path exists. If exists, and overwrite is false, return
     if os.path.exists(fullname):
@@ -91,10 +90,40 @@ def save_data(arts,filename,foldername='SQuAD_postprocessed',verbose=False,do_ov
 
     # Save the data
     data = {'data': arts, 'version':['v2.0']}
-    with open(fullname, 'w') as outfile:
-        json.dump(data, outfile)
+    with open(fullname, 'w') as f:
+        json.dump(data, f)
 
     return file_exists
+
+
+# # # # # # Merge individual art files into single large json # # # # # #
+def merge_artfiles(filename_prefix,foldername,outname,verbose = False,do_overwrite=False):
+    import os
+    import glob
+    datadir = get_data_folder()
+    squaddir = os.path.join(datadir,foldername)
+    searchterm = os.path.join(squaddir,filename_prefix)
+    if verbose: print("Searching" + searchterm)
+    allfiles = glob.glob(searchterm)
+    Nfiles = len(allfiles)
+
+    # Start looping through and loading articles
+    arts = []
+    # print(Nfiles)
+    for i in range(Nfiles):
+        # Load the data
+        fullname = os.path.join(squaddir,allfiles[i])
+        # print(fullname)
+        with open(fullname,'r') as f:
+            data = json.load(f)
+        art = data['data']
+        arts.append(art)
+
+    # Save the merged arts
+    # fullname = os.path.join(squaddir,outname)
+    # print("Saving merged articles to " + fullname)
+    save_data(arts,outname,foldername,verbose,do_overwrite)
+    return(arts)
 
 
 # # # # # Test if file exists # # # # #

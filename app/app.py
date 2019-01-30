@@ -256,7 +256,7 @@ app.layout = html.Div(style={'backgroundColor': colors['background']},children=[
     [dash.dependencies.Input('button', 'n_clicks')],
     [dash.dependencies.State('input-box', 'value')])
 def update_output(n_clicks, value):
-    testing_mode = True
+    testing_mode = False
     verbose_mode = True
 
     paragraph = value

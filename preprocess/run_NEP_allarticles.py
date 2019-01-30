@@ -18,8 +18,9 @@ sys.path.insert(0, os.path.join(curr_folder,'../app'))
 
 # Import custom utilities
 from utils import save_data, load_data, exists_datafolder
-from utils import path_postprocessed_NER
+from utils import load_SQuAD_train, load_SQuAD_dev
 from utils import get_foldername
+from utils import merge_artfiles
 
 # Set up folder names
 foldername = get_foldername('sq_pp_ner')
@@ -28,6 +29,7 @@ foldername = get_foldername('sq_pp_ner')
 verbose_on = True       # Verbose comments
 verbose2_on = False      # Detailed verbose comments - show results of NLP
 testing_mode = False
+skip_save = False
 
 # Set up AllenNLP
 allenNERmodel = os.path.join(os.getenv("HOME"),'src','allennlp','ner-model-2018.12.18.tar.gz')
@@ -72,7 +74,11 @@ for i,a in enumerate(art):
         art2[i]['paragraphs'][j]['allenNER']=results2
 
     # Save individual articles
-    save_data(art2[i],foldername)
+    if not skip_save: save_data(art2[i],foldername)
+
+# Once all individual files have been saved, merge into 1 large json file
+if not skip_save: merge_artfiles('train_art_*',foldername,'train-v2.0.json',verbose=True)
+
 
 
 # # # # # # # # # # # # # # # # # # # # Process DEV data # # # # # # # # # # # # # # # # #
@@ -114,9 +120,10 @@ for i,a in enumerate(art):
         art2[i]['paragraphs'][j]['allenNER']=results2
 
     # Save individual articles
-    save_data(art2[i],foldername)
+    if not skip_save: save_data(art2[i],foldername)
 
-# Once all individual files have been saved, merge into 1 large json
+if not skip_save: merge_artfiles('dev_art_*',foldername,'dev-v2.0.json',verbose=True)
+
 
 
 
