@@ -105,6 +105,7 @@ def merge_artfiles(filename_prefix,foldername,outname,verbose = False,do_overwri
     searchterm = os.path.join(squaddir,filename_prefix)
     if verbose: print("Searching" + searchterm)
     allfiles = glob.glob(searchterm)
+    allfiles.sort()         # Need to sort because for some reason, glob returns in a random order
     Nfiles = len(allfiles)
 
     # Start looping through and loading articles
