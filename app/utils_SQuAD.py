@@ -24,6 +24,7 @@ def classify_blanks_from_answers(art,maxWords_per_FITB=2,return_full=False,verbo
         if verbose_on: print("Article number:" + str(i).zfill(3))
         for j,p in enumerate(a['paragraphs']):
             art3[i]['paragraphs'].append([]) # Grow art3
+            art3[i]['title'] = art[i]['title'] # Copy over title
             if verbose_on: print("\tParagraph number: " + str(j))
 
             # ID all answers
@@ -94,6 +95,9 @@ def merge_arts_paragraph_fields(arts,arts2,list_of_fields,verbose_on=False):
     art_merged = deepcopy(arts)
     for i,a in enumerate(arts):
         if verbose_on: print("Article number:" + str(i).zfill(3))
+        # Check that the titles match
+        if not arts[i]['title'] == arts2[i]['title']:
+            print('Warning - titles mismatch. Art1 title:' + arts[i]['title'] + ' vs ' + art2[i]['title'] + '.')
         for j,p in enumerate(a['paragraphs']):
             if verbose_on: print("\tParagraph number: " + str(j))
             for field in list_of_fields:
