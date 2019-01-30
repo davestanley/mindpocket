@@ -28,8 +28,8 @@ foldername = get_foldername('sq_pp_ner')
 # Flags
 verbose_on = True       # Verbose comments
 verbose2_on = False      # Detailed verbose comments - show results of NLP
-testing_mode = False
-skip_save = False
+testing_mode = True
+skip_save = True
 
 # Set up AllenNLP
 allenNERmodel = os.path.join(os.getenv("HOME"),'src','allennlp','ner-model-2018.12.18.tar.gz')
@@ -77,7 +77,7 @@ for i,a in enumerate(art):
     if not skip_save: save_data(art2[i],foldername)
 
 # Once all individual files have been saved, merge into 1 large json file
-if not skip_save: merge_artfiles('train_art_*',foldername,'train-v2.0.json',verbose=True)
+merge_artfiles('train_art_*',foldername,'train.json',verbose=True)
 
 
 
@@ -122,7 +122,7 @@ for i,a in enumerate(art):
     # Save individual articles
     if not skip_save: save_data(art2[i],foldername)
 
-if not skip_save: merge_artfiles('dev_art_*',foldername,'dev-v2.0.json',verbose=True)
+merge_artfiles('dev_art_*',foldername,'dev.json',verbose=True)
 
 
 
