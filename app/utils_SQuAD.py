@@ -39,7 +39,7 @@ def classify_blanks_from_answers(art,maxWords_per_FITB=2,return_full=False,verbo
 
             # Split context in preparation for
             context_split = context.split()
-            blank_classification = [False] * len(context_split)
+            blank_classification = [0] * len(context_split)
 
             # Check to make sure reconstruction works
             context_reassembled = ' '.join(context_split)
@@ -67,7 +67,7 @@ def classify_blanks_from_answers(art,maxWords_per_FITB=2,return_full=False,verbo
                         for k,w2 in enumerate(context_split):
                             if w.lower() == w2.lower():
                                 context_split[k] = '______'
-                                blank_classification[k] = True
+                                blank_classification[k] = 1
 
                 else:
                     if verbose_on: print('\t**FAIL** Answer <' + a + '> fails - either out of context or too many words')
