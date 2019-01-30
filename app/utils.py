@@ -11,7 +11,7 @@ def get_foldername (mystring):
         foldername = 'SQuAD'    # Original SQuAD dataset
     if mystring == 'sq_pp_ner':
         foldername = 'SQuAD_pp_NER'
-    if mystring == 'sq_pp_trainging':
+    if mystring == 'sq_pp_training':
         foldername = 'SQuAD_pp_trainingblanks'
     return foldername
 
