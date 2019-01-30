@@ -1,8 +1,11 @@
 
 # Utilities specifically for working with the SQuAD dataset
 
-def classify_blanks_from_answers(art,maxWords_per_FITB=2,verbose_on=False,warning_level=0):
+def classify_blanks_from_answers(art,maxWords_per_FITB=2,return_full=False,verbose_on=False,warning_level=0):
     """Creates keys context_blanked and blank_classification under paragraph, based on keywords present in answers"""
+    # Inputs:
+    # return_full = True / False - If true, returns a copy of art with new fields added.
+    #        If false, just returns the new fields in an otherwise empty struct
     # Imports
     from utils_NLP import extract_no_stopwords
     from copy import deepcopy
@@ -11,14 +14,16 @@ def classify_blanks_from_answers(art,maxWords_per_FITB=2,verbose_on=False,warnin
     verbose_on2 = False # Set to true to display full context for each paragraph
 
     # Copy so don't overwrite original
-    art2 = deepcopy(art)
-    #art2 = art.copy()
+    art2 = deepcopy(art)    # Direct copy of original art
+    art3 = []               # Will contain only new entries to save space. Merge these in later.
 
     # Loop through articles
     for i,a in enumerate(art):
+        art3.append({'paragraphs':[]}) # Grow art3
         filename = 'train_art_' + str(i).zfill(3) + '.json'
         if verbose_on: print("Article number:" + str(i).zfill(3))
         for j,p in enumerate(a['paragraphs']):
+            art3[i]['paragraphs'].append([]) # Grow art3
             if verbose_on: print("\tParagraph number: " + str(j))
 
             # ID all answers
@@ -68,7 +73,16 @@ def classify_blanks_from_answers(art,maxWords_per_FITB=2,verbose_on=False,warnin
                     if verbose_on: print('\t**FAIL** Answer <' + a + '> fails - either out of context or too many words')
 
             context_blanked = ' '.join(context_split)
+
+            # Add entries to art2
             art2[i]['paragraphs'][j]['context_blanked'] = context_blanked
             art2[i]['paragraphs'][j]['blank_classification'] = blank_classification
 
-    return art2
+            # Add entries to art3
+            art3[i]['paragraphs'][j] = {'context_blanked':context_blanked,
+                                        'blank_classification':blank_classification
+                                       }
+    if return_full:
+        return art2
+    else:
+        return art3
