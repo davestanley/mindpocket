@@ -24,8 +24,8 @@ def sayHi():
 wsgi_app = app.wsgi_app
 
 # Setup local paths
-curr_folder = os.getcwd()
-print(curr_folder)
+# curr_folder = os.getcwd()
+# print(curr_folder)
 # sys.path.insert(0, os.path.join(curr_folder,'../app'))
 
 external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']

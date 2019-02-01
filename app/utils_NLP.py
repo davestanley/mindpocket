@@ -41,7 +41,9 @@ def tag_paragraph_NER(paragraph,verbose_mode=False):
 
 
     # Run it on my test sentence
-    predictor = Predictor.from_path("/home/davestanley/src/allennlp/ner-model-2018.12.18.tar.gz")
+    #predictor = Predictor.from_path("/home/davestanley/src/allennlp/ner-model-2018.12.18.tar.gz")
+    import os
+    predictor = Predictor.from_path(os.path.join(os.getenv("HOME"),'src','allennlp','ner-model-2018.12.18.tar.gz'))
     results = predictor.predict(sentence=paragraph)
     for word, tag in zip(results["words"], results["tags"]):
         if verbose_mode:
