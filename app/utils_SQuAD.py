@@ -1,13 +1,13 @@
 
 # Utilities specifically for working with the SQuAD dataset
 
-def classify_blanks_from_answers(art,maxWords_per_FITB=2,return_full=False,verbose_on=False,warning_level=0):
+def classify_blanks_from_answers(art,maxWords_per_FITB=2,return_full=False,verbose_on=False,warning_level=1):
     """Creates keys context_blanked and blank_classification under paragraph, based on keywords present in answers"""
     # Inputs:
     # return_full = True / False - If true, returns a copy of art with new fields added.
     #        If false, just returns the new fields in an otherwise empty struct
     # Imports
-    from utils_NLP import extract_no_stopwords
+    from utils_NLP import extract_no_stopwords, join_punctuation, allenNLP_split_words
     from copy import deepcopy
 
     # Local settings
@@ -37,35 +37,26 @@ def classify_blanks_from_answers(art,maxWords_per_FITB=2,return_full=False,verbo
             context = context.replace('  ',' ')               # Remove any double spaces!
             context = context.strip()                         # Remove excess white space at start and end
 
-            # # Split context in preparation for marking words
-            # context_split = context.split()
-
-            # # Split context in preparation for marking words
-            # from allennlp.predictors import SentenceTaggerPredictor
-            # predictor = SentenceTaggerPredictor([],[])
-            # context_split = predictor._tokenizer.split_words(context);
-
             # Split context in preparation for marking words
-            from allennlp.data.tokenizers.word_splitter import SpacyWordSplitter
-            ws = SpacyWordSplitter()
-            context_split = ws.split_words(context);
-
+            context_split = allenNLP_split_words(context)
 
             # Create blanks
             blank_classification = [0] * len(context_split)
 
-            # Check to make sure reconstruction works
-            context_reassembled = ' '.join(join_punctuation(context_split))
-            if not context == context_reassembled:
-                import import pdb
-                pdb.set_trace()
-                if warning_level == 1: print("Warning: Article #" + str(i) + " something's wrong - mismatch between original context and re-assembled context")
-                if warning_level == 2:
-                    print(len(context))
-                    print(len(context_reassembled))
-                if warning_level == 3:
-                    print(context)
-                    print(context_reassembled)
+            # # Check to make sure reconstruction works
+            # # # Commenting this out because there will almost always be a mismatch
+            # # # due to using allenNLP_split_words above (causes issues with brackets, etc)
+            # context_reassembled = ' '.join(join_punctuation(context_split))
+            # if not context == context_reassembled:
+            #     # import pdb;
+            #     # pdb.set_trace()
+            #     if warning_level == 1: print("Warning: Article #" + str(i) + " something's wrong - mismatch between original context and re-assembled context")
+            #     if warning_level == 2:
+            #         print(len(context))
+            #         print(len(context_reassembled))
+            #     if warning_level == 3:
+            #         print(context)
+            #         print(context_reassembled)
 
             #context_split_lower = context.lower().split()
             if verbose_on2: print('\tContext: ' + context)
