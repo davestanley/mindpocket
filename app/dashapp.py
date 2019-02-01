@@ -1,9 +1,5 @@
 
 
-######################### NLP Functions #########################
-
-from utils_NLP import tag_paragraph_NER, split_allenResults, merge_allenResults, extract_blanked_out_sentences
-
 ######################### App GUI Functions #########################
 
 
@@ -17,14 +13,32 @@ import dash
 import dash_core_components as dcc
 import dash_html_components as html
 from dash.dependencies import Input, Output
+from app import app
+
+# Test
+@app.route('/index')
+def sayHi():
+    return "Hi from my Flask App!"
+
+# Define for IIS module registration.
+wsgi_app = app.wsgi_app
 
 # Setup local paths
 curr_folder = os.getcwd()
+print(curr_folder)
 sys.path.insert(0, os.path.join(curr_folder,'../app'))
 
 external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
 
-app = dash.Dash(__name__, external_stylesheets=external_stylesheets)
+
+
+######################### NLP Functions #########################
+# Import local functions
+#from utils_NLP import tag_paragraph_NER, split_allenResults, merge_allenResults, extract_blanked_out_sentences
+
+# Connect dash to flask
+dashapp = dash.Dash(__name__, server=app, url_base_pathname='/',external_stylesheets=external_stylesheets)
+# app = dash.Dash(__name__, external_stylesheets=external_stylesheets)
 
 colors = {
     'background': '#DDEEFF',
@@ -32,7 +46,7 @@ colors = {
     'align': 'center'
 }
 
-app.layout = html.Div(style={'backgroundColor': colors['background']},children=[
+dashapp.layout = html.Div(style={'backgroundColor': colors['background']},children=[
     html.H1(children='MindPocket', style={'textAlign': colors['align'],'color': colors['text']}),
     html.Div(style={'textAlign': colors['align'],'color': colors['text']},children='''
         Enter text to generate questions
@@ -51,7 +65,7 @@ app.layout = html.Div(style={'backgroundColor': colors['background']},children=[
 ])
 
 
-@app.callback(
+@dashapp.callback(
     dash.dependencies.Output('output-container-button', 'children'),
     [dash.dependencies.Input('button', 'n_clicks')],
     [dash.dependencies.State('input-box', 'value')])
@@ -131,5 +145,5 @@ def update_output(n_clicks, value):
 
 
 
-if __name__ == '__main__':
-    app.run_server(debug=True)
+# if __name__ == '__main__':
+#     dashapp.run_server(debug=True)
