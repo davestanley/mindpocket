@@ -42,6 +42,7 @@ dashapp = dash.Dash(__name__, server=app, url_base_pathname='/',external_stylesh
 
 colors = {
     'background': '#DDEEFF',
+    # 'background': '#FFFFFF',
     'text': '#000000',
     'align': 'center'
 }
@@ -74,6 +75,11 @@ def update_output(n_clicks, value):
     verbose_mode = True
 
     paragraph = value
+
+    if paragraph.strip() == '':
+        print('empty')
+        out = []
+        return out
 
     # Testing: see if we can identify paragraph breaks
     if testing_mode:
