@@ -80,6 +80,23 @@ def sent2text(sentences_subset):
 def words2text(words):
     return ' '.join(join_punctuation(words))
 
+def allenNLP_split_words(context):
+    """Uses AllenNLP to conduct word splitting, as an alternative to mystring.split()"""
+    # # Split context (alternative method)
+    # from allennlp.predictors import SentenceTaggerPredictor
+    # predictor = SentenceTaggerPredictor([],[])
+    # context_split = predictor._tokenizer.split_words(context);
+    #
+    from allennlp.data.tokenizers.word_splitter import SpacyWordSplitter
+    ws = SpacyWordSplitter()
+    context_split = ws.split_words(context);
+    # Convert context_split to str's
+    for i,c in enumerate(context_split):
+        context_split[i] = str(context_split[i])
+
+    return context_split
+
+
 def split_allenResults(results):
     # Divides the results dictionary supplied by AllenNLP into a list based on
     # sentences
