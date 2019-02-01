@@ -26,7 +26,7 @@ wsgi_app = app.wsgi_app
 # Setup local paths
 curr_folder = os.getcwd()
 print(curr_folder)
-sys.path.insert(0, os.path.join(curr_folder,'../app'))
+# sys.path.insert(0, os.path.join(curr_folder,'../app'))
 
 external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
 
@@ -34,7 +34,7 @@ external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
 
 ######################### NLP Functions #########################
 # Import local functions
-#from utils_NLP import tag_paragraph_NER, split_allenResults, merge_allenResults, extract_blanked_out_sentences
+from app.utils_NLP import tag_paragraph_NER, split_allenResults, merge_allenResults, extract_blanked_out_sentences
 
 # Connect dash to flask
 dashapp = dash.Dash(__name__, server=app, url_base_pathname='/',external_stylesheets=external_stylesheets)
@@ -70,7 +70,7 @@ dashapp.layout = html.Div(style={'backgroundColor': colors['background']},childr
     [dash.dependencies.Input('button', 'n_clicks')],
     [dash.dependencies.State('input-box', 'value')])
 def update_output(n_clicks, value):
-    testing_mode = True
+    testing_mode = False
     verbose_mode = True
 
     paragraph = value
