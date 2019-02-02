@@ -18,7 +18,8 @@ def get_foldername (mystring):
 
 
 # # # # # Core File IO functions # # # # # # #
-def get_data_folder():
+def get_data_root():
+    ''' Gets the root folder for storing all data '''
     import os
 
     # Set up path info
@@ -32,7 +33,7 @@ def load_data(filename,foldername='SQuAD',verbose=False):
     import json
     import os
 
-    datadir = get_data_folder()
+    datadir = get_data_root()
     squaddir = os.path.join(datadir,foldername)
 
     fullname = os.path.join(squaddir,filename)
@@ -65,7 +66,7 @@ def save_data(arts,filename,foldername='SQuAD_postprocessed',verbose=False,do_ov
     import os
 
     # Set up path info
-    datadir = get_data_folder()
+    datadir = get_data_root()
     squaddir = os.path.join(datadir,foldername)
 
     # Create directory if doesn't already exist
@@ -100,7 +101,7 @@ def save_data(arts,filename,foldername='SQuAD_postprocessed',verbose=False,do_ov
 def merge_artfiles(filename_prefix,foldername,outname,verbose = False,do_overwrite=False):
     import os
     import glob
-    datadir = get_data_folder()
+    datadir = get_data_root()
     squaddir = os.path.join(datadir,foldername)
     searchterm = os.path.join(squaddir,filename_prefix)
     if verbose: print("Searching" + searchterm)
@@ -131,7 +132,7 @@ def merge_artfiles(filename_prefix,foldername,outname,verbose = False,do_overwri
 def exists_datafolder(filename,foldername='SQuAD_postprocessed'):
     import os
 
-    datadir = get_data_folder()
+    datadir = get_data_root()
     squaddir = os.path.join(datadir,foldername)
     fullname = os.path.join(squaddir,filename)
 
