@@ -134,6 +134,15 @@ def merge_allenResults(results_list):
         'tags': [t for r in results_list for t in r['tags']]
     })
 
+def allenNLP_classify_blanks(art,failterm='O'):
+    """For all articles, converts allen NER tags into a list of 0's or 1's and stores these in field: blank_classified_allenNER"""
+    # Failterm = term associated with a false classification (non-blank)
+    for i,a in enumerate(art):
+        for j,p in enumerate(a['paragraphs']):
+            tags = p['allenNER']['tags'].split()
+            art[i]['paragraphs'][j]['blank_classified_allenNER'] = [0 if t == failterm else 1 for t in tags]   # Convert to binary
+    return(art)
+
 def extract_blanked_out_sentences(results,verbose_mode = False):
     # From results word/token list, blank out a random word, and then return
     # the sentences containing that blanked out word, plus a few preceding
