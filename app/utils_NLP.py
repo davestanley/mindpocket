@@ -99,9 +99,10 @@ def allenNLP_split_words(context):
     return context_split
 
 
-def split_allenResults(results):
+def splitsentences_allenResults(results):
     # Divides the results dictionary supplied by AllenNLP into a list based on
-    # sentences
+    # sentences. Output is results_list[0:Nsentences-1], each entry containing
+    # fields 'words' and 'tags'
     ind_sentence_starts = [i+1 for i,w in enumerate(results['words']) if (w=='.' or w=='?' or w=='!')]
     ind_sentence_starts.insert(0, 0)
 
@@ -127,7 +128,7 @@ def split_allenResults(results):
     return(results_list)
 
 def merge_allenResults(results_list):
-    # Merge list of resutls into a single results dict
+    # Merge results_list[0:Nsentences] into a single results dict
     Nsent = len(results_list)
     return({
         'words': [w for r in results_list for w in r['words']],

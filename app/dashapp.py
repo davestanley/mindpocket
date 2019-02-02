@@ -34,7 +34,7 @@ external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
 
 ######################### NLP Functions #########################
 # Import local functions
-from app.utils_NLP import tag_paragraph_NER, split_allenResults, merge_allenResults, extract_blanked_out_sentences
+from app.utils_NLP import tag_paragraph_NER, splitsentences_allenResults, merge_allenResults, extract_blanked_out_sentences
 
 # Connect dash to flask
 dashapp = dash.Dash(__name__, server=app, url_base_pathname='/',external_stylesheets=external_stylesheets)
@@ -98,7 +98,7 @@ def update_output(n_clicks, value):
                 print(f"{word}\t{tag}")
 
         # Subdivide results into separate sentences, based on punctuation
-        results_list = split_allenResults(results)
+        results_list = splitsentences_allenResults(results)
 
         # Loop through sentences in steps of 4 sentences at a time
         Nsent = len(results_list)
