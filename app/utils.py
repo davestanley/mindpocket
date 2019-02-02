@@ -22,7 +22,7 @@ def get_data_folder():
     import os
 
     # Set up path info
-    repodir = os.path.join(os.getenv("HOME"),'src','animated-succotash')
+    repodir = os.path.join(os.getenv("HOME"),'src','mindpocket')
     datadir = os.path.join(repodir,'data')
 
     return datadir
