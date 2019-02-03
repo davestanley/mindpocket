@@ -99,7 +99,7 @@ def allenNLP_split_words(context):
     return context_split
 
 
-def splitsentences_allenResults(results):
+def splitsentences_allenResults(results,verbose=False):
     # Divides the results dictionary supplied by AllenNLP into a list based on
     # sentences. Output is results_list[0:Nsentences-1], each entry containing
     # fields 'words' and 'tags'
@@ -107,7 +107,7 @@ def splitsentences_allenResults(results):
     ind_sentence_starts.insert(0, 0)
 
     if len(ind_sentence_starts) < 2:
-        print("Warning no punctuation found, so cannot split sentence. Returning original as list")
+        if verbose: print("Warning no punctuation found, so cannot split sentence. Returning original as list")
         return [results]
 
 #     # Dict, then list
