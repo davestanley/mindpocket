@@ -6,3 +6,7 @@ Article # 49: Hydrogen, 5007 words.
 Article # 84: Brain, 7318 words.
 Article # 99: Immunology, 1650 words.
 
+
+Article # 458: Pharmacy, 2995 words.
+
+
