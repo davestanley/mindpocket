@@ -54,7 +54,6 @@ def prepare_results_by_paragraph(r,token_spacer,word_spacer):
 
 def write_art(art,newline_method,foldername,filename,verbose=True):
 
-
     # # Pick out sample paragraph (testing)
     # a = art[0]
     # p = a['paragraphs'][0]
@@ -63,8 +62,11 @@ def write_art(art,newline_method,foldername,filename,verbose=True):
         art_titles = [a['title'] for a in art]
         print("\tSaving articles: {}".format(' '.join(art_titles)))
 
+    token_spacer = "//"
+    word_spacer = ' '
+
     # Write blank char to file to clear
-    with open(os.path.join(get_data_root(),foldername,'allenTrain.txt'), 'w') as f:
+    with open(os.path.join(get_data_root(),foldername,filename), 'w') as f:
         f.write('')
 
     # Start writing new text
@@ -80,17 +82,13 @@ def write_art(art,newline_method,foldername,filename,verbose=True):
             results = {'words': context_split,
                        'tags': bc}
 
-
-            token_spacer = "//"
-            word_spacer = ' '
-
             if newline_method == 1: to_write = prepare_results_by_sentences(results,token_spacer,word_spacer);
             elif newline_method == 3: to_write = prepare_results_by_paragraph(results,token_spacer,word_spacer)
             else: print("Unknown newline method");
 
 
 
-            with open(os.path.join(get_data_root(),foldername,'allenTrain.txt'), 'a') as f:
+            with open(os.path.join(get_data_root(),foldername,filename), 'a') as f:
                 for w in to_write:
                     f.write(w + '\n')
 
