@@ -66,7 +66,7 @@ def write_art(art,newline_method,foldername,filename,verbose=True):
     word_spacer = ' '
 
     # Write blank char to file to clear
-    with open(os.path.join(get_data_root(),foldername,filename), 'w') as f:
+    with open(os.path.join(foldername,filename), 'w') as f:
         f.write('')
 
     # Start writing new text
@@ -88,7 +88,7 @@ def write_art(art,newline_method,foldername,filename,verbose=True):
 
 
 
-            with open(os.path.join(get_data_root(),foldername,filename), 'a') as f:
+            with open(os.path.join(foldername,filename), 'a') as f:
                 for w in to_write:
                     f.write(w + '\n')
 
@@ -111,7 +111,7 @@ import os
 
 # Setup paths containing utility
 curr_folder = os.getcwd()
-sys.path.insert(0, os.path.join(curr_folder,'../app'))
+sys.path.insert(0, os.path.join(curr_folder,'../../app'))
 
 # Utils imports for loading data
 from utils import save_data, load_data, exists_datafolder,get_data_root
@@ -154,7 +154,8 @@ list_of_fields = ['context_blanked','blank_classification']
 arts = merge_arts_paragraph_fields(arts,arts3,list_of_fields)
 
 # Source folder
-foldername = get_foldername('sq_pp_training')
+#foldername = get_foldername('sq_pp_training')
+foldername = './data'
 
 # import pdb
 # pdb.set_trace()
