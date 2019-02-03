@@ -107,3 +107,6 @@ venv.bak/
 allenTrain.txt
 allenDev.txt
 allenTest.txt
+
+# Trained model parameters
+model_params
