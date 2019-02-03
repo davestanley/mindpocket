@@ -3,7 +3,6 @@
 # # # # # # # # # # # Define supporting functions for preparing results list for writing to disk # # # # # # # # # # #
 def prepare_results_by_sentences(results,token_spacer,word_spacer):
     '''Returns a list of word-tag pairs, one for each sentence'''
-    from utils_NLP import splitsentences_allenResults
     results_list = splitsentences_allenResults(results)
     Nsentences = len(results_list)
 
@@ -52,6 +51,46 @@ def prepare_results_by_paragraph(r,token_spacer,word_spacer):
         sentence = sentence + r['words'][i] + token_spacer + str(r['tags'][i]) + word_spacer
     to_write = [sentence]
     return to_write
+
+def write_art(art,newline_method,foldername,filename):
+
+
+    # # Pick out sample paragraph (testing)
+    # a = art[0]
+    # p = a['paragraphs'][0]
+
+
+    # Write blank char to file to clear
+    with open(os.path.join(get_data_root(),foldername,'allenTrain.txt'), 'w') as f:
+        f.write('')
+
+    # Start writing new text
+    for a in art:
+        for p in a['paragraphs']:
+
+            context_split = allenNLP_split_words(p['context'])
+            bc = p['blank_classification']
+            if not len(context_split) == len(bc):
+                print('Warning - Mismatch between # words and labels')
+
+            # Format as allenNLP results list
+            results = {'words': context_split,
+                       'tags': bc}
+
+
+            token_spacer = "//"
+            word_spacer = ' '
+
+            if newline_method == 1: to_write = prepare_results_by_sentences(results,token_spacer,word_spacer);
+            elif newline_method == 3: to_write = prepare_results_by_paragraph(results,token_spacer,word_spacer)
+            else: print("Unknown newline method");
+
+
+
+            with open(os.path.join(get_data_root(),foldername,'allenTrain.txt'), 'a') as f:
+                for w in to_write:
+                    f.write(w + '\n')
+
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 
 # Set flags for code
@@ -117,41 +156,11 @@ arts = merge_arts_paragraph_fields(arts,arts3,list_of_fields)
 inds = [0,4,6]
 art = [arts[i] for i in inds]
 
-
-# Save in same folder as loaded from
 foldername = get_foldername('sq_pp_training')
-
-# # Pick out sample paragraph (testing)
-# a = art[0]
-# p = a['paragraphs'][0]
-
-# Write blank char to file to clear
-with open(os.path.join(get_data_root(),foldername,'allenTrain.txt'), 'w') as f:
-    f.write('')
-
-# Start writing new text
-for a in art:
-    for p in a['paragraphs']:
-
-        context_split = allenNLP_split_words(p['context'])
-        bc = p['blank_classification']
-        if not len(context_split) == len(bc):
-            print('Warning - Mismatch between # words and labels')
-
-        # Format as allenNLP results list
-        results = {'words': context_split,
-                   'tags': bc}
+filename = 'allenTrain.txt'
 
 
-        token_spacer = "//"
-        word_spacer = ' '
+import pdb
+pdb.set_trace()
 
-        if newline_method == 1: to_write = prepare_results_by_sentences(results,token_spacer,word_spacer);
-        elif newline_method == 3: to_write = prepare_results_by_paragraph(results,token_spacer,word_spacer)
-        else: print("Unknown newline method");
-
-
-
-        with open(os.path.join(get_data_root(),foldername,'allenTrain.txt'), 'a') as f:
-            for w in to_write:
-                f.write(w + '\n')
+write_art(art,newline_method,foldername,filename)
