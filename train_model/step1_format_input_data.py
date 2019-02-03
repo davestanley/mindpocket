@@ -52,13 +52,16 @@ def prepare_results_by_paragraph(r,token_spacer,word_spacer):
     to_write = [sentence]
     return to_write
 
-def write_art(art,newline_method,foldername,filename):
+def write_art(art,newline_method,foldername,filename,verbose=True):
 
 
     # # Pick out sample paragraph (testing)
     # a = art[0]
     # p = a['paragraphs'][0]
 
+    if verbose:
+        art_titles = [a['title'] for a in art]
+        print("\tSaving articles: {}".format(' '.join(art_titles)))
 
     # Write blank char to file to clear
     with open(os.path.join(get_data_root(),foldername,'allenTrain.txt'), 'w') as f:
@@ -120,7 +123,7 @@ from utils import merge_artfiles
 
 # Allen NLP processing import
 from utils_NLP import allenNLP_split_words, splitsentences_allenResults
-
+from utils_EDA import a_sentences_per_article
 
 # Load the training data
 arts_train = load_SQuAD_train()
@@ -152,15 +155,41 @@ from utils_SQuAD import merge_arts_paragraph_fields
 list_of_fields = ['context_blanked','blank_classification']
 arts = merge_arts_paragraph_fields(arts,arts3,list_of_fields)
 
-# Choose a subset of articles
-inds = [0,4,6]
-art = [arts[i] for i in inds]
-
+# Source folder
 foldername = get_foldername('sq_pp_training')
+
+# import pdb
+# pdb.set_trace()
+
+
+# Choose a subset of articles for training
+inds = [i for i in range(0,5)]
+inds = [15,99] # Genome and Immunology
+art = [arts[i] for i in inds]
+Nsent = a_sentences_per_article(art)
+print("Training set Nsentences={}".format(str(sum(Nsent))))
+
 filename = 'allenTrain.txt'
+write_art(art,newline_method,foldername,filename)
 
 
-import pdb
-pdb.set_trace()
 
+# Choose a subset of articles for dev
+inds = [i for i in range(Ntrain,Ntrain+2)]
+inds = [458]    # Pharmacy
+art = [arts[i] for i in inds]
+Nsent = a_sentences_per_article(art)
+print("Dev set Nsentences={}".format(str(sum(Nsent))))
+
+filename = 'allenDev.txt'
+write_art(art,newline_method,foldername,filename)
+
+# Choose a subset of articles for test
+inds = [i for i in range(6,8)]
+inds = [84]   # Brain
+art = [arts[i] for i in inds]
+Nsent = a_sentences_per_article(art)
+print("Dev set Nsentences={}".format(str(sum(Nsent))))
+
+filename = 'allenTest.txt'
 write_art(art,newline_method,foldername,filename)
