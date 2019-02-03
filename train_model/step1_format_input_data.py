@@ -163,6 +163,7 @@ foldername = get_foldername('sq_pp_training')
 # Choose a subset of articles for training
 inds = [i for i in range(0,5)]
 inds = [15,99] # Genome and Immunology
+inds = [15] # Genome
 art = [arts[i] for i in inds]
 Nsent = a_sentences_per_article(art)
 print("Training set Nsentences={}".format(str(sum(Nsent))))
@@ -175,6 +176,7 @@ write_art(art,newline_method,foldername,filename)
 # Choose a subset of articles for dev
 inds = [i for i in range(Ntrain,Ntrain+2)]
 inds = [458]    # Pharmacy
+inds = [99]     # Immunology
 art = [arts[i] for i in inds]
 Nsent = a_sentences_per_article(art)
 print("Dev set Nsentences={}".format(str(sum(Nsent))))
