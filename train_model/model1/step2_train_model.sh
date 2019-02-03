@@ -1,1 +1,1 @@
-allennlp train ./simple_tagger_mod.json --serialization-dir ./models
+allennlp train ./simple_tagger_mod.json --serialization-dir ./model_params
