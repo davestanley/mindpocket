@@ -16,32 +16,33 @@ def prepare_results_by_sentences(results,token_spacer,word_spacer):
 
     return to_write
 
-def prepare_results_by_sentences_forwardbackwards(results,token_spacer,word_spacer):
-    '''Returns a list of word-tag pairs, one for each sentence'''
-    from utils_NLP import splitsentences_allenResults
-
-    def do_mirror(s):
-        '''transforms s=[a,b,c] into s2[a,b,c,c,b,a] '''
-        s2 = s.copy()
-        s2.reverse()
-        return s + s2
-
-    results_list = splitsentences_allenResults(results)
-    Nsentences = len(results_list)
-
-    to_write = []
-    for r in results_list:
-        # Transform r into r + its mirror
-        r['words'] = do_mirror(r['words'])
-        r['tags'] = do_mirror(r['tags'])
-
-        # Start building sentences as before
-        sentence = ''
-        for i in range(len(r['words'])):
-            sentence = sentence + r['words'][i] + token_spacer + str(r['tags'][i]) + word_spacer
-        to_write.append(sentence)
-
-    return to_write
+# def prepare_results_by_sentences_forwardbackwards(results,token_spacer,word_spacer):
+#     # This is not needed because allenNLP includes a bidirectional option!!
+#     '''Returns a list of word-tag pairs, one for each sentence'''
+#     from utils_NLP import splitsentences_allenResults
+#
+#     def do_mirror(s):
+#         '''transforms s=[a,b,c] into s2[a,b,c,c,b,a] '''
+#         s2 = s.copy()
+#         s2.reverse()
+#         return s + s2
+#
+#     results_list = splitsentences_allenResults(results)
+#     Nsentences = len(results_list)
+#
+#     to_write = []
+#     for r in results_list:
+#         # Transform r into r + its mirror
+#         r['words'] = do_mirror(r['words'])
+#         r['tags'] = do_mirror(r['tags'])
+#
+#         # Start building sentences as before
+#         sentence = ''
+#         for i in range(len(r['words'])):
+#             sentence = sentence + r['words'][i] + token_spacer + str(r['tags'][i]) + word_spacer
+#         to_write.append(sentence)
+#
+#     return to_write
 
 def prepare_results_by_paragraph(r,token_spacer,word_spacer):
     '''Returns a single list of word-tag pairs'''
@@ -56,7 +57,7 @@ def prepare_results_by_paragraph(r,token_spacer,word_spacer):
 # Set flags for code
 newline_method = 1     # Method for defining new lines in text file_exists
                        # 1 - Each sentence is a new line
-                       # 2 - Repeat each sentence forward and backwards, and then make this a new line
+                       # 2 - Repeat each sentence forward and backwards, and then make this a new line (DISABLED - Just use Allen NLP bidirectional option)
                        # 3 - Each paragraph is a new line
 
 # Set up and load data
@@ -146,7 +147,6 @@ for a in art:
         word_spacer = ' '
 
         if newline_method == 1: to_write = prepare_results_by_sentences(results,token_spacer,word_spacer);
-        elif newline_method == 2: to_write = prepare_results_by_sentences_forwardbackwards(results,token_spacer,word_spacer);
         elif newline_method == 3: to_write = prepare_results_by_paragraph(results,token_spacer,word_spacer)
         else: print("Unknown newline method");
 
