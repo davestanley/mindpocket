@@ -65,6 +65,11 @@ def write_art(art,newline_method,foldername,filename,verbose=True):
     token_spacer = "//"
     word_spacer = ' '
 
+    # Create directory if doesn't already exist
+    if not os.path.exists(foldername):
+        print("Directory " + foldername + " doesn't exist. Creating..")
+        os.makedirs(foldername)
+
     # Write blank char to file to clear
     with open(os.path.join(foldername,filename), 'w') as f:
         f.write('')
