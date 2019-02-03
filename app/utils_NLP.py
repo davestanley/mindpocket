@@ -107,8 +107,8 @@ def splitsentences_allenResults(results):
     ind_sentence_starts.insert(0, 0)
 
     if len(ind_sentence_starts) < 2:
-        print("Warning no punctuation found, so cannot split sentence. Returning original")
-        return results
+        print("Warning no punctuation found, so cannot split sentence. Returning original as list")
+        return [results]
 
 #     # Dict, then list
 #     out_words = []
