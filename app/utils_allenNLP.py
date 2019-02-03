@@ -1,13 +1,14 @@
 # Utilities for running and testing AllenNLP code
 
 def run_predictor(art,predictor,foldername,filename_prefix,testing_mode=False,skip_save=False):
+    from utils import save_data, load_data, exists_datafolder
     from utils import merge_artfiles
 
     # Loop through and add results field to data
     art2 = art.copy()
     for i,a in enumerate(art):
         filename = filename_prefix + '_art_' + str(i).zfill(3) + '.json'
-
+        
         # Do a short test to see if file exists
         file_exists = exists_datafolder(filename,foldername)
         if file_exists:
