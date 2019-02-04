@@ -12,5 +12,5 @@ modelX.aYZ
     b - GLoVE with trainable = true
     c - GLoVE with trainable = false
   Y - Network size
-    0 - Standard network sizes (minimal)
-    1 - Larger network (approaching those used for example CRF NER tagger)
+    2 - Standard network sizes (minimal)
+    3 - Larger network (approaching those used for example CRF NER tagger)
