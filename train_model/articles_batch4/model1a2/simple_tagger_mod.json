@@ -55,7 +55,7 @@
   "trainer": {
     "optimizer": "adam",
     "num_epochs": 40,
-    "patience": 10,
+    "patience": 5,
     "cuda_device": 0
   }
 }
