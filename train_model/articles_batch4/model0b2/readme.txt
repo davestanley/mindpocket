@@ -1,6 +1,6 @@
 
 
-Overview: Like model0, but with GLoVE training enabled
+Overview: Like model0c2, but with GLoVE training enabled
 
 	Model Summary:
 	  - No character embedding

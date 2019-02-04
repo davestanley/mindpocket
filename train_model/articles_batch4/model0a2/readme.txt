@@ -1,6 +1,6 @@
 
 
-Overview: Like model0, except with GLoVE removed - just use default embedding
+Overview: Like model0c2, except with GLoVE removed - just use default embedding
 
 Model Summary:
     - No character embedding
