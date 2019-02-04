@@ -176,11 +176,11 @@ foldername = './data'
 
 
 # Choose a subset of articles for training
-inds = [i for i in range(0,80)]
+inds = [i for i in range(0,Ntrain)]
 # inds = [15,99] # Genome and Immunology
 # inds = [15] # Genome
-# art = [arts[i] for i in inds]
-art = arts        # All training articles!
+art = [arts[i] for i in inds]
+# art = arts        # All training articles!
 Nsent = a_sentences_per_article(art)
 print("Training set Nsentences={}".format(str(sum(Nsent))))
 
