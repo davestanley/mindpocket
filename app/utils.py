@@ -61,13 +61,15 @@ def load_data(filename,foldername='SQuAD',verbose=False):
 
     return arts
 
-def save_data(arts,filename,foldername='SQuAD_postprocessed',verbose=False,do_overwrite=False):
+def save_data(arts,filename,foldername='SQuAD_postprocessed',verbose=False,do_overwrite=False,prepend_data_folder=True):
+    # prepend_data_folder - Adds ~/src/mindpocket/data prefix to squaddir folder name
     import json
     import os
 
     # Set up path info
     datadir = get_data_root()
-    squaddir = os.path.join(datadir,foldername)
+    if prepend_data_folder: squaddir = os.path.join(datadir,foldername)
+    else: squaddir = foldername
 
     # Create directory if doesn't already exist
     if not os.path.exists(squaddir):
@@ -98,11 +100,13 @@ def save_data(arts,filename,foldername='SQuAD_postprocessed',verbose=False,do_ov
 
 
 # # # # # # Merge individual art files into single large json # # # # # #
-def merge_artfiles(filename_prefix,foldername,outname,verbose = False,do_overwrite=False):
+def merge_artfiles(filename_prefix,foldername,outname,verbose = False,do_overwrite=False,prepend_data_folder=True):
+    # prepend_data_folder - Adds ~/src/mindpocket/data prefix to squaddir folder name
     import os
     import glob
     datadir = get_data_root()
-    squaddir = os.path.join(datadir,foldername)
+    if prepend_data_folder: squaddir = os.path.join(datadir,foldername)
+    else: squaddir = foldername
     searchterm = os.path.join(squaddir,filename_prefix)
     if verbose: print("Searching" + searchterm)
     allfiles = glob.glob(searchterm)
@@ -114,9 +118,9 @@ def merge_artfiles(filename_prefix,foldername,outname,verbose = False,do_overwri
     # print(Nfiles)
     for i in range(Nfiles):
         # Load the data
-        fullname = os.path.join(squaddir,allfiles[i])
+        #fullname = os.path.join(squaddir,allfiles[i])
         # print(fullname)
-        with open(fullname,'r') as f:
+        with open(allfiles[i],'r') as f:
             data = json.load(f)
         art = data['data']
         arts.append(art)
@@ -124,16 +128,19 @@ def merge_artfiles(filename_prefix,foldername,outname,verbose = False,do_overwri
     # Save the merged arts
     # fullname = os.path.join(squaddir,outname)
     # print("Saving merged articles to " + fullname)
-    save_data(arts,outname,foldername,verbose,do_overwrite)
+    save_data(arts,outname,foldername,verbose,do_overwrite,prepend_data_folder)
     return(arts)
 
 
 # # # # # Test if file exists # # # # #
-def exists_datafolder(filename,foldername='SQuAD_postprocessed'):
+def exists_datafolder(filename,foldername='SQuAD_postprocessed',prepend_data_folder=True):
+    # prepend_data_folder - Adds ~/src/mindpocket/data prefix to squaddir folder name
+
     import os
 
     datadir = get_data_root()
-    squaddir = os.path.join(datadir,foldername)
+    if prepend_data_folder: squaddir = os.path.join(datadir,foldername)
+    else: squaddir = foldername
     fullname = os.path.join(squaddir,filename)
 
     if os.path.exists(fullname):
