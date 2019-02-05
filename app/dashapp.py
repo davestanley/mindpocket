@@ -85,7 +85,7 @@ except:
     [dash.dependencies.State('input-box', 'value')])
 def update_output(n_clicks, value):
     testing_mode = False
-    verbose_mode = True
+    verbose_mode = False
 
     paragraph = value
 
@@ -133,8 +133,6 @@ def update_output(n_clicks, value):
             removed_word = text_blanks['removed_word']
             removed_word_tag = text_blanks['removed_word_tag']
 
-            print (blanked_sentence)
-            print(removed_word)
             out.append(html.P('Question {}: {}'.format(str(count),blanked_sentence)))
             answers_list.append(removed_word)
             answers_tag_list.append(removed_word_tag)
