@@ -50,4 +50,4 @@ run_predictor(art,predictor,foldername,'train',testing_mode=False,skip_save=Fals
 # Load the training data
 arts = load_SQuAD_dev()
 art = arts
-run_predictor(art,allenNERmodel,foldername,'dev',testing_mode=False,skip_save=False)
+run_predictor(art,predictor,foldername,'dev',testing_mode=False,skip_save=False)
