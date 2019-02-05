@@ -15,6 +15,9 @@ import dash_html_components as html
 from dash.dependencies import Input, Output
 from app import app
 
+# Import AllenNLP
+from allennlp.predictors import Predictor
+
 # Test
 @app.route('/index')
 def sayHi():
@@ -66,6 +69,16 @@ dashapp.layout = html.Div(style={'backgroundColor': colors['background']},childr
 ])
 
 
+# Only open if predictor doesn't exist
+# import inspect
+# predictor = []
+# print(inspect.stack()[1].function)
+# print('Starting up')
+try:
+    predictor;
+except:
+    predictor = Predictor.from_path(os.path.join(os.getenv("HOME"),'src','allennlp','ner-model-2018.12.18.tar.gz'))
+
 @dashapp.callback(
     dash.dependencies.Output('output-container-button', 'children'),
     [dash.dependencies.Input('button', 'n_clicks')],
@@ -77,7 +90,7 @@ def update_output(n_clicks, value):
     paragraph = value
 
     if paragraph.strip() == '':
-        print('empty')
+        print('Empty run.')
         out = []
         return out
 
@@ -91,7 +104,7 @@ def update_output(n_clicks, value):
 
     if not testing_mode:
         # Tag the paragraph
-        results = tag_paragraph_NER(paragraph)
+        results = tag_paragraph_NER(paragraph,predictor)
 
         if verbose_mode:
             for word, tag in zip(results["words"], results["tags"]):
@@ -100,7 +113,7 @@ def update_output(n_clicks, value):
         # Subdivide results into separate sentences, based on punctuation
         results_list = splitsentences_allenResults(results)
 
-        # Loop through sentences in steps of 4 sentences at a time
+        # Loop through sentences in steps of 2 sentences at a time
         Nsent = len(results_list)
         step_size=2
         out = []
