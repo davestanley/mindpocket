@@ -118,6 +118,10 @@ def update_output(n_clicks, value):
         step_size=2
         out = []
         count=0
+        question_list = []
+        answers_list = []
+        answers_tag_list = []
+        answers_text = ''
         for i in range(0,Nsent,step_size):
             count=count+1
             results_curr = merge_allenResults(results_list[i:min(i+step_size,Nsent)])
@@ -129,9 +133,15 @@ def update_output(n_clicks, value):
             removed_word = text_blanks['removed_word']
             removed_word_tag = text_blanks['removed_word_tag']
 
-            out.append(html.P('Question {}: Fill in the blank(s)'.format(str(count))))
-            out.append(html.P(blanked_sentence))
-            out.append(html.P('Answer: {}; (Question type: {})'.format(removed_word,removed_word_tag)))
+            print (blanked_sentence)
+            print(removed_word)
+            out.append(html.P('Question {}: {}'.format(str(count),blanked_sentence)))
+            answers_list.append(removed_word)
+            answers_tag_list.append(removed_word_tag)
+            if count == 1: answers_text = answers_text + 'Answers: {}. {}'.format(str(count),removed_word)
+            else: answers_text = answers_text + ', {}. {}'.format(str(count),removed_word)
+        answers_text = answers_text + '.'
+        out.append(html.P(answers_text))
 
         #print(blanked_sentence)
         #print('Answer: ' + removed_word)
