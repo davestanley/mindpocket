@@ -1,0 +1,3 @@
+[submodule "submodules/genanki"]
+	path = submodules/genanki
+	url = git@github.com:kerrickstaley/genanki.git
