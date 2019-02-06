@@ -36,9 +36,6 @@ def tag_paragraph_NER(paragraph,predictor=[],verbose_mode=False):
     from allennlp.predictors import Predictor
 
 
-    # Set up other global variables
-    verbose_mode = False
-
 
     # Run it on my test sentence
     #predictor = Predictor.from_path("/home/davestanley/src/allennlp/ner-model-2018.12.18.tar.gz")
@@ -83,6 +80,17 @@ def sent2text(sentences_subset):
 
 def words2text(words):
     return ' '.join(join_punctuation(words))
+
+def words2words_blanked(words,bc,blankstr='______'):
+    '''Takes in words and blanks info, bc, and returns a list of blanked words'''
+    return [words[i] if not t else blankstr for i,t in enumerate(bc)]
+
+def words2answers(words,bc):
+    '''Takes in words and blanks info, bc, and returns a list of answers corresponding to blanked words'''
+    myanswers = []
+    for i,c in enumerate(bc):
+        if c == 1: myanswers.append(words[i])
+    return myanswers
 
 def allenNLP_split_words(context):
     """Uses AllenNLP to conduct word splitting, as an alternative to mystring.split()"""
@@ -137,13 +145,13 @@ def merge_allenResults(results_list):
         'tags': [t for r in results_list for t in r['tags']]
     })
 
-def allenNLP_classify_blanks(art,failterm='O'):
+def allenNLP_classify_blanks(art,failterm='O',fieldname='blank_classified_allenNER'):
     """For all articles, converts allen NER tags into a list of 0's or 1's and stores these in field: blank_classified_allenNER"""
     # Failterm = term associated with a false classification (non-blank)
     for i,a in enumerate(art):
         for j,p in enumerate(a['paragraphs']):
             tags = p['allenNER']['tags'].split()
-            art[i]['paragraphs'][j]['blank_classified_allenNER'] = [0 if t == failterm else 1 for t in tags]   # Convert to binary
+            art[i]['paragraphs'][j][fieldname] = [0 if t == failterm else 1 for t in tags]   # Convert to binary
     return(art)
 
 def extract_blanked_out_sentences(results,verbose_mode = False):

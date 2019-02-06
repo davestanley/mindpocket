@@ -29,12 +29,13 @@ def get_data_root():
     return datadir
 
 
-def load_data(filename,foldername='SQuAD',verbose=False):
+def load_data(filename,foldername='SQuAD',verbose=False,prepend_data_folder=True):
     import json
     import os
 
     datadir = get_data_root()
-    squaddir = os.path.join(datadir,foldername)
+    if prepend_data_folder: squaddir = os.path.join(datadir,foldername)
+    else: squaddir = foldername
 
     fullname = os.path.join(squaddir,filename)
     if verbose: print(fullname)

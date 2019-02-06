@@ -108,3 +108,19 @@ def merge_arts_paragraph_fields(arts,arts2,list_of_fields,verbose_on=False):
             for field in list_of_fields:
                 art_merged[i]['paragraphs'][j][field] = arts2[i]['paragraphs'][j][field]
     return art_merged
+
+
+def OR_arts_paragraph_fields(art,list_of_fields,destination_fieldname):
+    ''' OR together two paragraph fields in art '''
+    for i,a in enumerate(art):
+        for j,p in enumerate(a['paragraphs']):
+            lista=p[list_of_fields[0]]
+            for k,l in enumerate(list_of_fields):
+                if k>0:
+                    # Skip 1st entry, sorry programming efficiency Gods
+                    listb=p[list_of_fields[k]]
+                    # Continually mix in new listb's until complete
+                    lista = [a or b for a,b in zip(lista,listb)]
+            art[i]['paragraphs'][j][destination_fieldname] = lista      # Assign ORed list
+
+    return art
