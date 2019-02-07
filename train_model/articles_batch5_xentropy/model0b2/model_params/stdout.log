@@ -1,0 +1,203 @@
+2019-02-07 19:08:51,497 - INFO - allennlp.common.from_params - instantiating class <class 'allennlp.data.dataset_readers.dataset_reader.DatasetReader'> from params {'token_indexers': {'tokens': {'lowercase_tokens': True, 'type': 'single_id'}}, 'type': 'sequence_tagging', 'word_tag_delimiter': '//'} and extras {}
+2019-02-07 19:08:51,497 - INFO - allennlp.common.params - dataset_reader.type = sequence_tagging
+2019-02-07 19:08:51,498 - INFO - allennlp.common.from_params - instantiating class <class 'allennlp.data.dataset_readers.sequence_tagging.SequenceTaggingDatasetReader'> from params {'token_indexers': {'tokens': {'lowercase_tokens': True, 'type': 'single_id'}}, 'word_tag_delimiter': '//'} and extras {}
+2019-02-07 19:08:51,498 - INFO - allennlp.common.params - dataset_reader.word_tag_delimiter = //
+2019-02-07 19:08:51,498 - INFO - allennlp.common.params - dataset_reader.token_delimiter = None
+2019-02-07 19:08:51,498 - INFO - allennlp.common.from_params - instantiating class allennlp.data.token_indexers.token_indexer.TokenIndexer from params {'lowercase_tokens': True, 'type': 'single_id'} and extras {}
+2019-02-07 19:08:51,498 - INFO - allennlp.common.params - dataset_reader.token_indexers.tokens.type = single_id
+2019-02-07 19:08:51,498 - INFO - allennlp.common.from_params - instantiating class allennlp.data.token_indexers.single_id_token_indexer.SingleIdTokenIndexer from params {'lowercase_tokens': True} and extras {}
+2019-02-07 19:08:51,498 - INFO - allennlp.common.params - dataset_reader.token_indexers.tokens.namespace = tokens
+2019-02-07 19:08:51,499 - INFO - allennlp.common.params - dataset_reader.token_indexers.tokens.lowercase_tokens = True
+2019-02-07 19:08:51,499 - INFO - allennlp.common.params - dataset_reader.token_indexers.tokens.start_tokens = None
+2019-02-07 19:08:51,499 - INFO - allennlp.common.params - dataset_reader.token_indexers.tokens.end_tokens = None
+2019-02-07 19:08:51,499 - INFO - allennlp.common.params - dataset_reader.lazy = False
+2019-02-07 19:08:51,499 - INFO - allennlp.common.params - validation_dataset_reader = None
+2019-02-07 19:08:51,499 - INFO - allennlp.common.params - train_data_path = ../data/allenTrain.txt
+2019-02-07 19:08:51,499 - INFO - allennlp.commands.train - Reading training data from ../data/allenTrain.txt
+2019-02-07 19:08:51,500 - INFO - allennlp.data.dataset_readers.sequence_tagging - Reading instances from lines in file at: ../data/allenTrain.txt
+2019-02-07 19:09:15,667 - INFO - allennlp.common.params - validation_data_path = ../data/allenDev.txt
+2019-02-07 19:09:15,668 - INFO - allennlp.commands.train - Reading validation data from ../data/allenDev.txt
+2019-02-07 19:09:15,668 - INFO - allennlp.data.dataset_readers.sequence_tagging - Reading instances from lines in file at: ../data/allenDev.txt
+2019-02-07 19:09:15,927 - INFO - allennlp.common.params - test_data_path = None
+2019-02-07 19:09:15,927 - INFO - allennlp.commands.train - From dataset instances, validation, train will be considered for vocabulary creation.
+2019-02-07 19:09:15,928 - INFO - allennlp.common.params - vocabulary.type = None
+2019-02-07 19:09:15,928 - INFO - allennlp.common.params - vocabulary.extend = False
+2019-02-07 19:09:15,928 - INFO - allennlp.common.params - vocabulary.directory_path = None
+2019-02-07 19:09:15,928 - INFO - allennlp.common.params - vocabulary.min_count = None
+2019-02-07 19:09:15,928 - INFO - allennlp.common.params - vocabulary.max_vocab_size = None
+2019-02-07 19:09:15,928 - INFO - allennlp.common.params - vocabulary.non_padded_namespaces = ('*tags', '*labels')
+2019-02-07 19:09:15,928 - INFO - allennlp.common.params - vocabulary.min_pretrained_embeddings = None
+2019-02-07 19:09:15,928 - INFO - allennlp.common.params - vocabulary.only_include_pretrained_words = False
+2019-02-07 19:09:15,928 - INFO - allennlp.common.params - vocabulary.tokens_to_add = None
+2019-02-07 19:09:15,929 - INFO - allennlp.data.vocabulary - Fitting token dictionary from dataset.
+2019-02-07 19:09:23,616 - INFO - allennlp.common.from_params - instantiating class <class 'allennlp.models.model.Model'> from params {'encoder': {'bidirectional': True, 'dropout': 0.5, 'hidden_size': 50, 'input_size': 50, 'num_layers': 2, 'type': 'lstm'}, 'text_field_embedder': {'token_embedders': {'tokens': {'embedding_dim': 50, 'pretrained_file': '~/src/allennlp/glove/glove.6B.50d.txt.gz', 'trainable': True, 'type': 'embedding'}}}, 'type': 'simple_tagger2'} and extras {'vocab': Vocabulary with namespaces:  tokens, Size: 88725 || labels, Size: 2 || Non Padded Namespaces: {'*labels', '*tags'}}
+2019-02-07 19:09:23,616 - INFO - allennlp.common.params - model.type = simple_tagger2
+2019-02-07 19:09:23,616 - INFO - allennlp.common.from_params - instantiating class <class 'myallennlp.models.simple_tagger2.SimpleTagger2'> from params {'encoder': {'bidirectional': True, 'dropout': 0.5, 'hidden_size': 50, 'input_size': 50, 'num_layers': 2, 'type': 'lstm'}, 'text_field_embedder': {'token_embedders': {'tokens': {'embedding_dim': 50, 'pretrained_file': '~/src/allennlp/glove/glove.6B.50d.txt.gz', 'trainable': True, 'type': 'embedding'}}}} and extras {'vocab': Vocabulary with namespaces:  tokens, Size: 88725 || labels, Size: 2 || Non Padded Namespaces: {'*labels', '*tags'}}
+2019-02-07 19:09:23,616 - INFO - allennlp.common.from_params - instantiating class <class 'allennlp.modules.text_field_embedders.text_field_embedder.TextFieldEmbedder'> from params {'token_embedders': {'tokens': {'embedding_dim': 50, 'pretrained_file': '~/src/allennlp/glove/glove.6B.50d.txt.gz', 'trainable': True, 'type': 'embedding'}}} and extras {'vocab': Vocabulary with namespaces:  tokens, Size: 88725 || labels, Size: 2 || Non Padded Namespaces: {'*labels', '*tags'}}
+2019-02-07 19:09:23,617 - INFO - allennlp.common.params - model.text_field_embedder.type = basic
+2019-02-07 19:09:23,617 - INFO - allennlp.common.params - model.text_field_embedder.embedder_to_indexer_map = None
+2019-02-07 19:09:23,617 - INFO - allennlp.common.params - model.text_field_embedder.allow_unmatched_keys = False
+2019-02-07 19:09:23,617 - INFO - allennlp.common.from_params - instantiating class <class 'allennlp.modules.token_embedders.token_embedder.TokenEmbedder'> from params {'embedding_dim': 50, 'pretrained_file': '~/src/allennlp/glove/glove.6B.50d.txt.gz', 'trainable': True, 'type': 'embedding'} and extras {'vocab': Vocabulary with namespaces:  tokens, Size: 88725 || labels, Size: 2 || Non Padded Namespaces: {'*labels', '*tags'}}
+2019-02-07 19:09:23,617 - INFO - allennlp.common.params - model.text_field_embedder.token_embedders.tokens.type = embedding
+2019-02-07 19:09:23,617 - INFO - allennlp.common.params - model.text_field_embedder.token_embedders.tokens.num_embeddings = None
+2019-02-07 19:09:23,618 - INFO - allennlp.common.params - model.text_field_embedder.token_embedders.tokens.vocab_namespace = tokens
+2019-02-07 19:09:23,618 - INFO - allennlp.common.params - model.text_field_embedder.token_embedders.tokens.embedding_dim = 50
+2019-02-07 19:09:23,618 - INFO - allennlp.common.params - model.text_field_embedder.token_embedders.tokens.pretrained_file = ~/src/allennlp/glove/glove.6B.50d.txt.gz
+2019-02-07 19:09:23,618 - INFO - allennlp.common.params - model.text_field_embedder.token_embedders.tokens.projection_dim = None
+2019-02-07 19:09:23,618 - INFO - allennlp.common.params - model.text_field_embedder.token_embedders.tokens.trainable = True
+2019-02-07 19:09:23,618 - INFO - allennlp.common.params - model.text_field_embedder.token_embedders.tokens.padding_index = None
+2019-02-07 19:09:23,618 - INFO - allennlp.common.params - model.text_field_embedder.token_embedders.tokens.max_norm = None
+2019-02-07 19:09:23,618 - INFO - allennlp.common.params - model.text_field_embedder.token_embedders.tokens.norm_type = 2.0
+2019-02-07 19:09:23,618 - INFO - allennlp.common.params - model.text_field_embedder.token_embedders.tokens.scale_grad_by_freq = False
+2019-02-07 19:09:23,618 - INFO - allennlp.common.params - model.text_field_embedder.token_embedders.tokens.sparse = False
+2019-02-07 19:09:23,631 - INFO - allennlp.modules.token_embedders.embedding - Reading pretrained embeddings from file
+2019-02-07 19:09:27,408 - INFO - allennlp.modules.token_embedders.embedding - Initializing pre-trained embedding layer
+2019-02-07 19:09:28,019 - INFO - allennlp.modules.token_embedders.embedding - Pretrained embeddings were found for 69081 out of 88725 tokens
+2019-02-07 19:09:28,039 - INFO - allennlp.common.from_params - instantiating class <class 'allennlp.modules.seq2seq_encoders.seq2seq_encoder.Seq2SeqEncoder'> from params {'bidirectional': True, 'dropout': 0.5, 'hidden_size': 50, 'input_size': 50, 'num_layers': 2, 'type': 'lstm'} and extras {'vocab': Vocabulary with namespaces:  tokens, Size: 88725 || labels, Size: 2 || Non Padded Namespaces: {'*labels', '*tags'}}
+2019-02-07 19:09:28,039 - INFO - allennlp.common.params - model.encoder.type = lstm
+2019-02-07 19:09:28,039 - INFO - allennlp.common.params - model.encoder.batch_first = True
+2019-02-07 19:09:28,039 - INFO - allennlp.common.params - model.encoder.stateful = False
+2019-02-07 19:09:28,039 - INFO - allennlp.common.params - Converting Params object to dict; logging of default values will not occur when dictionary parameters are used subsequently.
+2019-02-07 19:09:28,039 - INFO - allennlp.common.params - CURRENTLY DEFINED PARAMETERS: 
+2019-02-07 19:09:28,039 - INFO - allennlp.common.params - model.encoder.bidirectional = True
+2019-02-07 19:09:28,040 - INFO - allennlp.common.params - model.encoder.dropout = 0.5
+2019-02-07 19:09:28,040 - INFO - allennlp.common.params - model.encoder.hidden_size = 50
+2019-02-07 19:09:28,040 - INFO - allennlp.common.params - model.encoder.input_size = 50
+2019-02-07 19:09:28,040 - INFO - allennlp.common.params - model.encoder.num_layers = 2
+2019-02-07 19:09:28,040 - INFO - allennlp.common.params - model.encoder.batch_first = True
+2019-02-07 19:09:28,042 - INFO - allennlp.nn.initializers - Initializing parameters
+2019-02-07 19:09:28,042 - INFO - allennlp.nn.initializers - Done initializing parameters; the following parameters are using their default initialization from their code
+2019-02-07 19:09:28,043 - INFO - allennlp.nn.initializers -    encoder._module.bias_hh_l0
+2019-02-07 19:09:28,043 - INFO - allennlp.nn.initializers -    encoder._module.bias_hh_l0_reverse
+2019-02-07 19:09:28,043 - INFO - allennlp.nn.initializers -    encoder._module.bias_hh_l1
+2019-02-07 19:09:28,043 - INFO - allennlp.nn.initializers -    encoder._module.bias_hh_l1_reverse
+2019-02-07 19:09:28,043 - INFO - allennlp.nn.initializers -    encoder._module.bias_ih_l0
+2019-02-07 19:09:28,043 - INFO - allennlp.nn.initializers -    encoder._module.bias_ih_l0_reverse
+2019-02-07 19:09:28,043 - INFO - allennlp.nn.initializers -    encoder._module.bias_ih_l1
+2019-02-07 19:09:28,043 - INFO - allennlp.nn.initializers -    encoder._module.bias_ih_l1_reverse
+2019-02-07 19:09:28,043 - INFO - allennlp.nn.initializers -    encoder._module.weight_hh_l0
+2019-02-07 19:09:28,044 - INFO - allennlp.nn.initializers -    encoder._module.weight_hh_l0_reverse
+2019-02-07 19:09:28,044 - INFO - allennlp.nn.initializers -    encoder._module.weight_hh_l1
+2019-02-07 19:09:28,044 - INFO - allennlp.nn.initializers -    encoder._module.weight_hh_l1_reverse
+2019-02-07 19:09:28,044 - INFO - allennlp.nn.initializers -    encoder._module.weight_ih_l0
+2019-02-07 19:09:28,044 - INFO - allennlp.nn.initializers -    encoder._module.weight_ih_l0_reverse
+2019-02-07 19:09:28,044 - INFO - allennlp.nn.initializers -    encoder._module.weight_ih_l1
+2019-02-07 19:09:28,044 - INFO - allennlp.nn.initializers -    encoder._module.weight_ih_l1_reverse
+2019-02-07 19:09:28,044 - INFO - allennlp.nn.initializers -    tag_projection_layer._module.bias
+2019-02-07 19:09:28,044 - INFO - allennlp.nn.initializers -    tag_projection_layer._module.weight
+2019-02-07 19:09:28,044 - INFO - allennlp.nn.initializers -    text_field_embedder.token_embedder_tokens.weight
+2019-02-07 19:09:28,298 - INFO - allennlp.common.from_params - instantiating class <class 'allennlp.data.iterators.data_iterator.DataIterator'> from params {'batch_size': 32, 'type': 'basic'} and extras {}
+2019-02-07 19:09:28,298 - INFO - allennlp.common.params - iterator.type = basic
+2019-02-07 19:09:28,299 - INFO - allennlp.common.from_params - instantiating class <class 'allennlp.data.iterators.basic_iterator.BasicIterator'> from params {'batch_size': 32} and extras {}
+2019-02-07 19:09:28,299 - INFO - allennlp.common.params - iterator.batch_size = 32
+2019-02-07 19:09:28,299 - INFO - allennlp.common.params - iterator.instances_per_epoch = None
+2019-02-07 19:09:28,299 - INFO - allennlp.common.params - iterator.max_instances_in_memory = None
+2019-02-07 19:09:28,299 - INFO - allennlp.common.params - iterator.cache_instances = False
+2019-02-07 19:09:28,299 - INFO - allennlp.common.params - iterator.track_epoch = False
+2019-02-07 19:09:28,300 - INFO - allennlp.common.params - iterator.maximum_samples_per_batch = None
+2019-02-07 19:09:28,300 - INFO - allennlp.common.params - validation_iterator = None
+2019-02-07 19:09:28,300 - INFO - allennlp.common.params - trainer.no_grad = ()
+2019-02-07 19:09:28,300 - INFO - allennlp.commands.train - Following parameters are Frozen  (without gradient):
+2019-02-07 19:09:28,300 - INFO - allennlp.commands.train - Following parameters are Tunable (with gradient):
+2019-02-07 19:09:28,301 - INFO - allennlp.commands.train - text_field_embedder.token_embedder_tokens.weight
+2019-02-07 19:09:28,301 - INFO - allennlp.commands.train - encoder._module.weight_ih_l0
+2019-02-07 19:09:28,301 - INFO - allennlp.commands.train - encoder._module.weight_hh_l0
+2019-02-07 19:09:28,301 - INFO - allennlp.commands.train - encoder._module.bias_ih_l0
+2019-02-07 19:09:28,301 - INFO - allennlp.commands.train - encoder._module.bias_hh_l0
+2019-02-07 19:09:28,301 - INFO - allennlp.commands.train - encoder._module.weight_ih_l0_reverse
+2019-02-07 19:09:28,301 - INFO - allennlp.commands.train - encoder._module.weight_hh_l0_reverse
+2019-02-07 19:09:28,301 - INFO - allennlp.commands.train - encoder._module.bias_ih_l0_reverse
+2019-02-07 19:09:28,301 - INFO - allennlp.commands.train - encoder._module.bias_hh_l0_reverse
+2019-02-07 19:09:28,302 - INFO - allennlp.commands.train - encoder._module.weight_ih_l1
+2019-02-07 19:09:28,302 - INFO - allennlp.commands.train - encoder._module.weight_hh_l1
+2019-02-07 19:09:28,302 - INFO - allennlp.commands.train - encoder._module.bias_ih_l1
+2019-02-07 19:09:28,302 - INFO - allennlp.commands.train - encoder._module.bias_hh_l1
+2019-02-07 19:09:28,302 - INFO - allennlp.commands.train - encoder._module.weight_ih_l1_reverse
+2019-02-07 19:09:28,302 - INFO - allennlp.commands.train - encoder._module.weight_hh_l1_reverse
+2019-02-07 19:09:28,302 - INFO - allennlp.commands.train - encoder._module.bias_ih_l1_reverse
+2019-02-07 19:09:28,302 - INFO - allennlp.commands.train - encoder._module.bias_hh_l1_reverse
+2019-02-07 19:09:28,302 - INFO - allennlp.commands.train - tag_projection_layer._module.weight
+2019-02-07 19:09:28,302 - INFO - allennlp.commands.train - tag_projection_layer._module.bias
+2019-02-07 19:09:28,303 - INFO - allennlp.common.params - trainer.type = default
+2019-02-07 19:09:28,303 - INFO - allennlp.common.params - trainer.patience = 5
+2019-02-07 19:09:28,303 - INFO - allennlp.common.params - trainer.validation_metric = -loss
+2019-02-07 19:09:28,303 - INFO - allennlp.common.params - trainer.shuffle = True
+2019-02-07 19:09:28,303 - INFO - allennlp.common.params - trainer.num_epochs = 40
+2019-02-07 19:09:28,303 - INFO - allennlp.common.params - trainer.cuda_device = 0
+2019-02-07 19:09:28,303 - INFO - allennlp.common.params - trainer.grad_norm = None
+2019-02-07 19:09:28,303 - INFO - allennlp.common.params - trainer.grad_clipping = None
+2019-02-07 19:09:28,303 - INFO - allennlp.common.params - trainer.learning_rate_scheduler = None
+2019-02-07 19:09:30,745 - INFO - allennlp.common.params - trainer.optimizer = adam
+2019-02-07 19:09:30,746 - INFO - allennlp.common.params - parameter_groups = None
+2019-02-07 19:09:30,746 - INFO - allennlp.training.optimizers - Number of trainable parameters: 4538052
+2019-02-07 19:09:30,747 - INFO - allennlp.common.params - Converting Params object to dict; logging of default values will not occur when dictionary parameters are used subsequently.
+2019-02-07 19:09:30,747 - INFO - allennlp.common.params - CURRENTLY DEFINED PARAMETERS: 
+2019-02-07 19:09:30,747 - INFO - allennlp.common.params - trainer.num_serialized_models_to_keep = 20
+2019-02-07 19:09:30,747 - INFO - allennlp.common.params - trainer.keep_serialized_model_every_num_seconds = None
+2019-02-07 19:09:30,748 - INFO - allennlp.common.params - trainer.model_save_interval = None
+2019-02-07 19:09:30,748 - INFO - allennlp.common.params - trainer.summary_interval = 100
+2019-02-07 19:09:30,748 - INFO - allennlp.common.params - trainer.histogram_interval = None
+2019-02-07 19:09:30,748 - INFO - allennlp.common.params - trainer.should_log_parameter_statistics = True
+2019-02-07 19:09:30,748 - INFO - allennlp.common.params - trainer.should_log_learning_rate = False
+2019-02-07 19:09:30,748 - INFO - allennlp.common.params - trainer.log_batch_size_period = None
+2019-02-07 19:09:30,750 - INFO - allennlp.common.params - evaluate_on_test = False
+2019-02-07 19:09:30,751 - INFO - allennlp.training.trainer - Beginning training.
+2019-02-07 19:09:30,751 - INFO - allennlp.training.trainer - Epoch 0/39
+2019-02-07 19:09:30,751 - INFO - allennlp.training.trainer - Peak CPU memory usage MB: 3608.068
+2019-02-07 19:09:30,831 - INFO - allennlp.training.trainer - GPU 0 memory usage MB: 336
+2019-02-07 19:09:30,832 - INFO - allennlp.training.trainer - Training
+2019-02-07 19:22:21,501 - INFO - allennlp.training.trainer - Validating
+2019-02-07 19:22:26,665 - INFO - allennlp.training.trainer -                     Training |  Validation
+2019-02-07 19:22:26,665 - INFO - allennlp.training.trainer - loss            |     0.389  |     0.508
+2019-02-07 19:22:26,666 - INFO - allennlp.training.trainer - cpu_memory_MB   |  3608.068  |       N/A
+2019-02-07 19:22:26,666 - INFO - allennlp.training.trainer - accuracy3       |     1.000  |     1.000
+2019-02-07 19:22:26,666 - INFO - allennlp.training.trainer - accuracy        |     0.787  |     0.701
+2019-02-07 19:22:26,666 - INFO - allennlp.training.trainer - gpu_0_memory_MB |   336.000  |       N/A
+2019-02-07 19:22:26,897 - INFO - allennlp.training.trainer - Best validation performance so far. Copying weights to './model_params/best.th'.
+2019-02-07 19:22:26,957 - INFO - allennlp.training.trainer - Epoch duration: 00:12:56
+2019-02-07 19:22:26,958 - INFO - allennlp.training.trainer - Estimated training time remaining: 8:24:32
+2019-02-07 19:22:26,958 - INFO - allennlp.training.trainer - Epoch 1/39
+2019-02-07 19:22:26,958 - INFO - allennlp.training.trainer - Peak CPU memory usage MB: 3870.128
+2019-02-07 19:22:27,084 - INFO - allennlp.training.trainer - GPU 0 memory usage MB: 811
+2019-02-07 19:22:27,085 - INFO - allennlp.training.trainer - Training
+2019-02-07 19:36:30,464 - INFO - allennlp.training.trainer - Validating
+2019-02-07 19:36:35,265 - INFO - allennlp.training.trainer -                     Training |  Validation
+2019-02-07 19:36:35,267 - INFO - allennlp.training.trainer - loss            |     0.313  |     0.632
+2019-02-07 19:36:35,267 - INFO - allennlp.training.trainer - cpu_memory_MB   |  3870.128  |       N/A
+2019-02-07 19:36:35,267 - INFO - allennlp.training.trainer - accuracy3       |     1.000  |     1.000
+2019-02-07 19:36:35,267 - INFO - allennlp.training.trainer - accuracy        |     0.838  |     0.662
+2019-02-07 19:36:35,268 - INFO - allennlp.training.trainer - gpu_0_memory_MB |   811.000  |       N/A
+2019-02-07 19:36:35,363 - INFO - allennlp.training.trainer - Epoch duration: 00:14:08
+2019-02-07 19:36:35,363 - INFO - allennlp.training.trainer - Estimated training time remaining: 8:34:27
+2019-02-07 19:36:35,363 - INFO - allennlp.training.trainer - Epoch 2/39
+2019-02-07 19:36:35,363 - INFO - allennlp.training.trainer - Peak CPU memory usage MB: 3870.252
+2019-02-07 19:36:35,499 - INFO - allennlp.training.trainer - GPU 0 memory usage MB: 813
+2019-02-07 19:36:35,499 - INFO - allennlp.training.trainer - Training
+2019-02-07 19:50:33,343 - INFO - allennlp.training.trainer - Validating
+2019-02-07 19:50:38,118 - INFO - allennlp.training.trainer -                     Training |  Validation
+2019-02-07 19:50:38,119 - INFO - allennlp.training.trainer - loss            |     0.242  |     0.863
+2019-02-07 19:50:38,119 - INFO - allennlp.training.trainer - cpu_memory_MB   |  3870.252  |       N/A
+2019-02-07 19:50:38,120 - INFO - allennlp.training.trainer - accuracy3       |     1.000  |     1.000
+2019-02-07 19:50:38,120 - INFO - allennlp.training.trainer - accuracy        |     0.882  |     0.652
+2019-02-07 19:50:38,120 - INFO - allennlp.training.trainer - gpu_0_memory_MB |   813.000  |       N/A
+2019-02-07 19:50:38,221 - INFO - allennlp.training.trainer - Epoch duration: 00:14:02
+2019-02-07 19:50:38,229 - INFO - allennlp.training.trainer - Estimated training time remaining: 8:27:12
+2019-02-07 19:50:38,236 - INFO - allennlp.training.trainer - Epoch 3/39
+2019-02-07 19:50:38,236 - INFO - allennlp.training.trainer - Peak CPU memory usage MB: 3870.26
+2019-02-07 19:50:38,397 - INFO - allennlp.training.trainer - GPU 0 memory usage MB: 825
+2019-02-07 19:50:38,398 - INFO - allennlp.training.trainer - Training
+2019-02-07 20:04:46,762 - INFO - allennlp.training.trainer - Validating
+2019-02-07 20:04:51,606 - INFO - allennlp.training.trainer -                     Training |  Validation
+2019-02-07 20:04:51,607 - INFO - allennlp.training.trainer - loss            |     0.186  |     1.125
+2019-02-07 20:04:51,607 - INFO - allennlp.training.trainer - cpu_memory_MB   |  3870.260  |       N/A
+2019-02-07 20:04:51,607 - INFO - allennlp.training.trainer - accuracy3       |     1.000  |     1.000
+2019-02-07 20:04:51,607 - INFO - allennlp.training.trainer - accuracy        |     0.914  |     0.635
+2019-02-07 20:04:51,614 - INFO - allennlp.training.trainer - gpu_0_memory_MB |   825.000  |       N/A
+2019-02-07 20:04:51,741 - INFO - allennlp.training.trainer - Epoch duration: 00:14:13
+2019-02-07 20:04:51,744 - INFO - allennlp.training.trainer - Estimated training time remaining: 8:18:08
+2019-02-07 20:04:51,746 - INFO - allennlp.training.trainer - Epoch 4/39
+2019-02-07 20:04:51,746 - INFO - allennlp.training.trainer - Peak CPU memory usage MB: 3870.264
+2019-02-07 20:04:51,907 - INFO - allennlp.training.trainer - GPU 0 memory usage MB: 825
+2019-02-07 20:04:51,907 - INFO - allennlp.training.trainer - Training
+2019-02-07 20:05:50,334 - INFO - root - Training interrupted by the user. Attempting to create a model archive using the current best epoch weights.
+2019-02-07 20:05:50,334 - INFO - allennlp.models.archival - archiving weights and vocabulary to ./model_params/model.tar.gz
