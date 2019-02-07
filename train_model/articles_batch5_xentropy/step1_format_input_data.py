@@ -177,7 +177,6 @@ foldername = './data'
 
 # Choose a subset of articles for training
 inds = [i for i in range(0,Ntrain)]
-inds = [i for i in range(0,40)]
 # inds = [15,99] # Genome and Immunology
 # inds = [15] # Genome
 art = [arts[i] for i in inds]
@@ -202,7 +201,7 @@ filename = 'allenDev.txt'
 write_art(art,newline_method,foldername,filename,mergeinAllenNLP_blanks)
 
 # Choose a subset of articles for test
-inds = [i for i in range(Ntrain+20,Ntrain+35)]
+inds = [i for i in range(30,40)]
 inds = [84]   # Brain
 art = [arts[i] for i in inds]
 Nsent = a_sentences_per_article(art)
