@@ -2,7 +2,7 @@
 
 
 Explanation of articles naming convention:
-articles_batchX.Y
+articles_batchX.YZ
   X - size of training corpus
     0 - 1 training article (for debugging only)
     1 - 20 training articles
@@ -12,3 +12,9 @@ articles_batchX.Y
   Y - merge in Allen NER blanks?
     0 - No Allen NER blanks (e.g., only the ground truth)
     1 - Yes Allen NER merged in
+
+  Z - entropy correction included in model [Y/N]
+    0 - No
+    1 - Yes
+
+
