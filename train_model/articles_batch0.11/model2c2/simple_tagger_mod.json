@@ -1,0 +1,63 @@
+{
+  "dataset_reader": {
+    "type": "sequence_tagging2",
+    "word_tag_delimiter": "//",
+    "token_indexers": {
+      "tokens": {
+        "type": "single_id",
+        "lowercase_tokens": true
+      },
+      "pos_tag": {
+        "type": "pos_tag2",
+        namespace: "pos"
+      },
+      "ner_tag": {
+        "type": "ner_tag2",
+        namespace: "ner"
+      },
+    }
+  },
+  "train_data_path": "../data/allenTrain.txt",
+  "validation_data_path": "../data/allenDev.txt",
+  "model": {
+    "type": "simple_tagger2",
+    "text_field_embedder": {
+      "token_embedders": {
+        "tokens": {
+            "type": "embedding",
+            "embedding_dim": 50,
+            "pretrained_file": "~/src/allennlp/glove/glove.6B.50d.txt.gz",
+            "trainable": false
+        },
+        "pos_tag": {
+            "type": "embedding",
+            "vocab_namespace": "pos",
+            "embedding_dim": 5,
+        },
+        "ner_tag": {
+            "type": "embedding",
+            "vocab_namespace": "ner",
+            "embedding_dim": 7,
+        },
+      }
+    },
+    "encoder": {
+      "type": "lstm",
+      "input_size": 62,
+      "hidden_size": 62,
+      "num_layers": 2,
+      "dropout": 0.5,
+      "bidirectional": true
+    }
+  },
+  "iterator": {
+    "type": "basic",
+    "batch_size": 32
+  },
+  "trainer": {
+    "optimizer": "adam",
+    "num_epochs": 40,
+    "patience": 5,
+    "cuda_device": -1
+  }
+}
