@@ -17,7 +17,7 @@
       "token_embedders": {
         "tokens": {
             "type": "embedding",
-            "embedding_dim": 50,
+            "embedding_dim": 100,
             "pretrained_file": "~/src/allennlp/glove/glove.6B.100d.txt.gz",
             "trainable": false
         },
