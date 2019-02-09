@@ -9,11 +9,12 @@
       },
       "pos_tag": {
         "type": "pos_tag2",
-        namespace: "pos"
+        "namespace": "pos",
+        "coarse_tags": true
       },
       "ner_tag": {
         "type": "ner_tag2",
-        namespace: "ner"
+        "namespace": "ner"
       },
     }
   },
