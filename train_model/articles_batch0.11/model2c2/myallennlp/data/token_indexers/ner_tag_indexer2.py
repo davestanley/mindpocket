@@ -39,8 +39,11 @@ class NerTagIndexer(TokenIndexer[int]):
                           vocabulary: Vocabulary,
                           index_name: str) -> Dict[str, List[int]]:
         tags = ['NONE' if not token.ent_type_ else token.ent_type_ for token in tokens]
+        temp = {index_name: [vocabulary.get_token_index(tag, self._namespace) for tag in tags]}
 
-        return {index_name: [vocabulary.get_token_index(tag, self._namespace) for tag in tags]}
+        # import pdb;
+        # pdb.set_trace()
+        return temp
 
     @overrides
     def get_padding_token(self) -> int:
