@@ -1,3 +1,6 @@
+# Modified version of sequence_tagging dataset reader to allow specifying a custom
+# tokenizer that operates on each sentence. Allows capturing pos tags, ner tags, and
+# dependencies. Using spacy tagger (see https://spacy.io/usage/spacy-101#annotations-pos-deps)
 from typing import Dict, List
 import logging
 
@@ -9,6 +12,9 @@ from allennlp.data.fields import TextField, SequenceLabelField, MetadataField, F
 from allennlp.data.instance import Instance
 from allennlp.data.token_indexers import TokenIndexer, SingleIdTokenIndexer
 from allennlp.data.tokenizers import Token
+    # davedit
+from allennlp.data.tokenizers import Tokenizer, WordTokenizer
+
 
 # Davedit - load spacey
 import spacy
@@ -44,11 +50,15 @@ class SequenceTaggingDatasetReader(DatasetReader):
                  word_tag_delimiter: str = DEFAULT_WORD_TAG_DELIMITER,
                  token_delimiter: str = None,
                  token_indexers: Dict[str, TokenIndexer] = None,
-                 lazy: bool = False) -> None:
+                 lazy: bool = False,
+                 mytokenizer: Tokenizer = None,           # davedit
+                 use_spacy_directly: bool = False) -> None:            #davedit
         super().__init__(lazy)
         self._token_indexers = token_indexers or {'tokens': SingleIdTokenIndexer()}
         self._word_tag_delimiter = word_tag_delimiter
         self._token_delimiter = token_delimiter
+        self._mytokenizer = mytokenizer or WordTokenizer()
+        self._use_spacy_directly = use_spacy_directly
 
     @overrides
     def _read(self, file_path):
@@ -75,22 +85,27 @@ class SequenceTaggingDatasetReader(DatasetReader):
                 words = [word for word, tag in tokens_and_tags]
                 sentence = ' '.join(words)
 
-                # # # # Usings spacy directly # # # #
-                # Load into spacy
-                doc = nlp(sentence)
+                if self._use_spacy_directly:
+                    # # # # Usings spacy directly # # # #
+                    # Load into spacy
+                    doc = nlp(sentence)
 
-                # Calculate pos
-                spacy_pos = [token.pos_ for token in doc]
+                    # Calculate pos
+                    spacy_pos = [token.pos_ for token in doc]
 
-                # Calculate tags
-                spacy_tags = [token.tag_ for token in doc]
+                    # Calculate tags
+                    spacy_tags = [token.tag_ for token in doc]
 
-                # Calculate NER tags
-                pos_tags = [token.ent_type_ for token in doc]
+                    # Calculate NER tags
+                    pos_tags = [token.ent_type_ for token in doc]
 
-                # Testing only
-                # temp = [(tt[0],tt[1],a,b) for tt,a,b in zip(tokens_and_tags,spacy_pos,spacy_tags)]
-                tokens = [Token(text=tt[0],pos=pos,tag=tag) for tt,pos,tag in zip(tokens_and_tags,spacy_pos,spacy_tags)]
+                    # Testing only
+                    # temp = [(tt[0],tt[1],a,b) for tt,a,b in zip(tokens_and_tags,spacy_pos,spacy_tags)]
+                    tokens = [Token(text=tt[0],pos=pos,tag=tag) for tt,pos,tag in zip(tokens_and_tags,spacy_pos,spacy_tags)]
+                else:
+                    # Use specified mytokenizer
+                    tokens = self._mytokenizer.tokenize(sentence)
+
 
                 #tokens = [Token(text=token) for token, tag in tokens_and_tags]
                 tags = [tag for token, tag in tokens_and_tags]
