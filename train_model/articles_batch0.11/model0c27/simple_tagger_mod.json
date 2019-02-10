@@ -35,6 +35,9 @@
   "validation_data_path": "../data/allenDev.txt",
   "model": {
     "type": "simple_tagger2",
+    "do_crossentropy_weighting": false,
+    "Ntags0": 5620.99,
+    "Ntags1": 256.16,
     "text_field_embedder": {
       "token_embedders": {
         "tokens": {
