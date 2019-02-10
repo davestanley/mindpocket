@@ -13,8 +13,3 @@ articles_batchX.YZ
     0 - No Allen NER blanks (e.g., only the ground truth)
     1 - Yes Allen NER merged in
 
-  Z - entropy correction included in model [Y/N]
-    0 - No
-    1 - Yes
-
-

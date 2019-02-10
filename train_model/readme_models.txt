@@ -1,8 +1,12 @@
 Model naming convention:
-modelX.aYZ
+modelWe_X.aYZ
+  W - use weighted entropy
+    0 - no 
+    1 - yes, weight entropy
   X - model complexity (character embedding)
     0 - Word embedding, no character embedding
     1 - Word embedding, character embedding
+    2 - No word embedding, no character embedding
   a - Word embedding settings
     a - Standard embedding
     b - GLoVE50 with trainable = true
