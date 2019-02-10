@@ -67,29 +67,6 @@ class SequenceTaggingDatasetReader(DatasetReader):
     def _read(self, file_path):
         debug_mode = True
 
-        # def words2text(words):
-        #     return ' '.join(join_punctuation(words))
-        #
-        # def join_punctuation(seq, characters='.,;?!'):
-        #     # For joining lists of words together with correct
-        #     # punctuation spacings
-        #     characters = set(characters)
-        #     seq = iter(seq)
-        #     current = next(seq)
-        #
-        #     for nxt in seq:
-        #         if nxt in characters:
-        #             current += nxt
-        #         else:
-        #             yield current
-        #             current = nxt
-        #
-        #     yield current
-        #
-        # if debug_mode:
-        #     from allennlp.data.tokenizers.word_splitter import SpacyWordSplitter
-        #     ws = SpacyWordSplitter()
-
         # if `file_path` is a URL, redirect to the cache
         file_path = cached_path(file_path)
 
@@ -144,48 +121,30 @@ class SequenceTaggingDatasetReader(DatasetReader):
                     tokens = [Token(text=tt[0],pos=pos,tag=tag) for tt,pos,tag in zip(tokens_and_tags,spacy_pos,spacy_tags)]
                 else:
                     # Use specified mytokenizer
+                    # Need to be sure to use modified white space tokenizer (registerd as whitespacy)
+                    # because the default option doesn't always reproduce the original tokenization
+                    # from versoin re-joined by spaces above.
                     tokens = self._mytokenizer.tokenize(sentence)
 
                 #tokens = [Token(text=token) for token, tag in tokens_and_tags]
                 tags = [tag for token, tag in tokens_and_tags]
 
                 # Bug checking because spacy is stupid....grrrr
+                if debug_mode:
+                    words2 = [t.text for t in tokens]
+                    if not words == words2:
+                        import pdb
+                        pdb.set_trace()
 
-
+                # If these don't match up, it will produce an error. In this csae,
+                # pre-emptively enter debug mode
                 if not len(tokens) == len(tags):
+                    # This is the orignal way tokens would have been calculated in sequence_tagging.py
                     tokens2 = [Token(text=token) for token, tag in tokens_and_tags]
+                    print("Error -misamatch between tokens and tags")
+                    print(tokens)
+                    print(tokens2)
 
-                    import spacy
-                    from spacy.tokens import Doc
-
-                    class WhitespaceTokenizer(object):
-                        def __init__(self, vocab):
-                            self.vocab = vocab
-
-                        def __call__(self, text):
-                            words = text.split(' ')
-                            # All tokens 'own' a subsequent space character in this tokenizer
-                            spaces = [True] * len(words)
-                            return Doc(self.vocab, words=words, spaces=spaces)
-
-                    nlp = spacy.load('en_core_web_sm')
-                    nlp.tokenizer = WhitespaceTokenizer(nlp.vocab)
-                    doc = nlp(sentence)
-                    words2 = [t.pos for t in doc]
-
-                    print(len(tokens))
-                    print(len(tags))
-
-                    # For Testing
-                    from allennlp.data.tokenizers.word_splitter import SpacyWordSplitter
-                    ws = SpacyWordSplitter()
-                    context_split = ws.split_words(sentence);
-                    sentence2 = 'the Karma Kargyu—cannot cannot'
-                    sentence3 = 'the Karma Kargyu — cannot cannot'
-                    ws.split_words(sentence2)
-                    ws.split_words(sentence3)
-                    print(ws.split_words(sentence2))
-                    print(ws.split_words(sentence3))
                     import pdb
                     pdb.set_trace()
 
