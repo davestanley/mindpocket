@@ -1,4 +1,6 @@
-# Simple tagger module with option to weight cross-entropy
+# Simple tagger module with option to weight cross-entropy. For dealing with
+# class imbalance
+# Dave Stanley, Insight Data Science, 2019
 from typing import Dict, Optional, List, Any
 
 import numpy
@@ -41,12 +43,20 @@ class SimpleTagger2(Model):
                  text_field_embedder: TextFieldEmbedder,
                  encoder: Seq2SeqEncoder,
                  initializer: InitializerApplicator = InitializerApplicator(),
+                 do_crossentropy_weighting: bool = False,
+                 Ntags0: int = None,
+                 Ntags1: int = None,
                  regularizer: Optional[RegularizerApplicator] = None) -> None:
         super(SimpleTagger2, self).__init__(vocab, regularizer)
 
         self.text_field_embedder = text_field_embedder
         self.num_classes = self.vocab.get_vocab_size("labels")
         self.encoder = encoder
+        # Cross entropy weighting -davedit
+        self.do_crossentropy_weighting = do_crossentropy_weighting
+            # Should be integer (e.g., 0-100), but actual range doesn't matter becuase we will normalize later
+        self.Ntags0 = Ntags0            # Number of tags == 0 in whole dataset
+        self.Ntags1 = Ntags1            # Number of tags == 1 in whole dataset
         self.tag_projection_layer = TimeDistributed(Linear(self.encoder.get_output_dim(),
                                                            self.num_classes))
 
@@ -123,21 +133,42 @@ class SimpleTagger2(Model):
 
 
         if tags is not None:
-            # import code
-            # code.interact(local=locals())
-            # Commenting out defualt AllenNLP loss
-            # loss = sequence_cross_entropy_with_logits(logits, tags, mask)
+            if self.do_crossentropy_weighting:
+                # Implementing custom loss function, weight tags = 1 vs tags = 0
+                # Note this only works for binary tags at present
 
-            # Implementing my own custom loss function - upweight loss of true
-            # positives!
-            Nnonblanks = 5877.15 - 256.16     # Average number of non-blanks per article
-            Nblanks = 256.16                  # Average # blanks per article
-            blank_weight = Nnonblanks / (Nnonblanks + Nblanks)*100
-            nblank_weight = Nblanks / (Nnonblanks + Nblanks)*100
-            mask2 = mask
-            mask2[tags == 1] = mask2[tags == 1] * blank_weight
-            mask2[tags == 0] = mask2[tags == 0] * nblank_weight
-            loss = sequence_cross_entropy_with_logits(logits, tags, mask2)
+
+                Nt0 = self.Ntags0          # Should correspond to non-blanks
+                Nt1 = self.Ntags1             # Should correspond to blanks
+
+                if not (Nt0 and Nt1):
+                    # If either Nt0 or Nt1 are unspecified
+                    Nt0 = sum(sum((tags==0).double()))
+                    Nt1 = sum(sum((tags==1).double()))
+
+                # Convert N blanks to weights - weight is inversely proportional to number of tags
+                t0wp = Nt1 / (Nt0 + Nt1)*100      # t0 weighting percent
+                t1wp = Nt0 / (Nt0 + Nt1)*100       # t1 weighting percent
+                mask2 = mask                        # That was pointless....
+                mask2[tags == 1] = mask2[tags == 1] * t1wp
+                mask2[tags == 0] = mask2[tags == 0] * t0wp
+                loss = sequence_cross_entropy_with_logits(logits, tags, mask2)
+
+                # # Old code, hardcoded
+                # Nnonblanks = 5877.15 - 256.16     # Average number of non-blanks per article
+                # Nblanks = 256.16                  # Average # blanks per article
+                # blank_weight = Nnonblanks / (Nnonblanks + Nblanks)*100
+                # nblank_weight = Nblanks / (Nnonblanks + Nblanks)*100
+                # mask2 = mask
+                # mask2[tags == 1] = mask2[tags == 1] * blank_weight
+                # mask2[tags == 0] = mask2[tags == 0] * nblank_weight
+                # loss = sequence_cross_entropy_with_logits(logits, tags, mask2)
+            else:
+                # Defualt AllenNLP loss
+                loss = sequence_cross_entropy_with_logits(logits, tags, mask)
+
+            # import pdb
+            # pdb.set_trace()
 
             for metric in self.metrics.values():
                 metric(logits, tags, mask.float())
