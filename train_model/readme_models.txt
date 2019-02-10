@@ -36,3 +36,10 @@ modelWe_X.aYZ
 
 
 
+Notes on vocab sizes:
+# Results of survey of sizes. Use these for embedding:
+# (Pdb) Npos 15: (coarse tags)
+# (Pdb) Npos 49: (fine tags)
+# (Pdb) Nner 19:
+# (Pdb) Ndep 45:
+
