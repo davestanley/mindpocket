@@ -51,8 +51,6 @@ class PosTagIndexer(TokenIndexer[int]):
                           index_name: str) -> Dict[str, List[int]]:
         tags: List[str] = []
 
-        token.token.tag_ = 'AA'
-
         for token in tokens:
             if self._coarse_tags:
                 tag = token.pos_
@@ -63,13 +61,10 @@ class PosTagIndexer(TokenIndexer[int]):
 
             tags.append(tag)
         temp = {index_name: [vocabulary.get_token_index(tag, self._namespace) for tag in tags]}
-        temp2 = [vocabulary.get_token_index(tag, self._namespace) for tag in tags]
+        #temp2 = [vocabulary.get_token_index(tag, self._namespace) for tag in tags]
 
-        from allennlp.data.tokenizers.word_splitter import SpacyWordSplitter
-        SpacyWordSplitter
-
-        import pdb;
-        pdb.set_trace()
+        # import pdb;
+        # pdb.set_trace()
         return temp
 
     @overrides
