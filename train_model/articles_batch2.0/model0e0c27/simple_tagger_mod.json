@@ -49,12 +49,12 @@
         "pos_tag": {
             "type": "embedding",
             "vocab_namespace": "pos",
-            "embedding_dim": 5,
+            "embedding_dim": 5
         },
         "ner_tag": {
             "type": "embedding",
             "vocab_namespace": "ner",
-            "embedding_dim": 7,
+            "embedding_dim": 7
         },
         "dependency_label": {
           "type": "embedding",
