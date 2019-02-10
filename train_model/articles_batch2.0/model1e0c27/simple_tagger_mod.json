@@ -5,7 +5,7 @@
     "mytokenizer": {
       "type": "word",
       "word_splitter": {
-        "type": "spacy",
+        "type": "whitespacy",
         "pos_tags": true,
         "parse": true,
         "ner": true
