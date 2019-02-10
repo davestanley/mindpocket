@@ -58,3 +58,9 @@ run_predictor(art,predictor,foldername,'train',testing_mode=False,skip_save=Fals
 arts = load_SQuAD_dev()
 art = arts
 run_predictor(art,predictor,foldername,'dev',testing_mode=False,skip_save=False,prepend_data_folder=False)
+
+# # Once done running and merging everything, delete all temporary _art_ files
+import glob
+for fl in glob.glob(os.path.join(foldername,'_art_*')):
+    #Remove file
+    os.remove(fl)
