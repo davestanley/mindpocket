@@ -1,1 +1,1 @@
-../../step2_train_model.sh
+allennlp train ./simple_tagger_mod.json --serialization-dir ./model_params --include-package myallennlp
