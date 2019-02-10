@@ -2,20 +2,33 @@
   "dataset_reader": {
     "type": "sequence_tagging2",
     "word_tag_delimiter": "//",
+    "mytokenizer": {
+      "type": "word",
+      "word_splitter": {
+        "type": "spacy",
+        "pos_tags": true,
+        "parse": true,
+        "ner": true
+      }
+    },
     "token_indexers": {
       "tokens": {
         "type": "single_id",
         "lowercase_tokens": true
       },
       "pos_tag": {
-        "type": "pos_tag2",
+        "type": "pos_tag",
         "namespace": "pos",
         "coarse_tags": false
       },
-      "ner_tag": {
-        "type": "ner_tag2",
-        "namespace": "ner"
+      "dependency_label": {
+        "type": "dependency_label",
+        "namespace": "dependencies"
       },
+      "ner_tag": {
+        "type": "ner_tag",
+        "namespace": "ner"
+      }
     }
   },
   "train_data_path": "../data/allenTrain.txt",
@@ -40,12 +53,17 @@
             "vocab_namespace": "ner",
             "embedding_dim": 7,
         },
+        "dependency_label": {
+          "type": "embedding",
+          "vocab_namespace": "dependencies",
+          "embedding_dim": 10
+        }
       }
     },
     "encoder": {
       "type": "lstm",
-      "input_size": 62,
-      "hidden_size": 62,
+      "input_size": 72,
+      "hidden_size": 72,
       "num_layers": 2,
       "dropout": 0.5,
       "bidirectional": true
