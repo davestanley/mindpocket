@@ -107,7 +107,8 @@ class SimpleTagger2(Model):
 
         """
 
-
+        #Davedit
+        print_vocab = False
 
 
         embedded_text_input = self.text_field_embedder(tokens)
@@ -167,8 +168,27 @@ class SimpleTagger2(Model):
                 # Defualt AllenNLP loss
                 loss = sequence_cross_entropy_with_logits(logits, tags, mask)
 
-            # import pdb
-            # pdb.set_trace()
+            if print_vocab:
+                vocab = self.vocab
+                vo = vocab.get_index_to_token_vocabulary('pos')
+                out = set([v for v in vo.values()])
+                print(out)
+                vo = vocab.get_index_to_token_vocabulary('ner')
+                out = set([v for v in vo.values()])
+                print(out)
+                vo = vocab.get_index_to_token_vocabulary('dependencies')
+                out = set([v for v in vo.values()])
+                print(out)
+                # Results of vocab from 1st 20 articles. Can use these to set embedding dimensions
+                # {'VBP', 'PRP$', 'SYM', 'XX', ':', 'ADD', 'NNS', 'CC', 'VBG', 'RBR', 'NNP', 'IN', 'JJ', 'TO', 'NFP', 'NNPS', 'PRP', 'LS', 'NN', 'CD', 'FW', 'MD', 'AFX', 'PDT', "''", 'RP', 'JJR', 'RB', 'VB', '``', '.', 'VBD', 'VBN', '-RRB-', 'JJS', 'RBS', '$', '@@PADDING@@', 'EX', 'HYPH', 'POS', '-LRB-', 'WP$', 'VBZ', ',', 'UH', 'WP', 'DT', 'WDT', 'WRB', '@@UNKNOWN@@'}
+                # {'PERCENT', 'ORG', 'NONE', 'ORDINAL', 'MONEY', 'CARDINAL', 'NORP', 'LANGUAGE', 'DATE', 'WORK_OF_ART', 'LAW', 'LOC', 'PERSON', 'QUANTITY', 'EVENT', 'GPE', 'TIME', 'FAC', '@@PADDING@@', 'PRODUCT', '@@UNKNOWN@@'}
+                # {'poss', 'attr', 'xcomp', 'npadvmod', 'agent', 'parataxis', 'mark', 'nmod', 'predet', 'compound', 'ROOT', 'intj', 'csubjpass', 'nsubjpass', 'preconj', 'amod', 'csubj', 'ccomp', 'punct', 'advcl', 'conj', 'acomp', 'oprd', 'case', 'nsubj', 'dobj', 'nummod', 'prt', 'cc', 'advmod', 'appos', 'neg', 'pcomp', 'quantmod', 'dep', 'meta', '@@PADDING@@', 'relcl', 'expl', 'acl', 'dative', 'auxpass', 'det', 'aux', 'prep', 'pobj', '@@UNKNOWN@@'}
+                # Vocab size
+                # Vocabulary with namespaces:  dependencies, Size: 47 || ner, Size: 21 || pos, Size: 51 || tokens, Size: 21902 || labels, Size: 2 || Non Padded Namespaces: {'*tags', '*labels'}
+
+
+                # import pdb
+                # pdb.set_trace()
 
             for metric in self.metrics.values():
                 metric(logits, tags, mask.float())

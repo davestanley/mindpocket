@@ -67,6 +67,7 @@ class SequenceTaggingDatasetReader(DatasetReader):
     def _read(self, file_path):
         debug_mode = False
         batch_process = True
+        print_vocab = False
         import time
 
         # if `file_path` is a URL, redirect to the cache
@@ -103,6 +104,36 @@ class SequenceTaggingDatasetReader(DatasetReader):
             total = t1-t0
             print("Token batch process time:")
             print(total)
+
+            # View full vocab - used for figuring out the correct embedding to use
+            if print_vocab:
+                pos_all = [token.pos_ for tokens in tokens_batch for token in tokens]
+                pos_all2 = set(pos_all)
+                tag_all = [token.tag_ for tokens in tokens_batch for token in tokens]
+                tag_all2 = set(tag_all)
+                ner_all = [token.ent_type_ for tokens in tokens_batch for token in tokens]
+                ner_all2 = set(ner_all)
+                dep_all = [token.dep_ for tokens in tokens_batch for token in tokens]
+                dep_all2 = set(dep_all)
+                print(pos_all2)
+                print(tag_all2)
+                print(ner_all2)
+                print(dep_all2)
+                print("Npos {}: ".format(str(len(pos_all2))))
+                print("Npos {}: ".format(str(len(tag_all2))))
+                print("Nner {}: ".format(str(len(ner_all2))))
+                print("Ndep {}: ".format(str(len(dep_all2))))
+                # Results of survey of sizes. Use these for embedding:
+                # (Pdb) Npos 15:
+                # (Pdb) Npos 49:
+                # (Pdb) Nner 19:
+                # (Pdb) Ndep 45:
+                # {'NUM', 'ADJ', 'INTJ', 'SYM', 'DET', 'NOUN', 'CCONJ', 'ADV', 'PART', 'ADP', 'X', 'VERB', 'PUNCT', 'PRON', 'PROPN'}
+                # (Pdb) {'RBR', 'POS', 'XX', 'SYM', ':', 'WDT', ',', 'FW', 'JJ', 'RB', '``', 'NFP', '-LRB-', 'CD', 'LS', 'RBS', 'JJR', 'RP', 'PRP$', '.', "''", 'DT', 'PRP', 'CC', 'VBD', 'NNP', 'AFX', 'EX', 'JJS', 'PDT', 'VBN', 'VBP', 'MD', 'WP$', 'VBZ', 'IN', 'NNPS', '$', 'UH', 'HYPH', 'WRB', 'VB', 'WP', 'TO', 'NNS', 'ADD', 'VBG', '-RRB-', 'NN'}
+                # (Pdb) {'', 'LANGUAGE', 'LAW', 'DATE', 'ORG', 'NORP', 'PRODUCT', 'PERSON', 'WORK_OF_ART', 'EVENT', 'GPE', 'QUANTITY', 'LOC', 'TIME', 'PERCENT', 'MONEY', 'CARDINAL', 'FAC', 'ORDINAL'}
+                # (Pdb) {'csubjpass', 'prep', 'npadvmod', 'attr', 'cc', 'compound', 'nmod', 'amod', 'advcl', 'pobj', 'appos', 'pcomp', 'advmod', 'quantmod', 'dative', 'nsubj', 'acl', 'predet', 'auxpass', 'mark', 'ccomp', 'neg', 'case', 'oprd', 'relcl', 'ROOT', 'aux', 'acomp', 'nummod', 'det', 'dep', 'preconj', 'meta', 'expl', 'punct', 'parataxis', 'poss', 'conj', 'xcomp', 'agent', 'dobj', 'nsubjpass', 'prt', 'csubj', 'intj'}
+
+
 
             for i in range(len(tokens_batch)):
                 tokens = tokens_batch[i]
