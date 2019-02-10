@@ -3,7 +3,7 @@ These submodules contain the classes for AllenNLP models,
 all of which are subclasses of :class:`~allennlp.models.model.Model`.
 """
 
-# from allennlp.models.model import Model
+from allennlp.models.model import Model
 # from allennlp.models.archival import archive_model, load_archive, Archive
 # from allennlp.models.biattentive_classification_network import BiattentiveClassificationNetwork
 # from allennlp.models.constituency_parser import SpanConstituencyParser
@@ -22,7 +22,7 @@ all of which are subclasses of :class:`~allennlp.models.model.Model`.
 # from allennlp.models.semantic_parsing.atis.atis_semantic_parser import AtisSemanticParser
 # from allennlp.models.semantic_parsing.text2sql_parser import Text2SqlParser
 # from allennlp.models.semantic_role_labeler import SemanticRoleLabeler
-# from allennlp.models.simple_tagger import SimpleTagger
+from myallennlp.models.simple_tagger2 import SimpleTagger2
 # from allennlp.models.esim import ESIM
 # from allennlp.models.bimpm import BiMpm
 # from allennlp.models.graph_parser import GraphParser

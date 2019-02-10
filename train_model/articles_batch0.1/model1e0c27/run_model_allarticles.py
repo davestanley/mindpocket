@@ -14,6 +14,13 @@ import os
 # Import Allen
 from allennlp.predictors import Predictor
 
+# Include custom
+import myallennlp
+from myallennlp import *
+from myallennlp.models.simple_tagger2 import SimpleTagger2
+from myallennlp.dataset_readers import sequence_tagging2
+from myallennlp.data.tokenizers.word_splitter import SpacyWordSplitter
+
 # Setup paths containing utility
 curr_folder = os.getcwd()
 sys.path.insert(0, os.path.join(curr_folder,'../../../app'))
@@ -35,7 +42,7 @@ skip_save = False
 
 # Set up AllenNLP
 currmodel = os.path.join('.','model.tar.gz')
-if not testing_mode: predictor = Predictor.from_path(currmodel)
+if not testing_mode: predictor = Predictor.from_path(currmodel,predictor_name='sentence-tagger')
 
 # # # # # # # # # # # # # # # # # # # # Process training data # # # # # # # # # # # # # # # # #
 # Load the training data
