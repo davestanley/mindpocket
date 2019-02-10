@@ -1,3 +1,4 @@
+# Simple tagger module with option to weight cross-entropy
 from typing import Dict, Optional, List, Any
 
 import numpy
@@ -111,9 +112,9 @@ class SimpleTagger2(Model):
                                                                           self.num_classes])
 
         output_dict = {"logits": logits, "class_probabilities": class_probabilities}
-        x = tokens['tokens']
-        y = tokens['pos_tag']
-        w = tokens['ner_tag']
+        # x = tokens['tokens']
+        # y = tokens['pos_tag']
+        # w = tokens['ner_tag']
 
         # import code
         # code.interact(local=locals())
