@@ -10,7 +10,7 @@
       "pos_tag": {
         "type": "pos_tag2",
         "namespace": "pos",
-        "coarse_tags": true
+        "coarse_tags": false
       },
       "ner_tag": {
         "type": "ner_tag2",
