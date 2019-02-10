@@ -10,6 +10,10 @@ from allennlp.data.instance import Instance
 from allennlp.data.token_indexers import TokenIndexer, SingleIdTokenIndexer
 from allennlp.data.tokenizers import Token
 
+# Davedit - load spacey
+import spacy
+nlp = spacy.load('en_core_web_sm')
+
 logger = logging.getLogger(__name__)  # pylint: disable=invalid-name
 
 DEFAULT_WORD_TAG_DELIMITER = "###"
@@ -61,12 +65,37 @@ class SequenceTaggingDatasetReader(DatasetReader):
                 if not line:
                     continue
 
+
                 tokens_and_tags = [pair.rsplit(self._word_tag_delimiter, 1)
                                    for pair in line.split(self._token_delimiter)]
-                tokens = [Token(token) for token, tag in tokens_and_tags]
+                # [tokens,tags] = [pair.rsplit(self._word_tag_delimiter, 1) for pair in line.split(self._token_delimiter)]
+
+                # davedit
+                # Get text only
+                words = [word for word, tag in tokens_and_tags]
+                sentence = ' '.join(words)
+
+                # # # # Usings spacy directly # # # #
+                # Load into spacy
+                doc = nlp(sentence)
+
+                # Calculate pos
+                spacy_pos = [token.pos_ for token in doc]
+
+                # Calculate tags
+                spacy_tags = [token.tag_ for token in doc]
+
+                # Calculate NER tags
+                pos_tags = [token.ent_type_ for token in doc]
+
+                # Testing only
+                # temp = [(tt[0],tt[1],a,b) for tt,a,b in zip(tokens_and_tags,spacy_pos,spacy_tags)]
+                tokens = [Token(text=tt[0],pos=pos,tag=tag) for tt,pos,tag in zip(tokens_and_tags,spacy_pos,spacy_tags)]
+
+                #tokens = [Token(text=token) for token, tag in tokens_and_tags]
                 tags = [tag for token, tag in tokens_and_tags]
 
-                # import pdb;
+                # import pdb
                 # pdb.set_trace()
 
                 yield self.text_to_instance(tokens, tags)
