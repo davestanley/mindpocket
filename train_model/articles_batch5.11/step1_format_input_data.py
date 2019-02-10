@@ -202,7 +202,7 @@ write_art(art,newline_method,foldername,filename,mergeinAllenNLP_blanks)
 
 # Choose a subset of articles for test
 inds = [i for i in range(Ntrain+20,Ntrain+35)]
-inds = [84]   # Brain
+# inds = [84]   # Brain
 art = [arts[i] for i in inds]
 Nsent = a_sentences_per_article(art)
 print("Dev set Nsentences={}".format(str(sum(Nsent))))
