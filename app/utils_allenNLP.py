@@ -21,7 +21,8 @@ def run_predictor(art,predictor,foldername,filename_prefix,testing_mode=False,sk
         # Otherwise with operation
         print("Article number:" + str(i).zfill(3) + ". Saving to: " + filename)
         for j,p in enumerate(a['paragraphs']):
-            print("\tParagraph number: " + str(j))
+            if verbose2_on:
+                print("\tParagraph number: " + str(j))
             if not testing_mode:
                 results = predictor.predict(sentence=p['context'])
                 if verbose2_on:
