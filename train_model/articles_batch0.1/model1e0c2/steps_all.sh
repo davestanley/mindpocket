@@ -22,4 +22,7 @@ if [ ! -d "$DIRECTORY" ]; then
 fi
 
 # Finally, test the model's performance
-python test_performance_model.py
+FILE=results1_mymodel.json
+if [ ! -d "$FILE" ]; then
+  python test_performance_model.py
+fi
