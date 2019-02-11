@@ -6,7 +6,7 @@
 source activate allennlp
 
 # Train the model and pack the model too
-DIRECTORY=model_params
+DIRECTORY=model_logs
 if [ ! -d "$DIRECTORY" ]; then
   # If directory doesnt exist, run the script
   ./step2_train_model.sh
