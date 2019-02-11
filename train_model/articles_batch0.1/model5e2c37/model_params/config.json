@@ -1,0 +1,71 @@
+{
+    "dataset_reader": {
+        "type": "sequence_tagging2",
+        "mytokenizer": {
+            "type": "word",
+            "word_splitter": {
+                "type": "whitespacy",
+                "ner": true,
+                "parse": true,
+                "pos_tags": true
+            }
+        },
+        "token_indexers": {
+            "dependency_label": {
+                "type": "dependency_label",
+                "namespace": "dependencies"
+            },
+            "ner_tag": {
+                "type": "ner_tag",
+                "namespace": "ner"
+            },
+            "pos_tag": {
+                "type": "pos_tag",
+                "coarse_tags": true,
+                "namespace": "pos"
+            }
+        },
+        "word_tag_delimiter": "//"
+    },
+    "iterator": {
+        "type": "basic",
+        "batch_size": 32
+    },
+    "model": {
+        "type": "simple_tagger2",
+        "Ntags0": 5620.99,
+        "Ntags1": 256.16,
+        "do_crossentropy_weighting": true,
+        "encoder": {
+            "type": "pass_through",
+            "input_dim": 22
+        },
+        "text_field_embedder": {
+            "token_embedders": {
+                "dependency_label": {
+                    "type": "embedding",
+                    "embedding_dim": 10,
+                    "vocab_namespace": "dependencies"
+                },
+                "ner_tag": {
+                    "type": "embedding",
+                    "embedding_dim": 7,
+                    "vocab_namespace": "ner"
+                },
+                "pos_tag": {
+                    "type": "embedding",
+                    "embedding_dim": 5,
+                    "vocab_namespace": "pos"
+                }
+            }
+        }
+    },
+    "train_data_path": "../data/allenTrain.txt",
+    "validation_data_path": "../data/allenDev.txt",
+    "trainer": {
+        "cuda_device": -1,
+        "num_epochs": 40,
+        "optimizer": "adam",
+        "patience": 5
+    }
+}

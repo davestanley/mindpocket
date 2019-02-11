@@ -1,0 +1,74 @@
+0it [00:00, ?it/s]
+80it [00:00, 14493.73it/s]
+
+0it [00:00, ?it/s]
+74it [00:00, 14639.80it/s]
+
+0it [00:00, ?it/s]
+154it [00:00, 41349.65it/s]
+
+0it [00:00, ?it/s]
+17514it [00:00, 175139.75it/s]
+40881it [00:00, 189360.51it/s]
+63790it [00:00, 199752.60it/s]
+85569it [00:00, 204838.03it/s]
+109313it [00:00, 213636.45it/s]
+134596it [00:00, 224049.47it/s]
+158805it [00:00, 229158.49it/s]
+183971it [00:00, 235473.91it/s]
+208874it [00:00, 239382.44it/s]
+232286it [00:01, 230594.52it/s]
+257797it [00:01, 237380.07it/s]
+281669it [00:01, 237771.39it/s]
+305992it [00:01, 239382.63it/s]
+329855it [00:01, 238972.78it/s]
+353700it [00:01, 233665.94it/s]
+377865it [00:01, 235971.48it/s]
+400000it [00:01, 233284.49it/s]
+
+  0%|          | 0/3 [00:00<?, ?it/s]
+Python 3.6.8 |Anaconda, Inc.| (default, Dec 30 2018, 01:22:34) 
+[GCC 7.3.0] on linux
+Type "help", "copyright", "credits" or "license" for more information.
+(InteractiveConsole)
+  File "<console>", line 1
+    !pwd
+    ^
+SyntaxError: invalid syntax
+Traceback (most recent call last):
+  File "<console>", line 1, in <module>
+NameError: name 'sentence' is not defined
+Traceback (most recent call last):
+  File "<console>", line 1, in <module>
+NameError: name 'sentence' is not defined
+  File "<console>", line 1
+    batch_size, sequence_length, _ = embedded_text_input.size()
+    ^
+IndentationError: unexpected indent
+  File "<console>", line 1
+    mask = get_text_field_mask(tokens)
+    ^
+IndentationError: unexpected indent
+  File "<console>", line 1
+    encoded_text = self.encoder(embedded_text_input, mask)embedded_text_input = self.text_field_embedder(tokens)
+    ^
+IndentationError: unexpected indent
+Traceback (most recent call last):
+  File "<console>", line 1, in <module>
+NameError: name 'get_text_field_mask' is not defined
+  File "<console>", line 1
+    encoded_text = self.encoder(embedded_text_input, mask)embedded_text_input = self.text_field_embedder(tokens)
+                                                                            ^
+SyntaxError: invalid syntax
+Traceback (most recent call last):
+  File "<console>", line 1, in <module>
+NameError: name 'get_text_field_mask' is not defined
+Traceback (most recent call last):
+  File "<console>", line 1, in <module>
+NameError: name 'mask' is not defined
+Traceback (most recent call last):
+  File "<console>", line 1, in <module>
+AttributeError: 'dict' object has no attribute 'size'
+Traceback (most recent call last):
+  File "<console>", line 1, in <module>
+AttributeError: 'dict' object has no attribute 'size'
