@@ -48,7 +48,7 @@ if not testing_mode: predictor = Predictor.from_path(currmodel,predictor_name='s
 # Load the training data
 arts = load_SQuAD_train()
 art = arts
-# art = arts[105:107]         # A few short articles
+art = arts[0]         # A few short articles
 run_predictor(art,predictor,foldername,'train',testing_mode=False,skip_save=False,prepend_data_folder=False)
 
 
@@ -57,4 +57,5 @@ run_predictor(art,predictor,foldername,'train',testing_mode=False,skip_save=Fals
 # Load the dev data
 arts = load_SQuAD_dev()
 art = arts
+art = arts[0:3]         # A few short articles
 run_predictor(art,predictor,foldername,'dev',testing_mode=False,skip_save=False,prepend_data_folder=False)
