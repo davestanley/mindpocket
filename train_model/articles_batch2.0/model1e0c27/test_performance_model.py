@@ -252,8 +252,8 @@ def run_full_analysis(resultsfname,merge_in_NER_data):
     out = calcstats_train_dev([x*100 for x in TPR0],resultsfname,Ntrain=Ntrain,Ndev=Ndev-15,Ntest=15,mytitle='TP')
     out = calcstats_train_dev([x*100 for x in FPR0],resultsfname,Ntrain=Ntrain,Ndev=Ndev-15,Ntest=15,mytitle='FPR')
     out = calcstats_train_dev([x*100 for x in ACC0],resultsfname,Ntrain=Ntrain,Ndev=Ndev-15,Ntest=15,mytitle='ACC0')
-    out = calcstats_train_dev(st0,resultsfname,Ntrain=Ntrain,Ndev=Ndev-15,Ntest=15,mytitle='Trues')             # Sum of all true values in each article (e.g., ground truth true blanks)
-    out = calcstats_train_dev(sbc0,resultsfname,Ntrain=Ntrain,Ndev=Ndev-15,Ntest=15,mytitle='Positives')        # Sum of all positive IDs in each article
+    out = calcstats_train_dev(sbc0,resultsfname,Ntrain=Ntrain,Ndev=Ndev-15,Ntest=15,mytitle='Trues')             # Sum of all true values in each article (e.g., ground truth true blanks)
+    out = calcstats_train_dev(st0,resultsfname,Ntrain=Ntrain,Ndev=Ndev-15,Ntest=15,mytitle='Positives')        # Sum of all positive IDs in each article (tags)
     out = calcstats_train_dev(TP0,resultsfname,Ntrain=Ntrain,Ndev=Ndev-15,Ntest=15,mytitle='TP0')
     out = calcstats_train_dev(FP0,resultsfname,Ntrain=Ntrain,Ndev=Ndev-15,Ntest=15,mytitle='FP0')
     out = calcstats_train_dev(FN0,resultsfname,Ntrain=Ntrain,Ndev=Ndev-15,Ntest=15,mytitle='FN0')
