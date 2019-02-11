@@ -16,7 +16,10 @@ if [ ! -d "$DIRECTORY" ]; then
 fi
 
 # Run the model on our data
-python run_model_allarticles.py
+DIRECTORY=SQ_pp_b4m0c2
+if [ ! -d "$DIRECTORY" ]; then
+  python run_model_allarticles.py
+fi
 
 # Finally, test the model's performance
 python test_performance_model.py
