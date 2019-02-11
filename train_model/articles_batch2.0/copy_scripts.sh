@@ -3,6 +3,7 @@
 FILE=test_performance_model.ipynb
 
 cp ../scripts/run_allmodels.sh .
+cp ../scripts/run_allmodels_server.sh .
 for d in model*/ ; do
     echo "$d"
     cd $d
