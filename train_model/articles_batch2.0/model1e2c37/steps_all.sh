@@ -1,4 +1,4 @@
-#!bash
+#!/bin/bash
 
 # All steps necessary to run model
 source activate allennlp

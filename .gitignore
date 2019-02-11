@@ -110,3 +110,6 @@ allenTest.txt
 
 # Trained model parameters
 model_params
+
+# Mac files
+.DS_Store
