@@ -147,10 +147,21 @@ class SimpleTagger2(Model):
                     Nt0 = sum(sum((tags==0).double()))
                     Nt1 = sum(sum((tags==1).double()))
 
+                import pdb; pdb.set_trace()
+
+                # # Convert N blanks to weights - weight is inversely proportional to number of tags
+                # t0wp = Nt1 / (Nt0 + Nt1)      # t0 weighting percent
+                # t1wp = Nt0 / (Nt0 + Nt1)       # t1 weighting percent
+                # mask2 = mask.clone()
+                # mask2 = mask2.double()
+                # mask2[tags == 1] = mask2[tags == 1] * t1wp
+                # mask2[tags == 0] = mask2[tags == 0] * t0wp
+                # loss = sequence_cross_entropy_with_logits(logits, tags, mask2)
+
                 # Convert N blanks to weights - weight is inversely proportional to number of tags
                 t0wp = Nt1 / (Nt0 + Nt1)*100      # t0 weighting percent
                 t1wp = Nt0 / (Nt0 + Nt1)*100       # t1 weighting percent
-                mask2 = mask                        # That was pointless....
+                mask2 = mask.clone()
                 mask2[tags == 1] = mask2[tags == 1] * t1wp
                 mask2[tags == 0] = mask2[tags == 0] * t0wp
                 loss = sequence_cross_entropy_with_logits(logits, tags, mask2)

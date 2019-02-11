@@ -32,8 +32,8 @@
   "model": {
     "type": "simple_tagger2",
     "do_crossentropy_weighting": true,
-    "Ntags0": 80,
-    "Ntags1": 20,
+    "Ntags0": 90,
+    "Ntags1": 10,
     "text_field_embedder": {
       "token_embedders": {
         "pos_tag": {
