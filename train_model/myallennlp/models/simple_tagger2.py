@@ -147,7 +147,7 @@ class SimpleTagger2(Model):
                     Nt0 = sum(sum((tags==0).double()))
                     Nt1 = sum(sum((tags==1).double()))
 
-                import pdb; pdb.set_trace()
+                #import pdb; pdb.set_trace()
 
                 # # Convert N blanks to weights - weight is inversely proportional to number of tags
                 # t0wp = Nt1 / (Nt0 + Nt1)      # t0 weighting percent
