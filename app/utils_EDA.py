@@ -34,3 +34,42 @@ def p_return_words_upper(words,is_blanked):
 def p_return_blanks(words,is_blanked):
     words_upper = [words[i] for i,t in enumerate(tags) if t]
     return words_upper
+
+def calcstats_train_dev(myvar,filename=None,Ntrain=0,Ndev=0,Ntest=0,mytitle=None):
+    import statistics
+    import json
+
+    st = {}
+    if Ntrain > 0:
+        st['train'] = {
+                    'median': statistics.median(myvar[0:Ntrain-1]),
+                    'mean': statistics.mean(myvar[0:Ntrain-1]),
+                    #'sum': sum(myvar[0:Ntrain-1])
+                    }
+
+    if Ndev > 0:
+        st['dev'] = {
+                    'median': statistics.median(myvar[Ntrain:Ntrain+Ndev-1]),
+                    'mean': statistics.mean(myvar[Ntrain:Ntrain+Ndev-1]),
+                    #'sum': sum(myvar[Ntrain:Ntrain+Ndev-1])
+                    }
+    if Ntest > 0:
+        st['test'] = {
+                    'median': statistics.median(myvar[Ntest:]),
+                    'mean': statistics.mean(myvar[Ntest:]),
+                    #'sum': sum(myvar[Ntest:])
+                    }
+    #
+    # if filename:
+    #     with open(filename, 'w') as f:
+    #         json.dump(st, f)
+
+    if filename:
+        with open(filename, 'a') as f:
+            if mytitle:
+                f.write('\"==' + mytitle + '==\"\n')
+            for k in st.keys():
+                json.dump([k, st[k]], f)
+                f.write('\n')
+
+    return st
