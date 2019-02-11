@@ -144,6 +144,8 @@ def run_full_analysis(resultsfname,merge_in_NER_data):
     TPpersent0 = []
     FPpersent0 = []
     abads = []            # Article-level bads
+    sbc0 = []
+    st0 = []
 
     art = arts[:]
 
@@ -216,6 +218,9 @@ def run_full_analysis(resultsfname,merge_in_NER_data):
         TN0.append(TN)
         TPpersent0.append(TPpersent)
         FPpersent0.append(FPpersent)
+        sbc0.append(sbc)
+        st0.append(st)
+
 
 
 
@@ -244,6 +249,8 @@ def run_full_analysis(resultsfname,merge_in_NER_data):
     out = calcstats_train_dev(TPR0,resultsfname,Ntrain=Ntrain,Ndev=Ndev-15,Ntest=15,mytitle='TP')
     out = calcstats_train_dev(FPR0,resultsfname,Ntrain=Ntrain,Ndev=Ndev-15,Ntest=15,mytitle='FPR')
     out = calcstats_train_dev(ACC0,resultsfname,Ntrain=Ntrain,Ndev=Ndev-15,Ntest=15,mytitle='ACC0')
+    out = calcstats_train_dev(st0,resultsfname,Ntrain=Ntrain,Ndev=Ndev-15,Ntest=15,mytitle='Trues')             # Sum of all true values in each article (e.g., ground truth true blanks)
+    out = calcstats_train_dev(sbc0,resultsfname,Ntrain=Ntrain,Ndev=Ndev-15,Ntest=15,mytitle='Positives')        # Sum of all positive IDs in each article
     out = calcstats_train_dev(TP0,resultsfname,Ntrain=Ntrain,Ndev=Ndev-15,Ntest=15,mytitle='TP0')
     out = calcstats_train_dev(FP0,resultsfname,Ntrain=Ntrain,Ndev=Ndev-15,Ntest=15,mytitle='FP0')
     out = calcstats_train_dev(FN0,resultsfname,Ntrain=Ntrain,Ndev=Ndev-15,Ntest=15,mytitle='FN0')
