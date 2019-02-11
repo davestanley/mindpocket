@@ -20,11 +20,14 @@ from utils import save_data, load_data, exists_datafolder
 from utils import load_SQuAD_train, load_SQuAD_dev
 from utils import get_foldername
 from utils_NLP import text2sentences,words2words_blanked,words2answers
+from utils_NLP import words2text
 from utils_SQuAD import OR_arts_paragraph_fields,merge_arts_paragraph_fields
 
 # Plotting includes
 from utils_EDAplots import plotbar_train_dev,plothist_train_dev,plotbar_train_dev2,plothist_train_dev2
 
+# Stats saving stuff
+from utils_EDA import calcstats_train_dev
 
 # Import fig stuff
 import matplotlib.pyplot as plt
@@ -220,7 +223,22 @@ for ab in abads:
 # Calculate how this affects Ntrain / Ndev
 Ntrain_bad = len([b for b in abads if b < Ntrain])
 Ndev_bad = len([b for b in abads if b >= Ntrain])
-print(Ntrain)
-print(Ndev)
-print(Ntrain_bad)
-print(Ndev_bad)
+print('Ntrain={}'.format(str(Ntrain)))
+print('Ndev={}'.format(str(Ndev)))
+print('Ntrain_bad={}'.format(str(Ntrain_bad)))
+print('Ndev_bad={}'.format(str(Ndev_bad)))
+
+
+
+# Calculate all statistics and save
+resultsfname = 'results.json'
+os.remove(resultsfname)
+out = calcstats_train_dev(TPR0,resultsfname,Ntrain=Ntrain,Ndev=Ndev-15,Ntest=15,mytitle='TP')
+out = calcstats_train_dev(FPR0,resultsfname,Ntrain=Ntrain,Ndev=Ndev-15,Ntest=15,mytitle='FPR')
+out = calcstats_train_dev(ACC0,resultsfname,Ntrain=Ntrain,Ndev=Ndev-15,Ntest=15,mytitle='ACC0')
+out = calcstats_train_dev(TP0,resultsfname,Ntrain=Ntrain,Ndev=Ndev-15,Ntest=15,mytitle='TP0')
+out = calcstats_train_dev(FP0,resultsfname,Ntrain=Ntrain,Ndev=Ndev-15,Ntest=15,mytitle='FP0')
+out = calcstats_train_dev(FN0,resultsfname,Ntrain=Ntrain,Ndev=Ndev-15,Ntest=15,mytitle='FN0')
+out = calcstats_train_dev(TN0,resultsfname,Ntrain=Ntrain,Ndev=Ndev-15,Ntest=15,mytitle='TN0')
+out = calcstats_train_dev(TPpersent0,resultsfname,Ntrain=Ntrain,Ndev=Ndev-15,Ntest=15,mytitle='TPpersent0')
+out = calcstats_train_dev(FPpersent0,resultsfname,Ntrain=Ntrain,Ndev=Ndev-15,Ntest=15,mytitle='FPpersent0')
