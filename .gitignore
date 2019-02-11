@@ -113,3 +113,6 @@ model_params
 
 # Mac files
 .DS_Store
+
+# Swap files
+*.swp
