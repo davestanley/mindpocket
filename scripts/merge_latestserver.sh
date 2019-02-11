@@ -11,15 +11,15 @@
 # git pull
 
 # Merge dev branch everywhere
-git checkout dev
+git checkout server
 git pull
 
 git checkout mac
-git merge dev
-git push
-
-git checkout server
-git merge dev
+git merge server
 git push
 
 git checkout dev
+git merge server
+git push
+
+# git checkout server
