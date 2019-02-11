@@ -1,0 +1,75 @@
+{
+  "dataset_reader": {
+    "type": "sequence_tagging2",
+    "word_tag_delimiter": "//",
+    "mytokenizer": {
+      "type": "word",
+      "word_splitter": {
+        "type": "whitespacy",
+        "pos_tags": true,
+        "parse": true,
+        "ner": true
+      }
+    },
+    "token_indexers": {
+      "pos_tag": {
+        "type": "pos_tag",
+        "namespace": "pos",
+        "coarse_tags": true
+      },
+      "dependency_label": {
+        "type": "dependency_label",
+        "namespace": "dependencies"
+      },
+      "ner_tag": {
+        "type": "ner_tag",
+        "namespace": "ner"
+      }
+    }
+  },
+  "train_data_path": "../data/allenTrain.txt",
+  "validation_data_path": "../data/allenDev.txt",
+  "model": {
+    "type": "simple_tagger2",
+    "do_crossentropy_weighting": true,
+    "Ntags0": 5620.99,
+    "Ntags1": 256.16,
+    "text_field_embedder": {
+      "token_embedders": {
+        "pos_tag": {
+            "type": "embedding",
+            "vocab_namespace": "pos",
+            "embedding_dim": 5
+        },
+        "ner_tag": {
+            "type": "embedding",
+            "vocab_namespace": "ner",
+            "embedding_dim": 7
+        },
+        "dependency_label": {
+          "type": "embedding",
+          "vocab_namespace": "dependencies",
+          "embedding_dim": 10
+        }
+      }
+    },
+    "encoder": {
+      "type": "rnn",
+      "input_size": 22,
+      "hidden_size": 22,
+      "num_layers": 2,
+      "dropout": 0.5,
+      "bidirectional": true
+    }
+  },
+  "iterator": {
+    "type": "basic",
+    "batch_size": 32
+  },
+  "trainer": {
+    "optimizer": "adam",
+    "num_epochs": 40,
+    "patience": 5,
+    "cuda_device": -1
+  }
+}
