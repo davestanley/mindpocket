@@ -1,5 +1,7 @@
 #!/bin/bash
 
+
+cp ../scripts/run_allmodels.sh .
 for d in model*/ ; do
     echo "$d"
     cd $d
