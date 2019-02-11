@@ -1,6 +1,6 @@
 #!/bin/bash
 
-FILE=scripts/test_performance_model.ipynb
+FILE=test_performance_model.ipynb
 
 cp ../scripts/run_allmodels.sh .
 for d in model*/ ; do
