@@ -23,6 +23,6 @@ fi
 
 # Finally, test the model's performance
 FILE=results1_mymodel.json
-if [ ! -d "$FILE" ]; then
+if [ ! -f "$FILE" ]; then
   python test_performance_model.py
 fi
