@@ -1,12 +1,15 @@
 Model naming convention:
 modelWe_X.aYZ
-  W - model-type / use weighted entropy 
+  W - encoder-type / use weighted entropy 
     0 - LSTM / no
     1 - LSTM / yes
     2 - RNN / no
     3 - RNN / yes
-    4 - Linear / no
-    5 - Linear yes
+    4 - Pass through / no
+    5 - Pass through yes
+    6 - LSTM / yes but reduced
+    7 - RNN / yes but reduced
+    8 - Pass through / yes but reduced
   X - model complexity (character embedding)
     0 - Word embedding, no character embedding
     1 - Word embedding, character embedding
@@ -34,6 +37,12 @@ modelWe_X.aYZ
     6 - 1,1,0
     7 - 1,1,1
 
+
+Note: Weighted entropy "yes but reduced" means we reduced how heavily we weight guessing false when the 
+    answer is true (false negatives) in order to make the network less gung-ho about guessing
+    everything.
+
+	order to 
 
 
 Notes on vocab sizes:
