@@ -1,0 +1,30 @@
+0it [00:00, ?it/s]
+Traceback (most recent call last):
+  File "/usr/lib/python3.6/runpy.py", line 193, in _run_module_as_main
+    "__main__", mod_spec)
+  File "/usr/lib/python3.6/runpy.py", line 85, in _run_code
+    exec(code, run_globals)
+  File "/usr/local/lib/python3.6/dist-packages/allennlp/run.py", line 18, in <module>
+    main(prog="allennlp")
+  File "/usr/local/lib/python3.6/dist-packages/allennlp/commands/__init__.py", line 72, in main
+    args.func(args)
+  File "/usr/local/lib/python3.6/dist-packages/allennlp/commands/train.py", line 111, in train_model_from_args
+    args.force)
+  File "/usr/local/lib/python3.6/dist-packages/allennlp/commands/train.py", line 144, in train_model_from_file
+    return train_model(params, serialization_dir, file_friendly_logging, recover, force)
+  File "/usr/local/lib/python3.6/dist-packages/allennlp/commands/train.py", line 293, in train_model
+    all_datasets = datasets_from_params(params)
+  File "/usr/local/lib/python3.6/dist-packages/allennlp/commands/train.py", line 161, in datasets_from_params
+    train_data = dataset_reader.read(train_data_path)
+  File "/usr/local/lib/python3.6/dist-packages/allennlp/data/dataset_readers/dataset_reader.py", line 73, in read
+    instances = [instance for instance in Tqdm.tqdm(instances)]
+  File "/usr/local/lib/python3.6/dist-packages/allennlp/data/dataset_readers/dataset_reader.py", line 73, in <listcomp>
+    instances = [instance for instance in Tqdm.tqdm(instances)]
+  File "/usr/local/lib/python3.6/dist-packages/tqdm/_tqdm.py", line 979, in __iter__
+    for obj in iterable:
+  File "/content/src/mindpocket/train_model/articles_batch2.1/model7e0c37/myallennlp/dataset_readers/sequence_tagging2.py", line 74, in _read
+    file_path = cached_path(file_path)
+  File "/usr/local/lib/python3.6/dist-packages/allennlp/common/file_utils.py", line 104, in cached_path
+    raise FileNotFoundError("file {} not found".format(url_or_filename))
+FileNotFoundError: file ../data/allenTrain.txt not found
+
