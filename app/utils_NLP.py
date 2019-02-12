@@ -85,6 +85,10 @@ def words2words_blanked(words,bc,blankstr='______'):
     '''Takes in words and blanks info, bc, and returns a list of blanked words'''
     return [words[i] if not t else blankstr for i,t in enumerate(bc)]
 
+def words2words_hashblank(words,bc,hashsymbol='___'):
+    '''Takes in words and blanks info, bc, and indicate blanks by hases (e.g., #Normandy#)'''
+    return [words[i] if not t else hashsymbol+words[i]+hashsymbol for i,t in enumerate(bc)]
+
 def words2answers(words,bc):
     '''Takes in words and blanks info, bc, and returns a list of answers corresponding to blanked words'''
     myanswers = []
