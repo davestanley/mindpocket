@@ -116,3 +116,6 @@ model_params
 
 # Swap files
 *.swp
+
+# Lock files
+.~lock*

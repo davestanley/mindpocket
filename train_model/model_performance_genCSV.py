@@ -130,7 +130,7 @@ def logfile2summary(logfile,order=None,verbose=False):
         if not k == 'datetime':
             log_summary[k] = (log_summary[k])[0]
 
-    print(log_summary)
+    # print(log_summary)
     log_list = [log_summary['datetime'],log_summary['best_validation_loss'],log_summary['training_loss'],log_summary['best_validation_accuracy'],log_summary['training_accuracy']]
     return log_list
 
@@ -143,38 +143,38 @@ import os
 myorder = ['datetime','best_validation_loss','training_loss','best_validation_accuracy','training_accuracy']
 
 csv_rows = []
-subfolders = set(glob.glob('articles*'))
+subfolders = sorted(glob.glob('articles*'))
 for sf in subfolders:
-    subfolders2 = set(glob.glob(os.path.join(sf,'model*')))
+    subfolders2 = sorted(glob.glob(os.path.join(sf,'model*')))
     for sf2 in subfolders2:
         print (sf2)
+        folder_struct = sf2.split('/')
         logfile = os.path.join(sf2,'model_logs','stdout.log')
         if os.path.isfile(logfile):
             logfile_list = logfile2summary(logfile,myorder)
-            folder_struct = sf2.split('/')
             csv_row = [folder_struct[0],folder_struct[1],''] + logfile_list
             csv_rows.append(csv_row)
         else:
-            print('Error, log file {} not found'.format(logfile))
+            print('Warning, log file {} not found'.format(logfile))
             csv_row = [folder_struct[0],folder_struct[1],''] + ['error']
             csv_rows.append(csv_row)
 
 
     # Now do old entropy folders
-    subfolders2b = set(glob.glob(os.path.join(sf,'*entropy*')))
+    subfolders2b = sorted(glob.glob(os.path.join(sf,'*entropy*')))
     for sf2b in subfolders2b:
-        subfolders2 = set(glob.glob(os.path.join(sf2b,'model*')))
+        subfolders2 = sorted(glob.glob(os.path.join(sf2b,'model*')))
         for sf2 in subfolders2:
             print (sf2)
-
+            folder_struct = sf2.split('/')
             logfile = os.path.join(sf2,'model_logs','stdout.log')
             if os.path.isfile(logfile):
                 logfile_list = logfile2summary(logfile,myorder)
-                folder_struct = sf2.split('/')
+
                 csv_row = [folder_struct[0],folder_struct[2],folder_struct[1]] + logfile_list
                 csv_rows.append(csv_row)
             else:
-                print('Error, log file {} not found'.format(logfile))
+                print('Warning, log file {} not found'.format(logfile))
                 csv_row = [folder_struct[0],folder_struct[2],folder_struct[1]] + ['error']
                 csv_rows.append(csv_row)
 
