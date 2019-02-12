@@ -14,6 +14,13 @@ import os
 # Import Allen
 from allennlp.predictors import Predictor
 
+# Include custom
+import myallennlp
+from myallennlp import *
+from myallennlp.models.simple_tagger2 import SimpleTagger2
+from myallennlp.dataset_readers import sequence_tagging2
+from myallennlp.data.tokenizers.word_splitter import SpacyWordSplitter
+
 # Setup paths containing utility
 curr_folder = os.getcwd()
 sys.path.insert(0, os.path.join(curr_folder,'../../../app'))
@@ -35,13 +42,13 @@ skip_save = False
 
 # Set up AllenNLP
 currmodel = os.path.join('.','model.tar.gz')
-if not testing_mode: predictor = Predictor.from_path(currmodel)
+if not testing_mode: predictor = Predictor.from_path(currmodel,predictor_name='sentence-tagger')
 
 # # # # # # # # # # # # # # # # # # # # Process training data # # # # # # # # # # # # # # # # #
 # Load the training data
 arts = load_SQuAD_train()
 art = arts
-# art = arts[105:107]         # A few short articles
+# art = arts[0:20]         # A few short articles
 run_predictor(art,predictor,foldername,'train',testing_mode=False,skip_save=False,prepend_data_folder=False)
 
 
@@ -51,3 +58,9 @@ run_predictor(art,predictor,foldername,'train',testing_mode=False,skip_save=Fals
 arts = load_SQuAD_dev()
 art = arts
 run_predictor(art,predictor,foldername,'dev',testing_mode=False,skip_save=False,prepend_data_folder=False)
+
+# # Once done running and merging everything, delete all temporary _art_ files
+import glob
+for fl in glob.glob(os.path.join('.',foldername,'*_art_*')):
+    #Remove file
+    os.remove(fl)
