@@ -249,7 +249,26 @@ def run_full_analysis(resultsfname,merge_in_NER_data):
 
     # Calculate stats
         # Scale up by factor of 100 for easier reading
-    out = calcstats_train_dev([x*100 for x in TPR0],resultsfname,Ntrain=Ntrain,Ndev=Ndev-15,Ntest=15,mytitle='TP')
+
+    # Write title
+    with open(resultsfname, 'a') as f:
+        f.write('\"==' + "New drop bads" + '==\"\n')
+
+    # ax = plothist_train_dev2(myvar2,Ntrain-Ntrain_bad,Ndev-Ndev_bad,xlabel=varname,ylabel='N Articles',devbins='auto')
+    # This excludes the bad files.... but unfortunately i didn't figure out how to separate testing and dev (x-validation) sets
+    myvar = TPR0; myvar2 = [v for i, v in enumerate(myvar) if i not in abads]; out = calcstats_train_dev([x*100 for x in myvar2],resultsfname,Ntrain=Ntrain-Ntrain_bad,Ndev=Ndev-Ndev_bad,Ntest=None,mytitle='TPR')
+    myvar = FPR0; myvar2 = [v for i, v in enumerate(myvar) if i not in abads]; out = calcstats_train_dev([x*100 for x in myvar2],resultsfname,Ntrain=Ntrain-Ntrain_bad,Ndev=Ndev-Ndev_bad,Ntest=None,mytitle='FPR')
+    myvar = ACC0; myvar2 = [v for i, v in enumerate(myvar) if i not in abads]; out = calcstats_train_dev([x*100 for x in myvar2],resultsfname,Ntrain=Ntrain-Ntrain_bad,Ndev=Ndev-Ndev_bad,Ntest=None,mytitle='ACC')
+    myvar = sbc0; myvar2 = [v for i, v in enumerate(myvar) if i not in abads]; out = calcstats_train_dev([x*100 for x in myvar2],resultsfname,Ntrain=Ntrain-Ntrain_bad,Ndev=Ndev-Ndev_bad,Ntest=None,mytitle='Trues')
+    myvar = st0; myvar2 = [v for i, v in enumerate(myvar) if i not in abads]; out = calcstats_train_dev([x*100 for x in myvar2],resultsfname,Ntrain=Ntrain-Ntrain_bad,Ndev=Ndev-Ndev_bad,Ntest=None,mytitle='Positives')
+    myvar = FPR0; myvar2 = [v for i, v in enumerate(myvar) if i not in abads]; out = calcstats_train_dev([x*100 for x in myvar2],resultsfname,Ntrain=Ntrain-Ntrain_bad,Ndev=Ndev-Ndev_bad,Ntest=None,mytitle='FPR')
+
+
+    # Write title
+    with open(resultsfname, 'a') as f:
+        f.write('\"==' + "Original" + '==\"\n')
+    # OLD
+    out = calcstats_train_dev([x*100 for x in TPR0],resultsfname,Ntrain=Ntrain,Ndev=Ndev-15,Ntest=15,mytitle='TPR')
     out = calcstats_train_dev([x*100 for x in FPR0],resultsfname,Ntrain=Ntrain,Ndev=Ndev-15,Ntest=15,mytitle='FPR')
     out = calcstats_train_dev([x*100 for x in ACC0],resultsfname,Ntrain=Ntrain,Ndev=Ndev-15,Ntest=15,mytitle='ACC0')
     out = calcstats_train_dev(sbc0,resultsfname,Ntrain=Ntrain,Ndev=Ndev-15,Ntest=15,mytitle='Trues')             # Sum of all true values in each article (e.g., ground truth true blanks)
