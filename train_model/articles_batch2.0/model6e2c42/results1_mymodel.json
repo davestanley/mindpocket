@@ -1,4 +1,12 @@
-"==TP=="
+"==New drop bads=="
+"==TPR=="
+"==FPR=="
+"==ACC=="
+"==Trues=="
+"==Positives=="
+"==FPR=="
+"==Original=="
+"==TPR=="
 ["train", {"median": 0.0, "mean": 0.0}]
 ["dev", {"median": 0.0, "mean": 0.0}]
 ["test", {"median": 0.0, "mean": 0.0}]

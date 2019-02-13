@@ -2,7 +2,7 @@
 
 DIRECTORY=model_params
 
-for d in model*/ ; do
+for d in *model*/ ; do
     echo "$d"
     cd $d
     echo Running model in $d

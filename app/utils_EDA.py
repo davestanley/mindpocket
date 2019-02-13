@@ -40,20 +40,20 @@ def calcstats_train_dev(myvar,filename=None,Ntrain=0,Ndev=0,Ntest=0,mytitle=None
     import json
 
     st = {}
-    if Ntrain > 0:
+    if Ntrain and Ntrain > 0:
         st['train'] = {
                     'median': statistics.median(myvar[0:Ntrain-1]),
                     'mean': statistics.mean(myvar[0:Ntrain-1]),
                     #'sum': sum(myvar[0:Ntrain-1])
                     }
 
-    if Ndev > 0:
+    if Ndev and Ndev > 0:
         st['dev'] = {
                     'median': statistics.median(myvar[Ntrain:Ntrain+Ndev-1]),
                     'mean': statistics.mean(myvar[Ntrain:Ntrain+Ndev-1]),
                     #'sum': sum(myvar[Ntrain:Ntrain+Ndev-1])
                     }
-    if Ntest > 0:
+    if Ntest and Ntest > 0:
         st['test'] = {
                     'median': statistics.median(myvar[Ntest:]),
                     'mean': statistics.mean(myvar[Ntest:]),
