@@ -149,6 +149,13 @@ def merge_allenResults(results_list):
         'tags': [t for r in results_list for t in r['tags']]
     })
 
+def allenNLP_classify_blanks_fromResults(results,failterm='O'):
+    """Like allenNLP_classify_blanks, but works on general text, not arts"""
+    # Failterm = term associated with a false classification (non-blank)
+
+    tagsout = [0 if t == failterm else 1 for t in results['tags']]   # Convert to binary
+    return tagsout
+
 def allenNLP_classify_blanks(art,failterm='O',fieldname='blank_classified_allenNER'):
     """For all articles, converts allen NER tags into a list of 0's or 1's and stores these in field: blank_classified_allenNER"""
     # Failterm = term associated with a false classification (non-blank)
