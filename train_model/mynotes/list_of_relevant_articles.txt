@@ -7,7 +7,40 @@ Article # 84: Brain, 7318 words.
 Article # 99: Immunology, 1650 words.
 
 
+Article # 456: Black_Death, 3213 words.
 Article # 458: Pharmacy, 2995 words.
 Article # 467: Immune system, 6155 words.
+
+
+
+
+~ Blank examples from article on immunology (model 6e0c37 with entropy 93/7) ~
+
+Sometimes ___antibodies___ are generated against tumor cells allowing for their destruction by the complement system.
+
+
+Rather, ___NK___ ___cells___ destroy compromised host ___cells___, such as ___tumor___ ___cells___ or ___virus___ - infected ___cells___, recognizing such ___cells___ by a condition known as " missing self. " 
+
+Sometimes ___antibodies___ are generated against tumor cells allowing for their destruction by the complement system
+
+
+~~ Blank examples from article on pharmacy (model 6e0c37 with entropy 93/7) ~~
+
+
+Pharmacists are healthcare professionals with specialised education and training who perform various roles to ensure optimal health outcomes for their patients through the quality use of ___medicines___
+
+Most ___hospital___ medications are unit - dose, or a single dose of ___medicine___
+
+The advances made in the Middle East in ___botany___ and chemistry led medicine in medieval Islam substantially to develop ___pharmacology___.
+
+
+In some rural areas in the United Kingdom, there are dispensing physicians who are allowed to both prescribe and dispense prescription - only medicines to their patients from within their practices
+
+
+
+
+
+
+
 
 
