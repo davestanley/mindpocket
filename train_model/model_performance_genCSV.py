@@ -145,7 +145,8 @@ myorder = ['datetime','best_validation_loss','training_loss','best_validation_ac
 csv_rows = []
 subfolders = sorted(glob.glob('articles*'))
 for sf in subfolders:
-    subfolders2 = sorted(glob.glob(os.path.join(sf,'model*')))
+    # Run through folders with or without entropy prefix
+    subfolders2 = sorted(glob.glob(os.path.join(sf,'model*')) + glob.glob(os.path.join(sf,'entropy*model*')) )
     for sf2 in subfolders2:
         print (sf2)
         folder_struct = sf2.split('/')
@@ -160,8 +161,8 @@ for sf in subfolders:
             csv_rows.append(csv_row)
 
 
-    # Now do old entropy folders
-    subfolders2b = sorted(glob.glob(os.path.join(sf,'*entropy*')))
+    # Now do old entropy folders (these should no longer exist)
+    subfolders2b = sorted(glob.glob(os.path.join(sf,'old_entropy*')))
     for sf2b in subfolders2b:
         subfolders2 = sorted(glob.glob(os.path.join(sf2b,'model*')))
         for sf2 in subfolders2:
