@@ -146,7 +146,7 @@ csv_rows = []
 subfolders = sorted(glob.glob('articles*'))
 for sf in subfolders:
     # Run through folders with or without entropy prefix
-    subfolders2 = sorted(glob.glob(os.path.join(sf,'model*')) + glob.glob(os.path.join(sf,'entropy*model*')) )
+    subfolders2 = sorted(glob.glob(os.path.join(sf,'*model*')))
     for sf2 in subfolders2:
         print (sf2)
         folder_struct = sf2.split('/')
