@@ -50,6 +50,8 @@ colors = {
     'align': 'center'
 }
 
+dashapp.title='MindPocket: Optimizing Learning'
+
 dashapp.layout = html.Div(style={'backgroundColor': colors['background']},children=[
     html.H1(children='MindPocket', style={'textAlign': colors['align'],'color': colors['text']}),
     html.Div(style={'textAlign': colors['align'],'color': colors['text']},children='''
