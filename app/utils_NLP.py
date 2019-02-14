@@ -10,6 +10,8 @@ def extract_no_stopwords(tokens):
 
 
 def find_inds_of_NE(tags):
+    # This function is out-dated now. Use instead:
+    # allenNLP_classify_blanks_fromResults(results,failterm='O')
     # Get indices of all named entity tags in the tags list
     l = [i for i, t in enumerate(tags) if not t == 'O']
     return(l)
@@ -165,16 +167,23 @@ def allenNLP_classify_blanks(art,failterm='O',fieldname='blank_classified_allenN
             art[i]['paragraphs'][j][fieldname] = [0 if t == failterm else 1 for t in tags]   # Convert to binary
     return(art)
 
-def extract_blanked_out_sentences(results,verbose_mode = False):
+def extract_blanked_out_sentences(results,failterm='O',easiness=0,verbose_mode = False):
     # From results word/token list, blank out a random word, and then return
     # the sentences containing that blanked out word, plus a few preceding
     # centences for context.
     from nltk.tokenize import sent_tokenize
+    import numpy as np
+    import random
+    import spacy # For non-random word selection only
 
     words = results['words']
     tags = results['tags']
 
-    l_NE = find_inds_of_NE(tags)
+
+    tags = allenNLP_classify_blanks_fromResults(results,failterm)
+    l_NE = [i for i, t in enumerate(tags) if t == 1]
+
+    #l_NE = find_inds_of_NE(tags)
     if verbose_mode:
         print("Indices of named entities:" + str(l_NE))
 
@@ -188,11 +197,57 @@ def extract_blanked_out_sentences(results,verbose_mode = False):
 
         return text_blanks
 
+    choose_word_randomly = False # if false, tries to choose
+                        # The word that is least similar to the document
+                        # overall. The goal here is to ensure that you don't
+                        # for example, blank out "Rome" in an article about
+                        # Rome (e.g., too obvious)
+    if choose_word_randomly:
+        # Choose one at random
+        ind = random.choice(l_NE)
+    else:
+        try:
+            # Choose the word based on how similar it is to other words in the sentence
+            # Similar words are easy, dissimilar words are hard
+            nlp = spacy.load('en_core_web_sm')
+            candidate_blanks = [words[i] for i in l_NE]
+            # candidate_blanks = []
+            # for i in l_NE: candidate_blanks.append(words[i])
+            doc = nlp(words2text(results['words']))
+            doc2 = nlp(candidate_blanks[0])
+            doc.similarity(doc2)
+
+            # Calculate similarity to sentence for each candidate blank
+            sims = []
+            for i,cb in enumerate(candidate_blanks): sims.append(doc.similarity(nlp(cb)))
+            ind_min = sims.index(min(sims))
+            ind_max = sims.index(max(sims))
+            candidate_blanks[ind_min]
+            candidate_blanks[ind_max]
 
 
-    # Choose one at random
-    import random
-    ind = random.choice(l_NE)
+            # Choose entry in candidate_blanks depending on difficulty
+            # This works by finding the blank corresponding to the "easiness" percentile
+            difficulty = 100
+            easiness = 100 - difficulty
+            # Find value of the easiness percentile
+            arr = np.array(sims)
+            per = np.percentile(arr, easiness) # easiest blanks have the closest similarity to the document overall
+
+            # Match to the closest one in the actual list
+            arr.sort()
+            per_orig = arr[np.where(arr>=per)[0][0]]
+
+            # Now, return index of original one
+            arr_orig = np.array(sims)
+            ind_cb = np.where(arr_orig==per)[0].tolist()[0] # Take first index matching per]
+
+            # Find where it is in our original list of blanks
+            ind = l_NE[ind_cb]
+
+        except:
+            print("###Warning - could not intelligently choose random blank. Reverting to random selection###")
+            ind = random.choice(l_NE)
 
 
     # Back up blanked out word and word type
@@ -253,6 +308,14 @@ def extract_blanked_out_sentences(results,verbose_mode = False):
 
     sentences_subset = get_two_preceeding_sentences(sentences_new,ind_sentence_containing_blank)
     paragraph_subset = sent2text(sentences_subset)
+
+    # Fix any spacing issues
+    paragraph_subset2 = paragraph_subset
+    paragraph_subset2 = paragraph_subset2.replace(' )',')')
+    paragraph_subset2 = paragraph_subset2.replace('( ','(')
+    paragraph_subset2 = paragraph_subset2.replace('[ ','[')
+    paragraph_subset2 = paragraph_subset2.replace(' ]',']')
+    paragraph_subset2 = paragraph_subset2.replace(' - ','-')
 
     text_blanks = dict()
     text_blanks['text'] = paragraph_subset
