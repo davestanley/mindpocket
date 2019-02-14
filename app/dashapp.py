@@ -8,6 +8,12 @@
 import sys
 import os
 
+# Setup app path
+curr_folder = os.getcwd()
+sys.path.insert(0, os.path.join(curr_folder,'app'))
+# sys.path.insert(0, os.path.join(os.getenv("HOME"),'src','mindpocket','app'))
+
+
 # Imports for dash
 import dash
 import dash_core_components as dcc
@@ -18,6 +24,14 @@ from app import app
 # Import AllenNLP
 from allennlp.predictors import Predictor
 
+# Include custom
+import myallennlp
+from myallennlp import *
+from myallennlp.models.simple_tagger2 import SimpleTagger2
+from myallennlp.dataset_readers import sequence_tagging2
+from myallennlp.data.tokenizers.word_splitter import SpacyWordSplitter
+
+
 # Test
 @app.route('/index')
 def sayHi():
@@ -25,11 +39,6 @@ def sayHi():
 
 # Define for IIS module registration.
 wsgi_app = app.wsgi_app
-
-# Setup local paths
-# curr_folder = os.getcwd()
-# print(curr_folder)
-# sys.path.insert(0, os.path.join(curr_folder,'../app'))
 
 external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
 
@@ -52,7 +61,7 @@ colors = {
 
 dashapp.title='MindPocket: Optimizing Learning'
 
-dashapp.layout = html.Div(style={'backgroundColor': colors['background']},children=[
+dashapp.layout = html.Div(style={'backgroundColor': colors['background'],'width': '100%'},children=[
     html.H1(children='MindPocket', style={'textAlign': colors['align'],'color': colors['text']}),
     html.Div(style={'textAlign': colors['align'],'color': colors['text']},children='''
         Enter text to generate questions
@@ -61,9 +70,18 @@ dashapp.layout = html.Div(style={'backgroundColor': colors['background']},childr
         id='input-box',
         placeholder='Enter a value...',
         value='',
-        style={'textAlign': 'left','color': '#000000','width': '100%'},
+        style={'textAlign': 'left','color': '#000000','width': '95%'},
         rows=20
     ),
+    # dcc.Slider(
+    #     min=0,
+    #     max=9,
+    #     marks={i: '{}'.format(i) for i in range(10)},
+    #     value=5,
+    # ),
+    html.Div(style={'textAlign': colors['align'],'color': colors['text']},children='''
+         
+    '''),
     html.Button('Generate!', id='button'),
     html.Div(id='output-container-button',
              children='Enter a value and press submit',
@@ -76,10 +94,20 @@ dashapp.layout = html.Div(style={'backgroundColor': colors['background']},childr
 # predictor = []
 # print(inspect.stack()[1].function)
 # print('Starting up')
+use_allenNLP_NER_as_model = False     # if true, uses AllenNLP pre-trained model; if false, uses my model trained on SQUAD data
+
 try:
     predictor;
 except:
-    predictor = Predictor.from_path(os.path.join(os.getenv("HOME"),'src','allennlp','ner-model-2018.12.18.tar.gz'))
+    if use_allenNLP_NER_as_model:
+        # AllenNER model
+        predictor = Predictor.from_path(os.path.join(os.getenv("HOME"),'src','allennlp','ner-model-2018.12.18.tar.gz'))
+        failterm = 'O'    # Model output associated with a "false" classification (e.g., do not blank)
+    else:
+        # My model
+        mymodel = os.path.join(curr_folder,'app','model.tar.gz')
+        predictor = Predictor.from_path(mymodel,predictor_name='sentence-tagger')
+        failterm = '0'    # Model output associated with a "false" classification (e.g., do not blank)
 
 @dashapp.callback(
     dash.dependencies.Output('output-container-button', 'children'),
@@ -130,7 +158,8 @@ def update_output(n_clicks, value):
             print (results_curr)
 
             # Generate the sentences
-            text_blanks = extract_blanked_out_sentences(results_curr)
+            easiness = 0
+            text_blanks = extract_blanked_out_sentences(results_curr,failterm,easiness)
             blanked_sentence = text_blanks['text']
             removed_word = text_blanks['removed_word']
             removed_word_tag = text_blanks['removed_word_tag']
