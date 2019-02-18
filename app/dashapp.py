@@ -97,27 +97,28 @@ dashapp.layout = html.Div(style={'backgroundColor': colors['background'],'width'
 # predictor = []
 # print(inspect.stack()[1].function)
 # print('Starting up')
+testing_mode = True
 use_allenNLP_NER_as_model = False     # if true, uses AllenNLP pre-trained model; if false, uses my model trained on SQUAD data
 
-try:
-    predictor;
-except:
-    if use_allenNLP_NER_as_model:
-        # AllenNER model
-        predictor = Predictor.from_path(os.path.join(os.getenv("HOME"),'src','allennlp','ner-model-2018.12.18.tar.gz'))
-        failterm = 'O'    # Model output associated with a "false" classification (e.g., do not blank)
-    else:
-        # My model
-        mymodel = os.path.join(curr_folder,'app','model.tar.gz')
-        predictor = Predictor.from_path(mymodel,predictor_name='sentence-tagger')
-        failterm = '0'    # Model output associated with a "false" classification (e.g., do not blank)
+if not testing_mode:
+    try:
+        predictor;
+    except:
+        if use_allenNLP_NER_as_model:
+            # AllenNER model
+            predictor = Predictor.from_path(os.path.join(os.getenv("HOME"),'src','allennlp','ner-model-2018.12.18.tar.gz'))
+            failterm = 'O'    # Model output associated with a "false" classification (e.g., do not blank)
+        else:
+            # My model
+            mymodel = os.path.join(curr_folder,'app','model.tar.gz')
+            predictor = Predictor.from_path(mymodel,predictor_name='sentence-tagger')
+            failterm = '0'    # Model output associated with a "false" classification (e.g., do not blank)
 
 @dashapp.callback(
     dash.dependencies.Output('output-container-button', 'children'),
     [dash.dependencies.Input('button', 'n_clicks')],
     [dash.dependencies.State('input-box', 'value')])
 def update_output(n_clicks, value):
-    testing_mode = False
     verbose_mode = False
 
     paragraph = value
