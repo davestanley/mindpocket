@@ -13,6 +13,8 @@ curr_folder = os.getcwd()
 sys.path.insert(0, os.path.join(curr_folder,'app'))
 # sys.path.insert(0, os.path.join(os.getenv("HOME"),'src','mindpocket','app'))
 
+# Set up genanki path
+sys.path.insert(0, os.path.join(curr_folder,'submodules','genanki'))
 
 # Imports for dash
 import dash
@@ -20,6 +22,10 @@ import dash_core_components as dcc
 import dash_html_components as html
 from dash.dependencies import Input, Output
 from app import app
+
+# Imports for anki
+import random
+import genanki
 
 # Import AllenNLP
 from allennlp.predictors import Predictor
@@ -31,11 +37,6 @@ from myallennlp.models.simple_tagger2 import SimpleTagger2
 from myallennlp.dataset_readers import sequence_tagging2
 from myallennlp.data.tokenizers.word_splitter import SpacyWordSplitter
 
-
-# Test
-@app.route('/index')
-def sayHi():
-    return "Hi from my Flask App!"
 
 # Define for IIS module registration.
 wsgi_app = app.wsgi_app
@@ -97,11 +98,10 @@ dashapp.layout = html.Div(
         html.Div(
             [
                 html.A(
-                    'Download Anki file',
+                    children='Download Anki file',
                     id='download-link',
-                    download="run.py",
-                    href="",
-                    target="_blank"
+                    download='file.apkg',
+                    href='/output.apkg'
                 )
             ],
             style={'margin-bottom': '10','margin-top': '10'}
@@ -197,17 +197,28 @@ def update_output(n_clicks, value, difficulty):
             removed_word = text_blanks['removed_word']
             removed_word_tag = text_blanks['removed_word_tag']
 
-            out.append(html.P('Question {}: {}'.format(str(count),blanked_sentence)))
+            # Append to running tally of all Q & A's
+            question_list.append(blanked_sentence)
             answers_list.append(removed_word)
             answers_tag_list.append(removed_word_tag)
+
+            # Append to text output for questions
+            out.append(html.P('Question {}: {}'.format(str(count),blanked_sentence)))
             if count == 1: answers_text = answers_text + 'Answers: {}. {}'.format(str(count),removed_word)
             else: answers_text = answers_text + ', {}. {}'.format(str(count),removed_word)
+
+        # Append to text output for answers
         answers_text = answers_text + '.'
         out.append(html.P(answers_text))
 
         #print(blanked_sentence)
         #print('Answer: ' + removed_word)
     else:
+        # Initialize lists
+        question_list = []
+        answers_list = []
+        answers_tag_list = []
+
         # Fill in some default values
         blanked_sentence = 'as created by Jordan ___, a software engi'
         removed_word = 'Walke'
@@ -222,6 +233,45 @@ def update_output(n_clicks, value, difficulty):
         out.append(html.P(blanked_sentence))
         out.append(html.P('Answer: {}; (Question type: {})'.format(removed_word,removed_word_tag)))
 
+        # Append to running tally of all Q & A's
+        question_list.append(blanked_sentence)
+        answers_list.append(removed_word)
+        answers_tag_list.append(removed_word_tag)
+
+    # # Save to Anki # #
+    # Build model
+    myrand = random.randrange(1 << 30, 1 << 31)
+    my_model = genanki.Model(
+        myrand,
+        'Simple Model',
+        fields=[
+            {'name': 'Question'},
+            {'name': 'Answer'}
+        ],
+        templates=[
+            {
+              'name': 'Card 1',
+              'qfmt': '{{Question}}',
+              'afmt': '{{FrontSide}}<hr id="answer">{{Answer}}',
+            }
+        ]
+    )
+
+    # Build deck
+    deck_name = 'Mindpocket Deck'
+    my_deck = genanki.Deck(
+        myrand+1,
+        deck_name)
+
+    # Add notes to deck
+    for i in range(len(question_list)):
+        my_note = genanki.Note(
+            model=my_model,
+            fields=[question_list[i], answers_list[i]])
+        my_deck.add_note(my_note)
+
+    # Save deck to file
+    genanki.Package(my_deck).write_to_file('output.apkg')
 
 
     # import pdb
