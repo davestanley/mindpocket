@@ -61,7 +61,15 @@ colors = {
 
 dashapp.title='MindPocket: Optimizing Learning'
 
-dashapp.layout = html.Div(style={'backgroundColor': colors['background'],'width': '100%'},children=[
+dashapp.layout = html.Div(
+    style={'width': '80%',
+          'margin-left': 'auto',
+          'margin-right' : 'auto',
+          'line-height' : '30px',
+          'backgroundColor': colors['background'],
+          'padding': '20px'
+          },
+    children=[
     html.H1(children='MindPocket', style={'textAlign': colors['align'],'color': colors['text']}),
     html.Div(style={'textAlign': colors['align'],'color': colors['text']},children='''
         Enter text to generate questions
@@ -80,7 +88,7 @@ dashapp.layout = html.Div(style={'backgroundColor': colors['background'],'width'
         min=1,
         max=10,
         marks={i: 'Level {}'.format(i) if i == 1 or i == 10 else '{}'.format(i) for i in range(1,11)},
-        value=10,
+        value=10
     ),
     html.Div(style={'textAlign': colors['align'],'color': colors['text']},children='''
 
