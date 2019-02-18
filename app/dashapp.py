@@ -23,6 +23,9 @@ import dash_html_components as html
 from dash.dependencies import Input, Output
 from app import app
 
+# Import flask
+import flask
+
 # Imports for anki
 import random
 import genanki
@@ -37,6 +40,17 @@ from myallennlp.models.simple_tagger2 import SimpleTagger2
 from myallennlp.dataset_readers import sequence_tagging2
 from myallennlp.data.tokenizers.word_splitter import SpacyWordSplitter
 
+# Test
+@app.route('/index')
+def sayHi():
+    return "Hi from my Flask App!"
+
+# Test
+@app.route('/index2')
+def sayHi2():
+    #path = '/output.apkg'
+    path = '/home/davestanley/Dropbox/git/mindpocket/output.apkg'
+    return flask.send_file(path, as_attachment=True)
 
 # Define for IIS module registration.
 wsgi_app = app.wsgi_app
@@ -101,7 +115,7 @@ dashapp.layout = html.Div(
                     children='Download Anki file',
                     id='download-link',
                     download='file.apkg',
-                    href='/output.apkg'
+                    href='/index2'
                 )
             ],
             style={'margin-bottom': '10','margin-top': '10'}
