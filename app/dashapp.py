@@ -62,42 +62,62 @@ colors = {
 dashapp.title='MindPocket: Optimizing Learning'
 
 dashapp.layout = html.Div(
-    style={'width': '80%',
-          'margin-left': 'auto',
-          'margin-right' : 'auto',
-          'line-height' : '30px',
-          'backgroundColor': colors['background'],
-          'padding': '20px'
-          },
-    children=[
-    html.H1(children='MindPocket', style={'textAlign': colors['align'],'color': colors['text']}),
-    html.Div(style={'textAlign': colors['align'],'color': colors['text']},children='''
-        Enter text to generate questions
-    '''),
-    dcc.Textarea(
-        id='input-box',
-        placeholder='Enter a value...',
-        value='',
-        style={'textAlign': 'left','color': '#000000','width': '95%'},
-        rows=20
-    ),
-    html.Div(style={'textAlign': colors['align'],'color': colors['text']},children='''
-        Select difficulty:
-    '''),
-    dcc.Slider(
-        min=1,
-        max=10,
-        marks={i: 'Level {}'.format(i) if i == 1 or i == 10 else '{}'.format(i) for i in range(1,11)},
-        value=10
-    ),
-    html.Div(style={'textAlign': colors['align'],'color': colors['text']},children='''
-
-    '''),
-    html.Button('Generate!', id='button'),
-    html.Div(id='output-container-button',
-             children='Enter a value and press submit',
-             style={'textAlign': 'left','color': colors['text']})
-])
+    [
+        html.H1(children='MindPocket', style={'textAlign': colors['align'],'color': colors['text']}),
+        html.Div(style={'textAlign': colors['align'],'color': colors['text']},children='''
+            Enter text to generate questions
+        '''),
+        dcc.Textarea(
+            id='input-box',
+            placeholder='Enter a value...',
+            value='',
+            style={'textAlign': 'left','color': '#000000','width': '95%'},
+            rows=20
+        ),
+        # html.Div(style={'textAlign': colors['align'],'color': colors['text']},children='''
+        #     Select difficulty:
+        # '''),
+        html.Div(
+            [
+                html.P('Select difficulty:'),
+                dcc.Slider(
+                    id='difficulty-slider',
+                    min=1,
+                    max=10,
+                    marks={i: 'Level {}'.format(i) if i == 1 or i == 10 else '{}'.format(i) for i in range(1,11)},
+                    value=10
+                )
+            ],
+            style={'margin-bottom': '40'}
+        ),
+        html.Button('Generate!', id='button'),
+        # html.Div(style={'textAlign': colors['align'],'color': colors['text']},children='''
+        #     blah
+        # '''),
+        html.Div(
+            [
+                html.A(
+                    'Download Anki file',
+                    id='download-link',
+                    download="run.py",
+                    href="",
+                    target="_blank"
+                )
+            ],
+            style={'margin-bottom': '10','margin-top': '10'}
+        ),
+        html.Div(id='output-container-button',
+                 children='Enter a value and press submit',
+                 style={'textAlign': 'left','color': colors['text']})
+     ],
+     style={'width': '80%',
+           'margin-left': 'auto',
+           'margin-right' : 'auto',
+           'line-height' : '30px',
+           'backgroundColor': colors['background'],
+           'padding': '40px'
+           }
+)
 
 
 # Only open if predictor doesn't exist
@@ -105,7 +125,7 @@ dashapp.layout = html.Div(
 # predictor = []
 # print(inspect.stack()[1].function)
 # print('Starting up')
-testing_mode = True
+testing_mode = False
 use_allenNLP_NER_as_model = False     # if true, uses AllenNLP pre-trained model; if false, uses my model trained on SQUAD data
 
 if not testing_mode:
@@ -125,8 +145,9 @@ if not testing_mode:
 @dashapp.callback(
     dash.dependencies.Output('output-container-button', 'children'),
     [dash.dependencies.Input('button', 'n_clicks')],
-    [dash.dependencies.State('input-box', 'value')])
-def update_output(n_clicks, value):
+    [dash.dependencies.State('input-box', 'value'),
+    dash.dependencies.State('difficulty-slider', 'value')])
+def update_output(n_clicks, value, difficulty):
     verbose_mode = False
 
     paragraph = value
@@ -170,7 +191,7 @@ def update_output(n_clicks, value):
             print (results_curr)
 
             # Generate the sentences
-            easiness = 0
+            easiness = 100-10*difficulty
             text_blanks = extract_blanked_out_sentences(results_curr,failterm,easiness)
             blanked_sentence = text_blanks['text']
             removed_word = text_blanks['removed_word']

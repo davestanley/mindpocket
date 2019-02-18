@@ -228,9 +228,10 @@ def extract_blanked_out_sentences(results,failterm='O',easiness=0,verbose_mode =
 
             # Choose entry in candidate_blanks depending on difficulty
             # This works by finding the blank corresponding to the "easiness" percentile
-            difficulty = 100
-            easiness = 100 - difficulty
+            # difficulty = 100
+            # easiness = 100 - difficulty
             # Find value of the easiness percentile
+            print(easiness)
             arr = np.array(sims)
             per = np.percentile(arr, easiness) # easiest blanks have the closest similarity to the document overall
 
