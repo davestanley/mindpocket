@@ -73,14 +73,17 @@ dashapp.layout = html.Div(style={'backgroundColor': colors['background'],'width'
         style={'textAlign': 'left','color': '#000000','width': '95%'},
         rows=20
     ),
-    # dcc.Slider(
-    #     min=0,
-    #     max=9,
-    #     marks={i: '{}'.format(i) for i in range(10)},
-    #     value=5,
-    # ),
     html.Div(style={'textAlign': colors['align'],'color': colors['text']},children='''
-         
+        Select difficulty:
+    '''),
+    dcc.Slider(
+        min=1,
+        max=10,
+        marks={i: 'Level {}'.format(i) if i == 1 or i == 10 else '{}'.format(i) for i in range(1,11)},
+        value=10,
+    ),
+    html.Div(style={'textAlign': colors['align'],'color': colors['text']},children='''
+
     '''),
     html.Button('Generate!', id='button'),
     html.Div(id='output-container-button',
