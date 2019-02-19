@@ -119,7 +119,7 @@ def splitsentences_allenResults(results,verbose=False):
     # Divides the results dictionary supplied by AllenNLP into a list based on
     # sentences. Output is results_list[0:Nsentences-1], each entry containing
     # fields 'words' and 'tags'
-    ind_sentence_starts = [i+1 for i,w in enumerate(results['words']) if (w=='.' or w=='?' or w=='!')]
+    ind_sentence_starts = [i+1 for i,w in enumerate(results['words']) if ('.' in w or '?' in w or '!' in w)]
     ind_sentence_starts.insert(0, 0)
 
     if len(ind_sentence_starts) < 2:

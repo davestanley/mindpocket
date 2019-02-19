@@ -281,7 +281,7 @@ def update_output(n_clicks, value, difficulty,ankilibname):
         for i in range(0,Nsent,step_size):
             count=count+1
             results_curr = merge_allenResults(results_list[i:min(i+step_size,Nsent)])
-            print (results_curr)
+            # print (results_curr)
 
             # Generate the sentences
             easiness = 100-10*difficulty
