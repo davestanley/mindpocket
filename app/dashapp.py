@@ -1,9 +1,6 @@
 
 
-######################### App GUI Functions #########################
-
-
-
+######################### Imports #########################
 # General imports
 import sys
 import os
@@ -16,44 +13,57 @@ sys.path.insert(0, os.path.join(curr_folder,'app'))
 # Set up genanki path
 sys.path.insert(0, os.path.join(curr_folder,'submodules','genanki'))
 
-# Imports for dash
+# Imports for Dash
 import dash
 import dash_core_components as dcc
 import dash_html_components as html
 from dash.dependencies import Input, Output
 from app import app
 
-# Import flask
+# Import Flask
 import flask
 
-# Imports for anki
+# Imports for Anki
 import random
 import genanki
 
-# File management
+# General file management
 import shutil
 import glob
+import time
 
 # Import AllenNLP
 from allennlp.predictors import Predictor
 
-# Include custom
+# Include custom AllenNLP library
 import myallennlp
 from myallennlp import *
 from myallennlp.models.simple_tagger2 import SimpleTagger2
 from myallennlp.dataset_readers import sequence_tagging2
 from myallennlp.data.tokenizers.word_splitter import SpacyWordSplitter
 
-# Set up temporary folder for saving contents of this session
-import time
+# Import local NLP functions
+from app.utils_NLP import tag_paragraph_NER, splitsentences_allenResults, merge_allenResults, extract_blanked_out_sentences
+
+
+######################### Global flags #########################
+
+testing_mode = False                  # If true, doesn't actually run AllenNLP, but rather just populates with some dummy data. Faster load times for testing
+use_allenNLP_NER_as_model = False     # If true, uses AllenNLP pre-trained model; if false, uses my model trained on SQUAD data
+
+
+######################### File management #########################
+# Set up downloads folder for saving contents of this session
+# Index this session's folder using current date/time
 timestr = time.strftime("%Y%m%d-%H%M%S")
 ankiout_path = os.path.join('downloads',timestr)
 if not os.path.exists(ankiout_path):
     os.makedirs(ankiout_path)
 
 
-# Delete all download that have expired (right now, default expiration time is
-# 1 hour. Comment out other lines to change)
+# Delete all download from earlier sessions that have expired (right now,
+# default expiration time is 1 hour. Uncomment other lines to change)
+#
 # timestr_tokeep = time.strftime("%Y%m%d-%H%M")           # 1 minute
 timestr_tokeep = time.strftime("%Y%m%d-%H")           # 1 hour
 # timestr_tokeep = time.strftime("%Y%m%d")              # 1 day
@@ -67,7 +77,9 @@ for f in allfiles:
         shutil.rmtree(f)
 
 
-# Test
+######################### Flask Routing #########################
+# Test code (from https://github.com/OXPHOS/GeneMiner/wiki/Setup-front-end-with-plotly-dash,-flask,-gunicorn-and-nginx
+# and https://github.com/OXPHOS/GeneMiner/tree/master/flask-dash-app)
 @app.route('/index')
 def sayHi():
     return "Hi from my Flask App!"
@@ -85,32 +97,40 @@ def return_downloads(path = None, filename = None):
     # print(path)
     return flask.send_file(path, as_attachment=True)
 
+
+######################### Setup Dash within Flash #########################
+# This embeds dash in flask (for details, see: https://github.com/OXPHOS/GeneMiner/wiki/Setup-front-end-with-plotly-dash,-flask,-gunicorn-and-nginx)
+
 # Define for IIS module registration.
 wsgi_app = app.wsgi_app
 
-external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
-
-
-
-######################### NLP Functions #########################
-# Import local functions
-from app.utils_NLP import tag_paragraph_NER, splitsentences_allenResults, merge_allenResults, extract_blanked_out_sentences
+# external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
+external_stylesheets = ['https://codepen.io/plotly/pen/EQZeaW.css']
 
 # Connect dash to flask
 dashapp = dash.Dash(__name__, server=app, url_base_pathname='/',external_stylesheets=external_stylesheets)
 # app = dash.Dash(__name__, external_stylesheets=external_stylesheets)
 
+
+
+######################### Setup Dash #########################
+
+# Define color scheme
 colors = {
-    'background': '#DDEEFF',
+    'background': '#DDEEFF',         # Light blue
     # 'background': '#FFFFFF',
     'text': '#000000',
+    'titletext': '#d63333',          # Reddish color
     'align': 'center'
 }
 
+# Set tab title
 dashapp.title='MindPocket: Optimizing Learning'
 
+# Layout
 dashapp.layout = html.Div(
     [
+    html.Div([
         html.H1(children='MindPocket', style={'textAlign': colors['align'],'color': colors['text']}),
         html.Div(style={'textAlign': colors['align'],'color': colors['text']},children='''
             Enter text to generate questions
@@ -122,9 +142,6 @@ dashapp.layout = html.Div(
             style={'textAlign': 'left','color': '#000000','width': '95%'},
             rows=20
         ),
-        # html.Div(style={'textAlign': colors['align'],'color': colors['text']},children='''
-        #     Select difficulty:
-        # '''),
         html.Div(
             [
                 html.P('Select difficulty:'),
@@ -139,9 +156,6 @@ dashapp.layout = html.Div(
             style={'margin-bottom': '40'}
         ),
         html.Button('Generate!', id='button'),
-        # html.Div(style={'textAlign': colors['align'],'color': colors['text']},children='''
-        #     blah
-        # '''),
         html.Div(
             [
                 html.A(
@@ -164,16 +178,20 @@ dashapp.layout = html.Div(
            'backgroundColor': colors['background'],
            'padding': '40px'
            }
+       )],
+   style={'width': '100%',
+         'margin-left': 'auto',
+         'margin-right' : 'auto',
+         'line-height' : '30px',
+         'backgroundColor': colors['background'],
+         'padding': '0px'
+         }
 )
 
+######################### Load AllenNLP #########################
 
-# Only open if predictor doesn't exist
-# import inspect
-# predictor = []
-# print(inspect.stack()[1].function)
-# print('Starting up')
-testing_mode = False
-use_allenNLP_NER_as_model = False     # if true, uses AllenNLP pre-trained model; if false, uses my model trained on SQUAD data
+testing_mode = False                  # If true, doesn't actually run AllenNLP, but rather just populates with some dummy data. Faster load times for testing
+use_allenNLP_NER_as_model = False     # If true, uses AllenNLP pre-trained model; if false, uses my model trained on SQUAD data
 
 if not testing_mode:
     try:
@@ -189,6 +207,8 @@ if not testing_mode:
             predictor = Predictor.from_path(mymodel,predictor_name='sentence-tagger')
             failterm = '0'    # Model output associated with a "false" classification (e.g., do not blank)
 
+######################### Main callback #########################
+# Generates blanks & prepares Anki file
 @dashapp.callback(
     dash.dependencies.Output('output-container-button', 'children'),
     [dash.dependencies.Input('button', 'n_clicks')],
@@ -329,13 +349,7 @@ def update_output(n_clicks, value, difficulty):
     # pdb.set_trace()
 
     return out
-    # return 'Fill in the blank:\n"{}"\n Answer:{} \n'.format(
-    #     blanked_sentence,
-    #     removed_word
-    # )
 
-
-
-
+# Not needed, since running within Flask
 # if __name__ == '__main__':
 #     dashapp.run_server(debug=True)
