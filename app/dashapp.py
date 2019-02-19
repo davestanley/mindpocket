@@ -30,6 +30,10 @@ import flask
 import random
 import genanki
 
+# File management
+import shutil
+import glob
+
 # Import AllenNLP
 from allennlp.predictors import Predictor
 
@@ -40,16 +44,45 @@ from myallennlp.models.simple_tagger2 import SimpleTagger2
 from myallennlp.dataset_readers import sequence_tagging2
 from myallennlp.data.tokenizers.word_splitter import SpacyWordSplitter
 
+# Set up temporary folder for saving contents of this session
+import time
+timestr = time.strftime("%Y%m%d-%H%M%S")
+ankiout_path = os.path.join('downloads',timestr)
+if not os.path.exists(ankiout_path):
+    os.makedirs(ankiout_path)
+
+
+# Delete all download that have expired (right now, default expiration time is
+# 1 hour. Comment out other lines to change)
+# timestr_tokeep = time.strftime("%Y%m%d-%H%M")           # 1 minute
+timestr_tokeep = time.strftime("%Y%m%d-%H")           # 1 hour
+# timestr_tokeep = time.strftime("%Y%m%d")              # 1 day
+
+# Delete files that are past the expiration
+allfiles = glob.glob(os.path.join('downloads','*'))
+allfiles_tokeep = glob.glob(os.path.join('downloads',timestr_tokeep + '*'))
+for f in allfiles:
+    if f not in allfiles_tokeep:
+        print('Deleting expired downloads folder ' + f)
+        shutil.rmtree(f)
+
+
 # Test
 @app.route('/index')
 def sayHi():
     return "Hi from my Flask App!"
 
-# Test
-@app.route('/index2')
-def sayHi2():
+# Flask coding for downloading files
+@app.route('/downloads/<path>/<filename>')
+def return_downloads(path = None, filename = None):
     #path = '/output.apkg'
-    path = '/home/davestanley/Dropbox/git/mindpocket/output.apkg'
+    #path = '/home/davestanley/Dropbox/git/mindpocket/output.apkg'
+    # print('original path')
+    # print(path)
+    path = os.path.join(os.getenv("HOME"),'src','mindpocket','downloads',path,filename)
+    #path = '/home/davestanley/Dropbox/git/mindpocket/downloads/' + path + '/' + filename
+    # print('new path')
+    # print(path)
     return flask.send_file(path, as_attachment=True)
 
 # Define for IIS module registration.
@@ -115,7 +148,7 @@ dashapp.layout = html.Div(
                     children='Download Anki file',
                     id='download-link',
                     download='file.apkg',
-                    href='/index2'
+                    href='/downloads/' + timestr + '/' + 'mindpocket_deck.apkg'
                 )
             ],
             style={'margin-bottom': '10','margin-top': '10'}
@@ -284,8 +317,12 @@ def update_output(n_clicks, value, difficulty):
             fields=[question_list[i], answers_list[i]])
         my_deck.add_note(my_note)
 
-    # Save deck to file
-    genanki.Package(my_deck).write_to_file('output.apkg')
+    # # Save deck to file # #
+    # First, get string containing current time
+    deckname = "mindpocket_deck"
+    ankiout_file = deckname + '.apkg'
+    ankiout_full = os.path.join(ankiout_path,ankiout_file)
+    genanki.Package(my_deck).write_to_file(ankiout_full)
 
 
     # import pdb
