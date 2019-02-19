@@ -171,33 +171,10 @@ dashapp.layout = html.Div(
             value='Mindpocket Deck'
         ),
         html.Br(),
-        # html.Div(
-        # [
-        #     html.P('Anki Library Name:'),
-        #     dcc.Input(
-        #         id='input-libname',
-        #         placeholder='Enter a value...',
-        #         type='text',
-        #         value='Mindpocket Deck'
-        #     )
-        # ],
-        #     style={'margin-bottom': '10','margin-top': '0'}
-        # ),
         html.Button('Generate!', id='button'),
         html.Div(id='output-container-button',
                  children='Enter a value and press submit',
                  style={'textAlign': 'left','color': colors['text']}),
-        # html.Div(
-        # [
-        #     html.A(
-        #         children='Download Anki file',
-        #         id='download-link',
-        #         download='file.apkg',
-        #         href='/downloads/' + timestr + '/' + 'mindpocket_deck.apkg'
-        #     )
-        # ],
-        #     style={'margin-bottom': '10','margin-top': '10'}
-        # ),
         html.Br(),
         html.A(
             children='Download Anki deck ',
