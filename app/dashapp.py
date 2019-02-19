@@ -163,6 +163,23 @@ dashapp.layout = html.Div(
                    'margin-right' : 'auto',
                    'width':'90%'}
         ),
+        html.P('Sentences per question:'),
+        html.Div(
+            [
+                dcc.Slider(
+                    id='spq-slider',
+                    min=1,
+                    max=4,
+                    #marks={i: 'Level {}'.format(i) if i == 1 or i == 10 else '{}'.format(i) for i in range(1,11)},
+                    marks={i: '{}'.format(i) for i in range(1,5)},
+                    value=2
+                )
+            ],
+            style={'margin-bottom': '40',
+                   'margin-left': 'auto',
+                   'margin-right' : 'auto',
+                   'width':'90%'}
+        ),
         html.Label('Anki Library Name: '),
         dcc.Input(
             id='input-libname',
@@ -238,9 +255,10 @@ if not testing_mode:
     [dash.dependencies.Input('button', 'n_clicks')],
     [dash.dependencies.State('input-box', 'value'),
     dash.dependencies.State('difficulty-slider', 'value'),
-    dash.dependencies.State('input-libname', 'value')
+    dash.dependencies.State('input-libname', 'value'),
+    dash.dependencies.State('spq-slider', 'value')
     ])
-def update_output(n_clicks, value, difficulty,ankilibname):
+def update_output(n_clicks, value, difficulty,ankilibname,step_size0=2):
     verbose_mode = False
 
     paragraph = value
@@ -271,7 +289,7 @@ def update_output(n_clicks, value, difficulty,ankilibname):
 
         # Loop through sentences in steps of 2 sentences at a time
         Nsent = len(results_list)
-        step_size=2
+        step_size=step_size0
         out = []
         count=0
         question_list = []
