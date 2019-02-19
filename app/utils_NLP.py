@@ -119,7 +119,7 @@ def splitsentences_allenResults(results,verbose=False):
     # Divides the results dictionary supplied by AllenNLP into a list based on
     # sentences. Output is results_list[0:Nsentences-1], each entry containing
     # fields 'words' and 'tags'
-    ind_sentence_starts = [i+1 for i,w in enumerate(results['words']) if (w=='.' or w=='?' or w=='!')]
+    ind_sentence_starts = [i+1 for i,w in enumerate(results['words']) if ('.' in w or '?' in w or '!' in w)]
     ind_sentence_starts.insert(0, 0)
 
     if len(ind_sentence_starts) < 2:
@@ -228,9 +228,10 @@ def extract_blanked_out_sentences(results,failterm='O',easiness=0,verbose_mode =
 
             # Choose entry in candidate_blanks depending on difficulty
             # This works by finding the blank corresponding to the "easiness" percentile
-            difficulty = 100
-            easiness = 100 - difficulty
+            # difficulty = 100
+            # easiness = 100 - difficulty
             # Find value of the easiness percentile
+            print(easiness)
             arr = np.array(sims)
             per = np.percentile(arr, easiness) # easiest blanks have the closest similarity to the document overall
 
