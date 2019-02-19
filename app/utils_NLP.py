@@ -241,7 +241,7 @@ def extract_blanked_out_sentences(results,failterm='O',easiness=0,verbose_mode =
 
             # Now, return index of original one
             arr_orig = np.array(sims)
-            ind_cb = np.where(arr_orig==per)[0].tolist()[0] # Take first index matching per]
+            ind_cb = np.where(arr_orig==per_orig)[0].tolist()[0] # Take first index matching per]
 
             # Find where it is in our original list of blanks
             ind = l_NE[ind_cb]
