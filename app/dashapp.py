@@ -105,7 +105,11 @@ def return_downloads(path = None, filename = None):
 wsgi_app = app.wsgi_app
 
 # external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
-external_stylesheets = ['https://codepen.io/plotly/pen/EQZeaW.css']
+# external_stylesheets = ['https://codepen.io/plotly/pen/EQZeaW.css']
+external_stylesheets = ["https://cdnjs.cloudflare.com/ajax/libs/skeleton/2.0.4/skeleton.min.css",
+                "https://fonts.googleapis.com/css?family=Raleway:400,400i,700,700i",
+                "https://fonts.googleapis.com/css?family=Product+Sans:400,400i,700,700i"]
+
 
 # Connect dash to flask
 dashapp = dash.Dash(__name__, server=app, url_base_pathname='/',external_stylesheets=external_stylesheets)
@@ -137,54 +141,97 @@ dashapp.layout = html.Div(
         '''),
         dcc.Textarea(
             id='input-box',
-            placeholder='Enter a value...',
+            placeholder='Enter text...',
             value='',
             style={'textAlign': 'left','color': '#000000','width': '95%'},
             rows=20
         ),
+        html.P('Select difficulty :'),
         html.Div(
             [
-                html.P('Select difficulty:'),
                 dcc.Slider(
                     id='difficulty-slider',
                     min=1,
                     max=10,
-                    marks={i: 'Level {}'.format(i) if i == 1 or i == 10 else '{}'.format(i) for i in range(1,11)},
+                    #marks={i: 'Level {}'.format(i) if i == 1 or i == 10 else '{}'.format(i) for i in range(1,11)},
+                    marks={i: 'Easiest' if i == 1 else 'Hardest' if i==10 else ' ' for i in range(1,11)},
                     value=10
                 )
             ],
-            style={'margin-bottom': '40'}
+            style={'margin-bottom': '40',
+                   'margin-left': 'auto',
+                   'margin-right' : 'auto',
+                   'width':'90%'}
         ),
+        html.Label('Anki Library Name: '),
+        dcc.Input(
+            id='input-libname',
+            placeholder='Enter a value...',
+            type='text',
+            value='Mindpocket Deck'
+        ),
+        html.Br(),
+        # html.Div(
+        # [
+        #     html.P('Anki Library Name:'),
+        #     dcc.Input(
+        #         id='input-libname',
+        #         placeholder='Enter a value...',
+        #         type='text',
+        #         value='Mindpocket Deck'
+        #     )
+        # ],
+        #     style={'margin-bottom': '10','margin-top': '0'}
+        # ),
         html.Button('Generate!', id='button'),
-        html.Div(
-            [
-                html.A(
-                    children='Download Anki file',
-                    id='download-link',
-                    download='file.apkg',
-                    href='/downloads/' + timestr + '/' + 'mindpocket_deck.apkg'
-                )
-            ],
-            style={'margin-bottom': '10','margin-top': '10'}
-        ),
         html.Div(id='output-container-button',
                  children='Enter a value and press submit',
-                 style={'textAlign': 'left','color': colors['text']})
-     ],
-     style={'width': '80%',
-           'margin-left': 'auto',
-           'margin-right' : 'auto',
-           'line-height' : '30px',
-           'backgroundColor': colors['background'],
-           'padding': '40px'
-           }
-       )],
-   style={'width': '100%',
+                 style={'textAlign': 'left','color': colors['text']}),
+        # html.Div(
+        # [
+        #     html.A(
+        #         children='Download Anki file',
+        #         id='download-link',
+        #         download='file.apkg',
+        #         href='/downloads/' + timestr + '/' + 'mindpocket_deck.apkg'
+        #     )
+        # ],
+        #     style={'margin-bottom': '10','margin-top': '10'}
+        # ),
+        html.Br(),
+        html.A(
+            children='Download Anki deck ',
+            id='download-link',
+            download='file.apkg',
+            href='/downloads/' + timestr + '/' + 'mindpocket_deck.apkg'
+        ),
+        html.Label('(get Anki app'),
+        # html.Br(),
+        html.A(
+            children=' here)',
+            href='https://apps.ankiweb.net/'
+        ),
+        html.Br(),
+        html.A(
+            children='Google Slides presentation link',
+            href='https://docs.google.com/presentation/d/1xPXH58mQQloVF6xvLjpK8aK8PnqofJTZtT6BnSYMKjY/'
+        )
+    ],
+    style={'width': '80%',
+       'margin-left': 'auto',
+       'margin-right' : 'auto',
+       'line-height' : '30px',
+       'backgroundColor': colors['background'],
+       'padding': '40px'
+       }
+    )],
+    style={'width': '100%',
          'margin-left': 'auto',
          'margin-right' : 'auto',
          'line-height' : '30px',
          'backgroundColor': colors['background'],
-         'padding': '0px'
+         'padding': '0px',
+         'boxShadow': '0px 0px 5px 5px rgba(204,204,204,0.4)'
          }
 )
 
@@ -213,8 +260,10 @@ if not testing_mode:
     dash.dependencies.Output('output-container-button', 'children'),
     [dash.dependencies.Input('button', 'n_clicks')],
     [dash.dependencies.State('input-box', 'value'),
-    dash.dependencies.State('difficulty-slider', 'value')])
-def update_output(n_clicks, value, difficulty):
+    dash.dependencies.State('difficulty-slider', 'value'),
+    dash.dependencies.State('input-libname', 'value')
+    ])
+def update_output(n_clicks, value, difficulty,ankilibname):
     verbose_mode = False
 
     paragraph = value
@@ -325,7 +374,8 @@ def update_output(n_clicks, value, difficulty):
     )
 
     # Build deck
-    deck_name = 'Mindpocket Deck'
+    deck_name = ankilibname
+    #deck_name = 'Mindpocket Deck'
     my_deck = genanki.Deck(
         myrand+1,
         deck_name)
