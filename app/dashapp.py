@@ -211,7 +211,7 @@ dashapp.layout = html.Div(
             href='https://docs.google.com/presentation/d/1xPXH58mQQloVF6xvLjpK8aK8PnqofJTZtT6BnSYMKjY/'
         )
     ],
-    style={'width': '80%',
+    style={'width': '40%',
        'margin-left': 'auto',
        'margin-right' : 'auto',
        'line-height' : '30px',
