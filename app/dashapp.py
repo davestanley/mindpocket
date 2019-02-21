@@ -163,16 +163,16 @@ dashapp.layout = html.Div(
                    'margin-right' : 'auto',
                    'width':'90%'}
         ),
-        html.P('Sentences per question:'),
+        html.P('Question density:'),
         html.Div(
             [
                 dcc.Slider(
-                    id='spq-slider',
+                    id='qd-slider',
                     min=1,
                     max=4,
                     #marks={i: 'Level {}'.format(i) if i == 1 or i == 10 else '{}'.format(i) for i in range(1,11)},
                     marks={i: '{}'.format(i) for i in range(1,5)},
-                    value=2
+                    value=3
                 )
             ],
             style={'margin-bottom': '40',
@@ -256,10 +256,14 @@ if not testing_mode:
     [dash.dependencies.State('input-box', 'value'),
     dash.dependencies.State('difficulty-slider', 'value'),
     dash.dependencies.State('input-libname', 'value'),
-    dash.dependencies.State('spq-slider', 'value')
+    dash.dependencies.State('qd-slider', 'value')
     ])
-def update_output(n_clicks, value, difficulty,ankilibname,step_size0=2):
+def update_output(n_clicks, value, difficulty,ankilibname,question_density=3):
     verbose_mode = False
+
+    # Step size should range from 1 - 4. We want question density to be
+    # the reverse of step size.
+    step_size0 = 5 - question_density
 
     paragraph = value
 
