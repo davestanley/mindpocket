@@ -297,7 +297,6 @@ def update_output(n_clicks, value, difficulty,ankilibname,step_size0=2):
         answers_tag_list = []
         answers_text = ''
         for i in range(0,Nsent,step_size):
-            count=count+1
             results_curr = merge_allenResults(results_list[i:min(i+step_size,Nsent)])
             # print (results_curr)
 
@@ -308,15 +307,19 @@ def update_output(n_clicks, value, difficulty,ankilibname,step_size0=2):
             removed_word = text_blanks['removed_word']
             removed_word_tag = text_blanks['removed_word_tag']
 
-            # Append to running tally of all Q & A's
-            question_list.append(blanked_sentence)
-            answers_list.append(removed_word)
-            answers_tag_list.append(removed_word_tag)
+            # Only post question if there are no errors!
+            if not removed_word == 'error':
+                count=count+1
 
-            # Append to text output for questions
-            out.append(html.P('Question {}: {}'.format(str(count),blanked_sentence)))
-            if count == 1: answers_text = answers_text + 'Answers: {}. {}'.format(str(count),removed_word)
-            else: answers_text = answers_text + ', {}. {}'.format(str(count),removed_word)
+                # Append to running tally of all Q & A's
+                question_list.append(blanked_sentence)
+                answers_list.append(removed_word)
+                answers_tag_list.append(removed_word_tag)
+
+                # Append to text output for questions
+                out.append(html.P('Question {}: {}'.format(str(count),blanked_sentence)))
+                if count == 1: answers_text = answers_text + 'Answers: {}. {}'.format(str(count),removed_word)
+                else: answers_text = answers_text + ', {}. {}'.format(str(count),removed_word)
 
         # Append to text output for answers
         answers_text = answers_text + '.'
