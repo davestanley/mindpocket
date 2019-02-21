@@ -18,3 +18,7 @@ Or: `gunicorn app:app -D`
 - spaCy (https://spacy.io/usage/)
 - genanki (https://github.com/kerrickstaley/genanki)
 
+# Training data
+- The algorithm was trained on the Stanford Question Answering Dataset (SQuAD) reading comprehension dataset
+- Q&A pairs and associated context were transformed into fill-in-the-blank questions 
+- The fill-in-the-blank data derived from SQuAD, and also a description of the transformation algorithm, can be found here: https://github.com/davestanley/SQuAD-Fill-in-the-Blanks
