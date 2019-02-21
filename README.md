@@ -9,6 +9,7 @@ Mindpocket generates fill-in-the-blank questions from any body of text. These qu
 # To run
 
 Run: `python run.py`
+Or: `gunicorn app:app -D`
 
 ## Requirements
 - AllenNLP (http://allennlp.org)
