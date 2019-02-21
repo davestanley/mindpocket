@@ -275,7 +275,7 @@ def update_output(n_clicks, value, difficulty,ankilibname,step_size0=2):
         if '\n' in paragraph:
             print('pass')
 
-
+    count = 0
     if not testing_mode:
         # Tag the paragraph
         results = tag_paragraph_NER(paragraph,predictor)
@@ -351,6 +351,11 @@ def update_output(n_clicks, value, difficulty,ankilibname,step_size0=2):
         question_list.append(blanked_sentence)
         answers_list.append(removed_word)
         answers_tag_list.append(removed_word_tag)
+
+    # If could not get any questions, return error and exit
+    if count == 0:
+        out = [html.P('Could not generate any questions from the input text.')]
+        return out
 
     # # Save to Anki # #
     # Build model
