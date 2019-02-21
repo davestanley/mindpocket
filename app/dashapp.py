@@ -319,9 +319,11 @@ def update_output(n_clicks, value, difficulty,ankilibname,step_size0=2):
                 # Append to text output for questions
                 out.append(html.P('Question {}: {}'.format(str(count),blanked_sentence)))
                 if count == 1: answers_text = answers_text + 'Answers: {}. {}'.format(str(count),removed_word)
-                else: answers_text = answers_text + ', {}. {}'.format(str(count),removed_word)
+                # if count == 1: answers_text = answers_text + '{}: {}'.format(str(count),removed_word)
+                else: answers_text = answers_text + ', {}: {}'.format(str(count),removed_word)
 
         # Append to text output for answers
+        # out.append(html.P('Answers:'))
         answers_text = answers_text + '.'
         out.append(html.P(answers_text))
 
