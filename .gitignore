@@ -119,3 +119,6 @@ model_params
 
 # Lock files
 .~lock*
+
+# VSCode files to ignore
+.vscode

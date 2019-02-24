@@ -12,6 +12,10 @@ Article # 458: Pharmacy, 2995 words.
 Article # 467: Immune system, 6155 words.
 
 
+Others:
+#56 Boston
+#165 Memory
+#213 Data compression
 
 
 ~ Blank examples from article on immunology (model 6e0c37 with entropy 93/7) ~
