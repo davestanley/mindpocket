@@ -1,6 +1,7 @@
 #!/bin/bash
 
 FILE=test_performance_model.ipynb
+FILE2=test_performance_manual.ipynb
 
 cp ../scripts/run_allmodels.sh .
 cp ../scripts/run_allmodels_server.sh .
@@ -16,6 +17,9 @@ for d in *model*/ ; do
     # Only copy over Jupyter results journal if it's not already present (dangerous to overwrite this!)
     if [ ! -f "$FILE" ]; then
       cp ../../scripts/test_performance_model.ipynb .
+    fi
+    if [ ! -f "$FILE2" ]; then
+      cp ../../scripts/test_performance_manual.ipynb .
     fi
     cp ../run_model_allarticles.py .
     #cp -r ../../myallennlp .
