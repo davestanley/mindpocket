@@ -142,7 +142,8 @@ dashapp.layout = html.Div(
         dcc.Textarea(
             id='input-box',
             placeholder='Enter text...',
-            value='''Turing award winner Jim Gray imagined data science as a fourth paradigm of science (empirical, theoretical, computational and now data-driven) and asserted that "everything about science is changing because of the impact of information technology" and the data deluge. In 2012, when Harvard Business Review called it "The Sexiest Job of the 21st Century", the term "data science" became a buzzword. It is now often used interchangeably with earlier concepts like business analytics, business intelligence, predictive modeling, and statistics. Even the suggestion that data science is sexy was paraphrasing Hans Rosling, featured in a 2011 BBC documentary with the quote, "Statistics is now the sexiest subject around." Nate Silver referred to data science as a sexed up term for statistics.''',
+            # value='''Turing award winner Jim Gray imagined data science as a fourth paradigm of science (empirical, theoretical, computational and now data-driven) and asserted that "everything about science is changing because of the impact of information technology" and the data deluge. In 2012, when Harvard Business Review called it "The Sexiest Job of the 21st Century", the term "data science" became a buzzword. It is now often used interchangeably with earlier concepts like business analytics, business intelligence, predictive modeling, and statistics. Even the suggestion that data science is sexy was paraphrasing Hans Rosling, featured in a 2011 BBC documentary with the quote, "Statistics is now the sexiest subject around." Nate Silver referred to data science as a sexed up term for statistics.''',
+            value='''Jim Gray imagined data science as a fourth paradigm of science. It is now often used interchangeably with earlier concepts like business analytics, business intelligence, predictive modeling, and statistics. Nate Silver referred to data science as a fancy term for statistics. It is a concept to unify statistics, data analysis, machine learning and their related methods.''',
             style={'textAlign': 'left','color': '#000000','width': '95%'},
             rows=20
         ),
@@ -172,7 +173,7 @@ dashapp.layout = html.Div(
                     max=4,
                     #marks={i: 'Level {}'.format(i) if i == 1 or i == 10 else '{}'.format(i) for i in range(1,11)},
                     marks={i: '{}'.format(i) for i in range(1,5)},
-                    value=3
+                    value=4
                 )
             ],
             style={'margin-bottom': '40',
